@@ -80,7 +80,9 @@
       }
     }
   }
-  @include transition(all 400ms ease);
+
+  transition: all 400ms ease;
+
   &.open{
     transform: translate(0, 0);
   }

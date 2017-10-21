@@ -8,4 +8,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./components/NavigationBar.scss"></style>
+<style lang="scss" src="./NavigationBar.scss"></style>
