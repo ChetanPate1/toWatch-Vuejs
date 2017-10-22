@@ -3,7 +3,7 @@
      <div class="col-md-offset-4 col-md-4">
         <h1>Sign in</h1>
 
-        <form name="signinForm" novalidate @submit.prevent="login">
+        <form name="signinForm" novalidate @submit.prevent="onLogin">
           <div class="form-element">
             <label for="email">Email</label>
             <input name="email" type="email" v-model="email" required>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'Login',
   data() {
@@ -34,17 +36,41 @@ export default {
       password: '',
       validation: {
         show: false,
-        message: ''
+        message: 'Something went wrong'
       }
     }
   },
+  computed: {
+    ...mapActions([
+      'signUserIn',
+      'signUserOut'
+    ])
+  },
   methods: {
-    login() {
-      console.log('login');
+    onLogin() {
+
+      this.$store.dispatch('signUserIn', {
+        email: this.email, password: this.password
+      });
+
+      // this.$router.push('my-shows');
+    },
+    validationMessage(error) {
+       this.validation.show = true;
+       if (error.code === 'auth/wrong-password') {
+          this.validation.message = 'Incorrect password';
+       }
+       if(error.code === 'auth/user-not-found'){
+          this.validation.message = 'User does not exist';
+       }
+       if(error.code === 'auth/email-already-in-use'){
+          this.validation.message = 'User already exists';
+       }
+
+       setTimeout(function() {
+          this.validation.show = false;
+       }, 3000);
     }
   }
 }
 </script>
-
-<style lang="css">
-</style>
