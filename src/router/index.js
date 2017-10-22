@@ -6,9 +6,10 @@ import MyShows from '@/components/MyShows';
 import WatchList from '@/components/WatchList';
 import RewatchList from '@/components/RewatchList';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
+  linkActiveClass: 'active',
   routes: [
     {
       path: '/most-popular',
@@ -34,6 +35,7 @@ export default new Router({
       path: '/rewatch-list',
       name: 'rewatchList',
       component: RewatchList
-    }
+    },
+    { path: '/', redirect: '/most-popular' }
   ]
-})
+});
