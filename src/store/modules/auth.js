@@ -3,11 +3,12 @@ import * as firebase from 'firebase';
 const state = {
   user: {
     uid: '',
-    email: ''
-  }
+    email: '',
+    isLoggedIn: false
+  },
 }
 
-const getter = {
+const getters = {
   user: state => state.user
 }
 
@@ -16,23 +17,46 @@ const actions = {
     firebase.auth()
       .signInWithEmailAndPassword(cred.email, cred.password)
       .then(user => {
-        console.log(user);
+          commit('SIGN_IN_USER', user);
       });
-
-    // commit(types., cred)
   },
-  signUserOut() {
-    firebase.auth().signOut();
+  signUserOut({ commit }) {
+    firebase.auth()
+      .signOut()
+      .then(() => {
+        commit('SIGN_OUT_USER');
+      });
+  },
+  getCurrentUser({ commit }) {
+    const user = firebase.auth()
+      .onAuthStateChanged(user => {
+          if(user){
+            commit('SIGN_IN_USER', user);
+          }
+      });
   }
 }
 
 const mutations = {
-  [types.SIGN_IN_USER](state, cred) {
-
+  [types.SIGN_IN_USER](state, user) {
+    state.user = {
+      uid: user.uid,
+      email: user.email,
+      isLoggedIn: true
+    };
+  },
+  [types.SIGN_OUT_USER](state) {
+    state.user = {
+      uid: '',
+      email: '',
+      isLoggedIn: false
+    };
   }
 }
 
 export default {
   state,
-  actions
+  getters,
+  actions,
+  mutations
 }

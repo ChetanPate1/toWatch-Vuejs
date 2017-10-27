@@ -42,18 +42,14 @@ export default {
   },
   computed: {
     ...mapActions([
-      'signUserIn',
-      'signUserOut'
+      'signUserIn'
     ])
   },
   methods: {
     onLogin() {
-
       this.$store.dispatch('signUserIn', {
         email: this.email, password: this.password
       });
-
-      // this.$router.push('my-shows');
     },
     validationMessage(error) {
        this.validation.show = true;
