@@ -43,7 +43,15 @@ export default {
   computed: {
     ...mapActions([
       'signUserIn'
+    ]),
+    ...mapGetters([
+      'user'
     ])
+  },
+  mounted(){
+    if(this.user.isLoggedIn){
+      this.$router.push('my-shows');
+    }
   },
   methods: {
     onLogin() {

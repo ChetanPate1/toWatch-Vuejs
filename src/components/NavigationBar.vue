@@ -3,7 +3,6 @@
     <nav class="navigation-bar" v-bind:class="{'open' : open }">
        <div class="container">
           <a class="brand"><strong>toWatch</strong></a>
-          {{this.user}}{{this.user.isLoggedIn}}
           <ul class="links margin-top-xs-40">
              <router-link :to="{ path: '/most-popular'}" tag="li"><a><span class="dripicons-star"></span> MOST POPULAR</a></router-link>
              <router-link :to="{ path: '/rewatch-list'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-clockwise"></span> REWATCH LIST</a></router-link>
