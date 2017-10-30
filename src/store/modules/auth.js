@@ -7,7 +7,7 @@ const state = {
     uid: '',
     email: '',
     isLoggedIn: false
-  },
+  }
 }
 
 const getters = {
