@@ -39,7 +39,7 @@ export default {
       'user'
     ])
   },
-  mounted(){
+  beforeMount(){
     this.$store.dispatch('getCurrentUser');
   },
   methods: {
