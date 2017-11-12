@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as types from '../mutation-types';
 
 const state = {
-  shows: {}
+  shows: []
 }
 
 const getters = {

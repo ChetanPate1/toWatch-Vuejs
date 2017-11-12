@@ -33,9 +33,10 @@ const actions = {
   getCurrentUser({ commit }) {
     const user = firebase.auth()
       .onAuthStateChanged(user => {
-          if(user){
+          if (user) {
             commit('SIGN_IN_USER', user);
-          }else{
+          } else {
+            commit('SIGN_OUT_USER', user);
             router.push('login');
           }
       });

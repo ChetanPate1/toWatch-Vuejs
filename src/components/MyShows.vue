@@ -33,11 +33,10 @@ export default {
       'myShows'
     ]),
     ...mapActions([
-      'getMyShows'
+      'getMyShows',
     ])
   },
   mounted() {
-    console.log(this.user);
     this.$store.dispatch('getMyShows', this.user);
   },
   components: {
