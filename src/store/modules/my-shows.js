@@ -10,10 +10,10 @@ const getters = {
 }
 
 const actions = {
-  getMyShows({ commit }, payload) {
-    console.log(payload);
-    const dbMyShows = firebase.database().ref(`shows/${ payload.uid }`);
-    dbMyShows.on('value', snapshot => {
+  getMyShows({ commit }) {
+    const uid = firebase.auth().currentUser.uid;
+    const myShows = firebase.database().ref(`shows/${ uid }`);
+    myShows.on('value', snapshot => {
       commit('GET_MY_SHOWS', snapshot.val());
     });
   }

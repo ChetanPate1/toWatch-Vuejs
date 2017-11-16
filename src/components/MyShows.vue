@@ -29,7 +29,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'user',
       'myShows'
     ]),
     ...mapActions([
@@ -37,7 +36,7 @@ export default {
     ])
   },
   mounted() {
-    this.$store.dispatch('getMyShows', this.user);
+    this.$store.dispatch('getMyShows');
   },
   components: {
     NoContent,

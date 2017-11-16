@@ -17,11 +17,17 @@ firebase.initializeApp({
   messagingSenderId: "989986376535"
 });
 
-/* eslint-disable no-new */
-new Vue({
-  store,
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+let app;
+firebase.auth().onAuthStateChanged((user) =>{
+  if(!app){
+
+    app = new Vue({
+      store,
+      el: '#app',
+      router,
+      template: '<App/>',
+      components: { App }
+    });
+  }
 });
+/* eslint-disable no-new */
