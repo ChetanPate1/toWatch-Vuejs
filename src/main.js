@@ -7,7 +7,7 @@ import router from './router';
 import store from './store';
 
 Vue.config.productionTip = false;
-
+/* eslint-disable no-new */
 firebase.initializeApp({
   apiKey: "AIzaSyBThnFs67ZrJ6J0z6IXkGzT16077IGXk9c",
   authDomain: "towatch-b9155.firebaseapp.com",
@@ -17,17 +17,10 @@ firebase.initializeApp({
   messagingSenderId: "989986376535"
 });
 
-let app;
-firebase.auth().onAuthStateChanged((user) =>{
-  if(!app){
-
-    app = new Vue({
-      store,
-      el: '#app',
-      router,
-      template: '<App/>',
-      components: { App }
-    });
-  }
+new Vue({
+ store,
+ el: '#app',
+ router,
+ template: '<App/>',
+ components: { App }
 });
-/* eslint-disable no-new */
