@@ -11,11 +11,16 @@
      <h5>On {{ subHeading }}</h5>
      <h6>Next <small>Aired Episode</small></h6>
 
-     <div ng-transclude="frostGlass"></div>
+     <frost-glass :img-src="''" >
+        <countdown-timer :to="0" ></countdown-timer>
+     </frost-glass>
   </div>
 </template>
 
 <script>
+import FrostGlass from '../FrostGlass/FrostGlass';
+import CountdownTimer from '../CountdownTimer/CountdownTimer';
+
 export default {
   name: 'WatchlistCard',
   props: {
@@ -23,6 +28,10 @@ export default {
     details: String,
     subHeading: String,
     imgSrc: String
+  },
+  components: {
+    FrostGlass,
+    CountdownTimer
   }
 }
 </script>

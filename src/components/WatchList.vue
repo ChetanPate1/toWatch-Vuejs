@@ -5,19 +5,15 @@
            <button class="button pull-right margin-bottom-30" @click="openPopup">Track a show</button>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-md-4 fade-in" v-for="watchlist in Watchlist" >
+        <div class="col-xs-12 col-sm-6 col-md-4 fade-in" v-for="(item, index) in watchlist" :key="index">
            <watchlist-card
-              heading="''"
-              sub-heading="'Season 1 Episode 1'"
-              details="''"
-              img-src="''" >
-
-              <!-- <frost-glass imgsrc="WatchlistCtrl.shows.$getRecord( watchlist.showId ).imgSrc" >
-                 <countdown-timer to="WatchlistCtrl.nextAired( watchlist )" ></countdown-timer>
-              </frost-glass> -->
+              :heading="''"
+              :sub-heading="concatSubHeading(item.on)"
+              :details="''"
+              :img-src="''" >
            </watchlist-card>
         </div>
-        <no-content :message="noContentMessage" :condition="true"></no-content>
+        <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
      </div>
   </div>
 
@@ -26,18 +22,33 @@
 <script>
 import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'WatchList',
   data() {
     return {
-      Watchlist: [],
       noContentMessage: 'Your watch list is empty!'
     }
+  },
+  computed: {
+    ...mapGetters([
+      'watchlist',
+      'myShows'
+    ]),
+    ...mapActions([
+      'getWatchlist',
+    ])
+  },
+  mounted() {
+    this.$store.dispatch('getWatchlist');
   },
   methods: {
     openPopup() {
 
+    },
+    concatSubHeading(on) {
+      return `Season ${ on.season } Episode ${ on.episode }`;
     }
   },
   components: {
@@ -47,5 +58,4 @@ export default {
 }
 </script>
 
-<style lang="css">
-</style>
+<style lang="scss"></style>
