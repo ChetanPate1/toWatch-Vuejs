@@ -31,7 +31,7 @@ const actions = {
       });
   },
   getCurrentUser({ commit }) {
-    const user = firebase.auth()
+    firebase.auth()
       .onAuthStateChanged(user => {
           if (user) {
             commit('SIGN_IN_USER', user);

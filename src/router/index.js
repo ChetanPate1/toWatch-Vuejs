@@ -5,10 +5,11 @@ import Login from '@/components/Login';
 import MyShows from '@/components/MyShows';
 import WatchList from '@/components/WatchList';
 import RewatchList from '@/components/RewatchList';
+import * as firebase from 'firebase';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   linkActiveClass: 'active',
   routes: [
     {
@@ -24,18 +25,45 @@ export default new Router({
     {
       path: '/my-shows',
       name: 'myShows',
-      component: MyShows
+      component: MyShows,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/watch-list',
       name: 'watchList',
-      component: WatchList
+      component: WatchList,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/rewatch-list',
       name: 'rewatchList',
-      component: RewatchList
+      component: RewatchList,
+      meta: {
+        requiresAuth: true
+      }
     },
     { path: '/', redirect: '/most-popular' }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    firebase.auth()
+      .onAuthStateChanged(user => {
+          if (user) {
+            next()
+          } else {
+            commit('SIGN_OUT_USER', user);
+            next({path: 'login'});
+          }
+      });
+  } else {
+    next();
+  }
+})
+
+export default router;

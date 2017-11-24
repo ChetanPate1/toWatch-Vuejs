@@ -33,22 +33,25 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'watchlist',
-      'myShows'
+      'user',
+      'watchlist'
     ]),
     ...mapActions([
-      'getWatchlist',
+      'getWatchlist'
     ])
   },
   mounted() {
-    this.$store.dispatch('getWatchlist');
+    const uid = this.user.uid;
+    this.$store.dispatch('getWatchlist', { uid });
   },
   methods: {
     openPopup() {
 
     },
     concatSubHeading(on) {
-      return `Season ${ on.season } Episode ${ on.episode }`;
+      if(on) {
+        return `Season ${ on.season } Episode ${ on.episode }`;
+      }
     }
   },
   components: {
