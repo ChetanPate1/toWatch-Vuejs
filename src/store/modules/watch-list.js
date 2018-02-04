@@ -10,8 +10,9 @@ const getters = {
 }
 
 const actions = {
-  getWatchlist({ commit }, payload) {
-    const watchlist = firebase.database().ref(`watchlist/${ payload.uid }`);
+  getWatchlist({ commit }) {
+    const uid = firebase.auth().currentUser.uid;
+    const watchlist = firebase.database().ref(`watchlist/${ uid }`);
     watchlist.on('value', snapshot => {
       commit('GET_WATCHLIST', snapshot.val());
     });

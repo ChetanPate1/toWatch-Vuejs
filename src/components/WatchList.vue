@@ -33,7 +33,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'user',
       'watchlist'
     ]),
     ...mapActions([
@@ -41,8 +40,7 @@ export default {
     ])
   },
   mounted() {
-    const uid = this.user.uid;
-    this.$store.dispatch('getWatchlist', { uid });
+    this.$store.dispatch('getWatchlist');
   },
   methods: {
     openPopup() {

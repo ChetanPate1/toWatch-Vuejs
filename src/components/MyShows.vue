@@ -7,7 +7,7 @@
               :img-src="show.imgSrc"
               :shows="myShows"
               :reference="key"
-              :index="index"
+              :key="index"
               :deleteable="true" >
            </show-card>
         </div>
