@@ -1,11 +1,12 @@
 <template lang="html">
   <div class="container-fluid">
      <div class="row show-layout">
-        <div class="col-xs-6 col-sm-3 col-md-2 fade-in" v-for="(show, key, index) in myShows" >
+        <div class="col-xs-6 col-sm-3 col-md-2 fade-in" v-for="(show, key, index) in myShows">
            <show-card
               :heading="show.series"
               :img-src="show.imgSrc"
               :shows="myShows"
+              :reference="key"
               :index="index"
               :deleteable="true" >
            </show-card>
@@ -32,7 +33,7 @@ export default {
       'myShows'
     ]),
     ...mapActions([
-      'getMyShows',
+      'getMyShows'
     ])
   },
   mounted() {

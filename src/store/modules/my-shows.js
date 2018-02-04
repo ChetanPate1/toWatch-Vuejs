@@ -16,6 +16,11 @@ const actions = {
     myShows.on('value', snapshot => {
       commit('GET_MY_SHOWS', snapshot.val());
     });
+  },
+  deleteShow({ commit }, ref){
+    const uid = firebase.auth().currentUser.uid;
+    const show = firebase.database().ref(`shows/${ uid }/${ ref }`);
+    show.remove();
   }
 }
 

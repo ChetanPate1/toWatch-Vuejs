@@ -49,7 +49,7 @@ export default {
 
     },
     concatSubHeading(on) {
-      if(on) {
+      if(on.length) {
         return `Season ${ on.season } Episode ${ on.episode }`;
       }
     }

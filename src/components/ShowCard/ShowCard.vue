@@ -8,7 +8,7 @@
            <button type="button" name="cancel" class="button" @click="deleteOpen = !deleteOpen">cancel</button>
         </div>
         <div class="col-xs-6">
-           <button type="button" name="delete" class="button red" @click="shows.$remove(index)">delete</button>
+           <button type="button" name="delete" class="button red" @click="deleteShow()">delete</button>
         </div>
      </div>
      <button class="button red delete-button" type="button" @click="deleteOpen = !deleteOpen">Delete</button>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'ShowCard',
   data() {
@@ -26,7 +28,13 @@ export default {
   props: {
     heading: String,
     imgSrc: String,
+    reference: String,
     deleteable: Boolean
+  },
+  methods: {
+    deleteShow(){
+      this.$store.dispatch('deleteShow', this.reference);
+    }
   }
 }
 </script>
