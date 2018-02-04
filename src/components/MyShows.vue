@@ -1,5 +1,10 @@
 <template lang="html">
   <div class="container-fluid">
+    <div class="row margin-bottom-20">
+      <div class="col-xs-12">
+        <search-shows></search-shows>
+      </div>
+    </div>
      <div class="row show-layout">
         <div class="col-xs-6 col-sm-3 col-md-2 fade-in" v-for="(show, key, index) in myShows">
            <show-card
@@ -18,6 +23,7 @@
 
 <script>
 import ShowCard from './ShowCard/ShowCard';
+import SearchShows from './SearchShows/SearchShows';
 import NoContent from './NoContent/NoContent';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -41,7 +47,8 @@ export default {
   },
   components: {
     NoContent,
-    ShowCard
+    ShowCard,
+    SearchShows
   }
 }
 </script>
