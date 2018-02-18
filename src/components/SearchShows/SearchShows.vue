@@ -1,12 +1,12 @@
 <template lang="html">
 <div class="form-element search pull-right">
   <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
-  <input type="text" name="series" v-model="series">
-  <button class="dripicons-search" ng-click="find" ng-disabled="sendStatus.disableButton"></button>
+  <input type="text" name="showName" v-model="showName">
+  <button type="button" class="dripicons-search" @click="findShow" :disabled="sendStatus.disableButton"></button>
 
-  <div class="search-results" v-bind:class="{'show' : MyShowsCtrl.foundShows }">
-    <div class="result" v-for="show in foundShows" ng-click="MyShowsCtrl.add(show.permalink)">
-      <div class="number">{{ $index + 1 }}.</div>
+  <div class="search-results" v-bind:class="{'show' : foundShows }">
+    <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show.permalink)">
+      <div class="number">{{ index + 1 }}.</div>
       <div class="name">{{ show.name }}</div>
       <div class="network">{{ show.network }}</div>
     </div>
@@ -21,7 +21,7 @@ export default {
   name: 'SearchShows',
   data() {
     return {
-      foundShows: [],
+      showName: '',
       sendStatus: {
         disableButton: false,
         loader: false,
@@ -34,13 +34,27 @@ export default {
       }
     }
   },
-  props: {
-
+  computed: {
+    ...mapGetters([
+      'foundShows'
+    ]),
+    ...mapActions([
+      'searchForShow'
+    ])
   },
   methods: {
     addSeries(series) {
-      this.foundShows = [];
       this.sendStatus.loader = true;
+      this.sendStatus.disableButton = true;
+
+      this.$store.dispatch('saveShow', series)
+        .then(() => {
+          this.sendStatus.loader = false
+          this.sendStatus.disableButton = false;
+          this.showName = '';
+        });
+
+        return;
       episodateApi.getShow(series).then(function(showData) {
         if (showData.seasons) {
           showData.requestData = series;
@@ -56,7 +70,7 @@ export default {
       });
     },
     findShow(){
-
+      this.$store.dispatch('searchForShow', this.showName);
     }
   }
 }

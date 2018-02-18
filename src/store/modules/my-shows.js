@@ -1,12 +1,16 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
+import axios from 'axios';
+import generateSeasons from '../../js/generators';
 
 const state = {
-  shows: {}
+  shows: {},
+  foundShows: []
 }
 
 const getters = {
-  myShows: state => state.shows
+  myShows: state => state.shows,
+  foundShows: state => state.foundShows
 }
 
 const actions = {
@@ -16,6 +20,26 @@ const actions = {
     myShows.on('value', snapshot => {
       commit('GET_MY_SHOWS', snapshot.val());
     });
+  },
+  searchForShow({ commit }, show){
+    axios.get('https://www.episodate.com/api/search?q=' + show)
+      .then(res => {
+         commit('UPDATE_FOUND_SHOWS', res.data.tv_shows);
+      });
+  },
+  saveShow({ commit }, showPermalink){
+    let newShow = {};
+    axios.get('https://www.episodate.com/api/show-details?q=' + showPermalink)
+      .then(function(res) {
+        const uid = firebase.auth().currentUser.uid;
+        const newRef = firebase.database().ref(`shows/${ uid }`).push().key;
+        let showSeasons = generateSeasons(res.data.tvShow);
+
+        newShow[`/shows/${uid}/${newRef}`] = showSeasons;
+        firebase.database().ref(`shows/${ uid }`).update(newShow);
+        console.log(showSeasons, newRef);
+        commit('EMPTY_FOUND_SHOWS');
+      });
   },
   deleteShow({ commit }, ref){
     const uid = firebase.auth().currentUser.uid;
@@ -27,6 +51,12 @@ const actions = {
 const mutations = {
   [types.GET_MY_SHOWS](state, snapshot) {
     state.shows = snapshot;
+  },
+  [types.UPDATE_FOUND_SHOWS](state, foundShows) {
+    state.foundShows = foundShows;
+  },
+  [types.EMPTY_FOUND_SHOWS](state) {
+    state.foundShows = [];
   }
 }
 
