@@ -31,13 +31,11 @@ const actions = {
     let newShow = {};
     axios.get('https://www.episodate.com/api/show-details?q=' + showPermalink)
       .then(function(res) {
-        const uid = firebase.auth().currentUser.uid;
-        const newRef = firebase.database().ref(`shows/${ uid }`).push().key;
         let showSeasons = generateSeasons(res.data.tvShow);
-
-        newShow[`/shows/${uid}/${newRef}`] = showSeasons;
-        firebase.database().ref(`shows/${ uid }`).update(newShow);
-        console.log(showSeasons, newRef);
+        const uid = firebase.auth().currentUser.uid;
+        const ref = firebase.database().ref(`shows/${ uid }`).push(showSeasons);
+        ref.set(showSeasons)
+        ref.update(showSeasons);
         commit('EMPTY_FOUND_SHOWS');
       });
   },
