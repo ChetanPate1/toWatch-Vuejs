@@ -5,14 +5,13 @@
         <span class="behind">{{ behindCount(seasons, currentseason) }}</span>
      </button> -->
 
-
      <h2>{{ heading }}</h2>
      <h4>{{ details }}</h4>
      <h5>On {{ subHeading }}</h5>
      <h6>Next <small>Aired Episode</small></h6>
 
-     <frost-glass :img-src="''" >
-        <countdown-timer :to="0" ></countdown-timer>
+     <frost-glass :img-src="imgSrc" >
+        <countdown-timer :to="nextAired" ></countdown-timer>
      </frost-glass>
   </div>
 </template>
@@ -27,6 +26,7 @@ export default {
     heading: String,
     details: String,
     subHeading: String,
+    nextAired: Number,
     imgSrc: String
   },
   components: {

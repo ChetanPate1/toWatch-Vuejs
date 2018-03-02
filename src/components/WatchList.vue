@@ -7,50 +7,66 @@
 
         <div class="col-xs-12 col-sm-6 col-md-4 fade-in" v-for="(item, index) in watchlist" :key="index">
            <watchlist-card
-              :heading="''"
+              :heading="myShows[item.showId].series"
               :sub-heading="concatSubHeading(item.on)"
               :details="''"
-              :img-src="''" >
+              :next-aired="nextAired(item)"
+              :img-src="myShows[item.showId].imgSrc" >
            </watchlist-card>
         </div>
         <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
      </div>
   </div>
-
 </template>
 
 <script>
 import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
+import { objSize } from '../js/helperFunctions';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'WatchList',
   data() {
     return {
+      today: new Date().getTime(),
       noContentMessage: 'Your watch list is empty!'
     }
   },
   computed: {
     ...mapGetters([
-      'watchlist'
+      'watchlist',
+      'myShows'
     ]),
     ...mapActions([
-      'getWatchlist'
+      'getWatchlist',
+      'getMyShows'
     ])
   },
   mounted() {
     this.$store.dispatch('getWatchlist');
+    this.$store.dispatch('getMyShows');
   },
   methods: {
     openPopup() {
 
     },
     concatSubHeading(on) {
-      if(on.length) {
-        return `Season ${ on.season } Episode ${ on.episode }`;
+      return `Season ${ on.season } Episode ${ on.episode }`;
+    },
+    nextAired(watchlist) {
+      let nextAired, i = 1;
+      let show = this.myShows[watchlist.showId];
+      let seasons = objSize(show.seasons);
+      let latestSeason = show.seasons['season_' + seasons];
+      let latestSeasonSize = objSize(latestSeason);
+
+      for (i; i <= latestSeasonSize; i++) {
+         if (latestSeason[i].airDate - this.today > 0){
+            return latestSeason[i].airDate;
+         }
       }
-    }
+   }
   },
   components: {
     WatchlistCard,
