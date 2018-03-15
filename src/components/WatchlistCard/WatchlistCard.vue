@@ -5,13 +5,19 @@
      <h5>On {{ subHeading }}</h5>
      <h6>Next <small>Aired Episode</small></h6>
 
-     <frost-glass :img-src="imgSrc" >
-        <countdown-timer :to="nextAired" ></countdown-timer>
+      <more-panel
+        :un-watched="watchlist.unwatched"
+        :current-season="watchlist.on.season"
+        :current-episode="watchlist.on.episode">
+      </more-panel>
+     <frost-glass :img-src="imgSrc">
+        <countdown-timer :to="nextAired"></countdown-timer>
      </frost-glass>
   </div>
 </template>
 
 <script>
+import MorePanel from '../Panel/MorePanel';
 import FrostGlass from '../FrostGlass/FrostGlass';
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
 
@@ -20,11 +26,13 @@ export default {
   props: {
     heading: String,
     details: String,
+    watchlist: Object,
     subHeading: String,
     nextAired: Number,
     imgSrc: String
   },
   components: {
+    MorePanel,
     FrostGlass,
     CountdownTimer
   }

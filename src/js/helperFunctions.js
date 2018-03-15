@@ -23,3 +23,7 @@ export function hasDaysPast(time, days) {
 
   return Math.floor(diff / dayInSec) > days;
 }
+
+export function timeNow(){
+   return new Date().getTime();
+}

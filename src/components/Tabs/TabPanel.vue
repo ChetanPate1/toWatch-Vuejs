@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import PanelRow from './PanelRow';
+  import PanelRow from '../Panel/PanelRow';
 
   export default {
     name: 'TabPanel',
@@ -17,7 +17,7 @@
       active: Boolean,
       content: Array,
       currentSeason: String,
-      currentEpisode: Number
+      currentEpisode: String
     },
     components: {
       PanelRow

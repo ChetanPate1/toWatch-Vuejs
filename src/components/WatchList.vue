@@ -9,7 +9,8 @@
            <watchlist-card
               :heading="myShows[item.showId].series"
               :sub-heading="concatSubHeading(item.on)"
-              :details="''"
+              :details="currentEpisodeName(item, item.on)"
+              :watchlist="item"
               :next-aired="nextAired(item)"
               :img-src="myShows[item.showId].imgSrc" >
            </watchlist-card>
@@ -41,11 +42,15 @@ export default {
     ...mapActions([
       'getWatchlist',
       'getMyShows'
-    ])
+    ]),
+    currentEpisodeName(watchlist, on) {
+      console.log(watchlist);
+      return watchlist.unwatched['season_'+ on.season][on.episode].name;
+    }
   },
   mounted() {
-    this.$store.dispatch('getWatchlist');
     this.$store.dispatch('getMyShows');
+    this.$store.dispatch('getWatchlist');
   },
   methods: {
     openPopup() {

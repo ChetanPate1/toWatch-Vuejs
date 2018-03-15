@@ -31,7 +31,7 @@
     props: {
       seasons: Object,
       currentTab: String,
-      currentEpisode: Number
+      currentEpisode: String
     },
     data(){
       return {

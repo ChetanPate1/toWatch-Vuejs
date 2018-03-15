@@ -16,14 +16,14 @@
 
 <script>
   import { mapMutations } from 'vuex';
-  import { timeNow, objSize } from '../HelperFunctions';
+  import { timeNow, objSize } from '@/js/helperFunctions';
 
   export default {
     name: 'PanelRow',
     props: {
       season: Array,
       currentSeason: String,
-      currentEpisode: Number
+      currentEpisode: String
     },
     methods: {
       ...mapMutations([

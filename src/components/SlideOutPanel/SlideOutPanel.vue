@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import Tabs from './Tabs';
+  import Tabs from '../Tabs/Tabs';
 
   export default {
     name: 'SlideOutPanel',
@@ -17,7 +17,7 @@
       open: Boolean,
       unWatched: Object,
       currentSeason: String,
-      currentEpisode: Number
+      currentEpisode: String
     },
     components: {
       Tabs
