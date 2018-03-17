@@ -42,11 +42,7 @@ export default {
     ...mapActions([
       'getWatchlist',
       'getMyShows'
-    ]),
-    currentEpisodeName(watchlist, on) {
-      console.log(watchlist);
-      return watchlist.unwatched['season_'+ on.season][on.episode].name;
-    }
+    ])
   },
   mounted() {
     this.$store.dispatch('getMyShows');
@@ -58,6 +54,9 @@ export default {
     },
     concatSubHeading(on) {
       return `Season ${ on.season } Episode ${ on.episode }`;
+    },
+    currentEpisodeName(item, on) {
+      return item.unwatched['season_'+ on.season][on.episode].name;
     },
     nextAired(watchlist) {
       let nextAired, i = 1;

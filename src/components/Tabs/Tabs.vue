@@ -19,7 +19,6 @@
       </tab-panel>
     </div>
   </div>
-
 </template>
 
 <script>

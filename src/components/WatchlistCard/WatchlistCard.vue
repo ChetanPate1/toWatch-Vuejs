@@ -6,7 +6,7 @@
      <h6>Next <small>Aired Episode</small></h6>
 
       <more-panel
-        :un-watched="watchlist.unwatched"
+        :seasons="watchlist.unwatched"
         :current-season="watchlist.on.season"
         :current-episode="watchlist.on.episode">
       </more-panel>
