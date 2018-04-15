@@ -8,10 +8,10 @@ import watchlist from './modules/watch-list';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: {
-    auth,
-    mostPopular,
-    myShows,
-    watchlist
-  }
+   modules: {
+      auth,
+      mostPopular,
+      myShows,
+      watchlist
+   }
 });

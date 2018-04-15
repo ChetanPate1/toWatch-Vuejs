@@ -1,45 +1,45 @@
 <template lang="html">
-  <div class="no-content" v-bind:class="{ 'show': condition }">
-     <h1>{{ message }}</h1>
-  </div>
+   <div class="no-content" v-bind:class="{ 'show': condition }">
+      <h1>{{ message }}</h1>
+   </div>
 </template>
 
 <script>
 export default {
-  name: 'NoContent',
-  props: {
-    message: String,
-    condition: Boolean
-  }
+   name: 'NoContent',
+   props: {
+      message: String,
+      condition: Boolean
+   }
 }
 </script>
 
 <style lang="scss">
 .no-content{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  opacity: 0;
-  transform: translate(0, -100%);
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   z-index: 100;
+   opacity: 0;
+   transform: translate(0, -100%);
 
-  h1{
-    position: absolute;
-    top: 50%;
-    margin: 0;
-    padding: 0 15px;
-    width: 100%;
-    text-align: center;
-    color: #f1f1f1;
-    transform: translate(0, -50%);
-  }
+   h1{
+      position: absolute;
+      top: 50%;
+      margin: 0;
+      padding: 0 15px;
+      width: 100%;
+      text-align: center;
+      color: #f1f1f1;
+      transform: translate(0, -50%);
+   }
 
-  &.show{
-    opacity: 1;
-    transform: translate(0, 0);
-  }
+   &.show{
+      opacity: 1;
+      transform: translate(0, 0);
+   }
 }
 
 </style>

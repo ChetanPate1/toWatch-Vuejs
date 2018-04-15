@@ -1,58 +1,58 @@
 <template>
-  <div>
-    <div class="tabs">
-      <tab-button v-for="season in seasons"
-        :key="season[0]"
-        :name="'S '+ season[0]"
-        :active="isTabSelected(season[0])"
-        @click.native="tabSelect(season[0])" >
+   <div>
+      <div class="tabs">
+         <tab-button v-for="season in seasons"
+         :key="season[0]"
+         :name="'S '+ season[0]"
+         :active="isTabSelected(season[0])"
+         @click.native="tabSelect(season[0])" >
       </tab-button>
-    </div>
+   </div>
 
-    <div class="tab-panels">
+   <div class="tab-panels">
       <tab-panel v-for="season in seasons"
-        :key="season[0]"
-        :content="season"
-        :current-season="currentTab"
-        :current-episode="currentEpisode"
-        :active="isTabSelected(season[0])" >
-      </tab-panel>
-    </div>
-  </div>
+      :key="season[0]"
+      :content="season"
+      :current-season="currentTab"
+      :current-episode="currentEpisode"
+      :active="isTabSelected(season[0])" >
+   </tab-panel>
+</div>
+</div>
 </template>
 
 <script>
-  import TabButton from './TabButton';
-  import TabPanel from './TabPanel';
+import TabButton from './TabButton';
+import TabPanel from './TabPanel';
 
-  export default {
-    name: 'Tabs',
-    props: {
+export default {
+   name: 'Tabs',
+   props: {
       seasons: Object,
       currentTab: String,
       currentEpisode: String
-    },
-    data(){
+   },
+   data(){
       return {
-        tabActive: ''
+         tabActive: ''
       }
-    },
-    mounted(){
+   },
+   mounted(){
       this.tabActive = this.currentTab;
-    },
-    methods: {
+   },
+   methods: {
       tabSelect(tabNumber) {
-        this.tabActive = tabNumber;
+         this.tabActive = tabNumber;
       },
       isTabSelected(number) {
-        return this.tabActive == number;
+         return this.tabActive == number;
       }
-    },
-    components: {
+   },
+   components: {
       TabButton,
       TabPanel
-    }
-  }
+   }
+}
 </script>
 
 <style src="./Tabs.scss" lang="scss"></style>
