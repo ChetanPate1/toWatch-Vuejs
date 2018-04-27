@@ -17,6 +17,9 @@ const actions = {
          commit('GET_WATCHLIST', snapshot.val());
       });
    },
+   addToWatchlist({commit}, seriesKey){
+
+   },
    toggleWatched (state, { episode, seasonKey }) {
 
    },

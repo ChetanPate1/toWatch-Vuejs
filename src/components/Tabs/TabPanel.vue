@@ -16,8 +16,8 @@ export default {
    props: {
       active: Boolean,
       content: Array,
-      currentSeason: String,
-      currentEpisode: String
+      currentSeason: Number,
+      currentEpisode: Number
    },
    components: {
       PanelRow

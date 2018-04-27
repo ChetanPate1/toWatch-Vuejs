@@ -1,12 +1,15 @@
 <template lang="html">
-   <div class="container">
-      <div class="row">
-         <div class="col-xs-12">
-            <button class="button pull-right margin-bottom-30" @click="openPopup">Track a show</button>
-         </div>
+<div class="container" v-bind:class="{'container-lg' : watchlist.length > 3 }">
+   <div class="row">
+      <div class="col-xs-12">
+         <button class="button pull-right margin-bottom-30" @click="openPopup">Track a show</button>
+      </div>
 
-         <div class="col-xs-12 col-sm-6 col-md-4 fade-in" v-for="(item, index) in watchlist" :key="index">
-            <watchlist-card
+      <div class="col-xs-12 col-sm-6 fade-in"
+         v-bind:class="{'col-md-3' : watchlist.length > 3, 'col-md-4' : watchlist.length < 3 }"
+         v-for="(item, index) in watchlist"
+         :key="index">
+         <watchlist-card
             :heading="myShows[item.showId].series"
             :sub-heading="concatSubHeading(item.on)"
             :details="currentEpisodeName(item, item.on)"

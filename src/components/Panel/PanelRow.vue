@@ -22,8 +22,8 @@ export default {
    name: 'PanelRow',
    props: {
       season: Array,
-      currentSeason: String,
-      currentEpisode: String
+      currentSeason: Number,
+      currentEpisode: Number
    },
    methods: {
       ...mapMutations([
@@ -32,8 +32,8 @@ export default {
       ]),
       watched(episode, airDate){
          const season = this.season;
-         const currentEpisode = parseInt(this.currentEpisode, 0);
-         let isCurrentSeason = this.currentSeason === season[0].toString();
+         const currentEpisode = this.currentEpisode;
+         let isCurrentSeason = this.currentSeason === season[0];
          let isOneMoreOrOneLess = episode === currentEpisode || episode === currentEpisode - 1;
          let seasonKey =  `season_${ season[0] }`;
 

@@ -38,9 +38,13 @@ export default {
       }
    },
    mounted() {
-      window.setInterval(() => {
-         this.timer(this.to)
-      }, 1000);
+      if(this.to){
+         window.setInterval(() => {
+            this.timer(this.to)
+         }, 1000);
+      }else {
+         return this.prettifyTime( [0, 0, 0, 0] );
+      }
    },
    methods: {
       timer(futureDate) {

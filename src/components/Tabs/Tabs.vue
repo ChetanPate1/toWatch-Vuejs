@@ -29,8 +29,8 @@ export default {
    name: 'Tabs',
    props: {
       seasons: Object,
-      currentTab: String,
-      currentEpisode: String
+      currentTab: Number,
+      currentEpisode: Number
    },
    data(){
       return {

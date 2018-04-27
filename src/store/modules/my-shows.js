@@ -32,9 +32,10 @@ const actions = {
       axios.get('https://www.episodate.com/api/show-details?q=' + showPermalink)
          .then(function(res) {
             let showSeasons = generateSeasons(res.data.tvShow);
+            console.log(showSeasons);
             const uid = firebase.auth().currentUser.uid;
             const ref = firebase.database().ref(`shows/${ uid }`).push(showSeasons);
-            ref.set(showSeasons)
+            ref.set(showSeasons);
             ref.update(showSeasons);
             commit('EMPTY_FOUND_SHOWS');
          });

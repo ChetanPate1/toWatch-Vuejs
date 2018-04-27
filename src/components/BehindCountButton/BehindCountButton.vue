@@ -12,7 +12,7 @@ export default {
    props: {
       open: Boolean,
       unWatched: Object,
-      currentSeason: String
+      currentSeason: Number
    },
    computed: {
       behindCount(){

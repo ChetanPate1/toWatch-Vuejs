@@ -16,8 +16,8 @@ export default {
    props: {
       open: Boolean,
       unWatched: Object,
-      currentSeason: String,
-      currentEpisode: String
+      currentSeason: Number,
+      currentEpisode: Number
    },
    components: {
       Tabs

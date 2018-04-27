@@ -1,17 +1,17 @@
 <template>
-   <div>
-      <behind-count-button @click.native="toggleOpen()"
+  <div>
+    <behind-count-button @click.native="toggleOpen()"
       :un-watched="seasons"
       :current-season="currentSeason" :open="open">
-   </behind-count-button>
+    </behind-count-button>
 
-   <slide-out-panel
-   :un-watched="seasons"
-   :current-season="currentSeason"
-   :current-episode="currentEpisode"
-   :open="open" >
-</slide-out-panel>
-</div>
+    <slide-out-panel
+      :un-watched="seasons"
+      :current-season="currentSeason"
+      :current-episode="currentEpisode"
+      :open="open" >
+    </slide-out-panel>
+  </div>
 </template>
 
 <script>
@@ -22,8 +22,8 @@ export default {
    name: 'MorePanel',
    props: {
       seasons: Object,
-      currentSeason: String,
-      currentEpisode: String
+      currentSeason: Number,
+      currentEpisode: Number
    },
    data() {
       return {
@@ -39,6 +39,5 @@ export default {
       BehindCountButton,
       SlideOutPanel
    }
-
 }
 </script>

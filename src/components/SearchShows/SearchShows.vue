@@ -1,5 +1,5 @@
 <template lang="html">
-   <div class="form-element search pull-right">
+   <div class="form-element search">
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
       <input type="text" name="showName" v-model="showName">
       <button type="button" class="dripicons-search" @click="findShow" :disabled="sendStatus.disableButton"></button>
