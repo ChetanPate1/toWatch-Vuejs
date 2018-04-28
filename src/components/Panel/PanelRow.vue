@@ -1,6 +1,11 @@
 <template>
    <div>
-      <div class="panel-row" v-for="(episode, index) in season" v-if="index > 0" :key="episode.number" :class="{ 'disabled' : !episode.watched }" >
+      <div class="panel-row"
+         v-for="(episode, index) in season"
+         v-if="index > 0"
+         :key="episode.number"
+         :class="{ 'disabled' : !episode.watched }" >
+
          <div class="col-35">
             <span class="aired-by"><i class="dripicons-feed"></i> {{ aired(episode.airDate).by }}</span>
          </div>
@@ -41,31 +46,11 @@ export default {
             return;
          }
 
-         this.$store.commit('toggleWatched', { episode, seasonKey });
+         this.$store.dispatch('toggleWatched', { episode, seasonKey });
          this.countWatched(this.season, this.currentSeason);
       },
       countWatched(season, currentSeason) {
-         let count = 1, j = 1;
-         let totalEpisodes = objSize(season);
-         let nextSeason = parseInt(currentSeason, 0) + 1;
-         let on = { episode: 1, season: currentSeason };
-
-         for (j; j < totalEpisodes; j++) {
-            if(season[j].watched){
-               count++;
-            }
-            if (!season[j].watched) {
-               count + 1;
-            }
-         }
-
-         if(count === objSize(season)){
-            on.season = nextSeason.toString();
-            on.episode = 1;
-         }else {
-            on.episode = count;
-         }
-         this.$store.commit('setCurrentSeason', { on });
+         this.$store.dispatch('setCurrentSeason', { season, currentSeason });
       },
       aired(date) {
          date = parseInt(date, 0);

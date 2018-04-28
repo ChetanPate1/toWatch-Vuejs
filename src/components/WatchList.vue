@@ -1,13 +1,13 @@
 <template lang="html">
-<div class="container" v-bind:class="{'container-lg' : watchlist.length > 3 }">
+<div class="container" v-bind:class="{'container-lg' : watchlistSize() > 3 }">
    <div class="row">
       <div class="col-xs-12">
          <button class="button pull-right margin-bottom-30" @click="openPopup">Track a show</button>
       </div>
 
       <div class="col-xs-12 col-sm-6 fade-in"
-         v-bind:class="{'col-md-3' : watchlist.length > 3, 'col-md-4' : watchlist.length < 3 }"
          v-for="(item, index) in watchlist"
+         v-bind:class="{'col-md-3' : watchlistSize() > 3, 'col-md-4' : watchlistSize() < 3 }"
          :key="index">
          <watchlist-card
             :heading="myShows[item.showId].series"
@@ -54,6 +54,9 @@ export default {
    methods: {
       openPopup() {
 
+      },
+      watchlistSize(){
+         return objSize(this.watchlist);
       },
       concatSubHeading(on) {
          return `Season ${ on.season } Episode ${ on.episode }`;

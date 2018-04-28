@@ -1,5 +1,6 @@
 <template>
-   <button class="more-button" type="button" name="more" :class="{ 'open' : open }">
+   <button class="more-button" type="button" name="more"
+      :class="{ 'open' : open, 'up-to-date': behindCount == 0  }">
       <span class="dripicons-plus"></span>
       <span class="behind">{{ behindCount }}</span>
    </button>
