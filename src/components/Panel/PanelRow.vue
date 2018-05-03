@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 import { timeNow, objSize } from '@/js/helperFunctions';
 
 export default {
@@ -31,7 +31,7 @@ export default {
       currentEpisode: Number
    },
    methods: {
-      ...mapMutations([
+      ...mapActions([
          'toggleWatched',
          'setCurrentSeason'
       ]),

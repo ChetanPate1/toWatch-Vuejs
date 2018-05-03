@@ -1,10 +1,6 @@
 <template>
-   <div class="slide-out-panel" :class="{ 'open' : open }" >
-      <tabs
-      :seasons="unWatched"
-      :current-tab="currentSeason"
-      :current-episode="currentEpisode">
-   </tabs>
+<div class="slide-out-panel" :class="{ 'open' : open }" >
+   <slot></slot>
 </div>
 </template>
 
@@ -14,13 +10,7 @@ import Tabs from '../Tabs/Tabs';
 export default {
    name: 'SlideOutPanel',
    props: {
-      open: Boolean,
-      unWatched: Object,
-      currentSeason: Number,
-      currentEpisode: Number
-   },
-   components: {
-      Tabs
+      open: Boolean
    }
 }
 </script>

@@ -1,57 +1,18 @@
 <template>
-   <div>
-      <div class="tabs">
-         <tab-button v-for="season in seasons"
-         :key="season[0]"
-         :name="'S '+ season[0]"
-         :active="isTabSelected(season[0])"
-         @click.native="tabSelect(season[0])" >
-      </tab-button>
+<div>
+   <div class="tabs">
+      <slot name="tab-buttons"></slot>
    </div>
 
    <div class="tab-panels">
-      <tab-panel v-for="season in seasons"
-      :key="season[0]"
-      :content="season"
-      :current-season="currentTab"
-      :current-episode="currentEpisode"
-      :active="isTabSelected(season[0])" >
-   </tab-panel>
-</div>
+      <slot name="tab-panels"></slot>
+   </div>
 </div>
 </template>
 
 <script>
-import TabButton from './TabButton';
-import TabPanel from './TabPanel';
-
 export default {
    name: 'Tabs',
-   props: {
-      seasons: Object,
-      currentTab: Number,
-      currentEpisode: Number
-   },
-   data(){
-      return {
-         tabActive: ''
-      }
-   },
-   mounted(){
-      this.tabActive = this.currentTab;
-   },
-   methods: {
-      tabSelect(tabNumber) {
-         this.tabActive = tabNumber;
-      },
-      isTabSelected(number) {
-         return this.tabActive == number;
-      }
-   },
-   components: {
-      TabButton,
-      TabPanel
-   }
 }
 </script>
 
