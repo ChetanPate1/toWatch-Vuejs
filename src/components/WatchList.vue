@@ -2,7 +2,7 @@
 <div class="container" v-bind:class="{'container-lg' : watchlistSize() > 3 }">
    <div class="row">
       <div class="col-xs-12">
-         <button class="button pull-right margin-bottom-30" @click="openPopup">Track a show</button>
+         <popup :shows="myShows"></popup>
       </div>
 
       <div class="col-xs-12 col-sm-6 fade-in"
@@ -20,12 +20,15 @@
       </div>
       <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
    </div>
+
 </div>
 </template>
 
 <script>
 import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
+import Popup from './Popup/Popup';
+
 import { objSize } from '../js/helperFunctions';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -52,9 +55,6 @@ export default {
       this.$store.dispatch('getWatchlist');
    },
    methods: {
-      openPopup() {
-
-      },
       watchlistSize(){
          return objSize(this.watchlist);
       },
@@ -80,7 +80,8 @@ export default {
    },
    components: {
       WatchlistCard,
-      NoContent
+      NoContent,
+      Popup
    }
 }
 </script>

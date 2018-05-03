@@ -1,8 +1,9 @@
 <template lang="html">
+<form v-on:submit.prevent="findShow">
    <div class="form-element search">
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
       <input type="text" name="showName" v-model="showName">
-      <button type="button" class="dripicons-search" @click="findShow" :disabled="sendStatus.disableButton"></button>
+      <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
       <div class="search-results" v-bind:class="{'show' : foundShows }">
          <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show.permalink)">
@@ -12,6 +13,7 @@
          </div>
       </div>
    </div>
+</form>
 </template>
 
 <script>
@@ -48,26 +50,11 @@ export default {
          this.sendStatus.disableButton = true;
 
          this.$store.dispatch('saveShow', series)
-         .then(() => {
-            this.sendStatus.loader = false
-            this.sendStatus.disableButton = false;
-            this.showName = '';
-         });
-
-         return;
-         episodateApi.getShow(series).then(function(showData) {
-            if (showData.seasons) {
-               showData.requestData = series;
-
-               $timeout(function() {
-                  showToast(showData.series, 'added to My Shows');
-                  firebaseArray.save(ref, showData);
-                  this.series = '';
-               }, 2000);
-            }
-            this.sendStatus.disableButton = false;
-            this.sendStatus.loader = false;
-         });
+            .then(() => {
+               this.sendStatus.loader = false
+               this.sendStatus.disableButton = false;
+               this.showName = '';
+            });
       },
       findShow(){
          this.$store.dispatch('searchForShow', this.showName);

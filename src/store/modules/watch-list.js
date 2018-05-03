@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
 import { timeNow, objSize } from '@/js/helperFunctions';
+import { initWatchlist } from '../../js/generators';
 
 const state = {
    watchlist: {}
@@ -14,12 +15,19 @@ const actions = {
    getWatchlist({ commit }) {
       const uid = firebase.auth().currentUser.uid;
       const watchlist = firebase.database().ref(`watchlist/${ uid }`);
+
       watchlist.on('value', snapshot => {
          commit('GET_WATCHLIST', snapshot.val());
       });
    },
-   addToWatchlist({commit}, seriesKey){
+   addToWatchlist({ rootState }, series){
+      let show = rootState.myShows.shows[series.seriesRef];
+      let initSeries = initWatchlist(show, series);
 
+      const uid = firebase.auth().currentUser.uid;
+      const ref = firebase.database().ref(`watchlist/${ uid }`).push(initSeries);
+      ref.set(initSeries);
+      ref.update(initSeries);
    },
    toggleWatched ({ episode, seasonKey }) {
 

@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
 import axios from 'axios';
-import generateSeasons from '../../js/generators';
+import { generateSeasons } from '../../js/generators';
 
 const state = {
    shows: {},
@@ -32,11 +32,12 @@ const actions = {
       axios.get('https://www.episodate.com/api/show-details?q=' + showPermalink)
          .then(function(res) {
             let showSeasons = generateSeasons(res.data.tvShow);
-            console.log(showSeasons);
+
             const uid = firebase.auth().currentUser.uid;
             const ref = firebase.database().ref(`shows/${ uid }`).push(showSeasons);
             ref.set(showSeasons);
             ref.update(showSeasons);
+
             commit('EMPTY_FOUND_SHOWS');
          });
    },
