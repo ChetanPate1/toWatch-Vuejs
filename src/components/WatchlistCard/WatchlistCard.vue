@@ -13,9 +13,7 @@
    </behind-count-button>
 
    <slide-out-panel :open="open">
-      <tabs
-         :seasons="watchlist.unwatched"
-         :current-tab="tabActive">
+      <tabs>
          <tab-button slot="tab-buttons"
             v-for="season in watchlist.unwatched"
             :key="season[0]"
@@ -61,12 +59,12 @@ export default {
       watchlist: Object,
       subHeading: String,
       nextAired: Number,
-      imgSrc: String,
-      tabActive: 1
+      imgSrc: String
    },
    data() {
       return {
-         open: false
+         open: false,
+         tabActive: 1
       }
    },
    mounted(){
@@ -76,16 +74,11 @@ export default {
       toggleOpen(){
          this.open = !this.open;
       },
-      tabSelect(tabNumber) {
-         this.$emit('tabActive', tabNumber);
+      tabSelect(selectedTab) {
+         this.tabActive = selectedTab;
       },
       isTabSelected(number) {
-         var selected = false;
-         this.$on('tabActive', (tabNumber) => {
-            selected = this.tabActive == tabNumber
-         });
-
-         return selected;
+         return this.tabActive == number;
       }
    },
    components: {
