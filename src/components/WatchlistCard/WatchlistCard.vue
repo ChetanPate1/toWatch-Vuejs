@@ -13,24 +13,25 @@
    </behind-count-button>
 
    <slide-out-panel :open="open">
+      {{tabActive}}
       <tabs>
          <tab-button slot="tab-buttons"
-            v-for="season in watchlist.unwatched"
-            :key="season[0]"
-            :name="'S '+ season[0]"
-            :active="isTabSelected(season[0])"
-            @click.native="tabSelect(season[0])">
+            v-for="(season, index) in watchlist.unwatched"
+            :key="index"
+            :name="tabButtonName(index)"
+            :active="isTabSelected(index)"
+            @click.native="tabSelect(index)">
          </tab-button>
 
          <tab-panel slot="tab-panels"
             v-for="(season, index) in watchlist.unwatched"
-            :active="isTabSelected(season[0])"
+            :active="isTabSelected(index)"
             :key="index">
-            <panel-row
-               :season="season"
-               :current-season="watchlist.on.season"
-               :current-episode="watchlist.on.episode">
-            </panel-row>
+            <panel-rows
+               :watchlist-id="id"
+               :watchlist-item="watchlist"
+               :season="season">
+            </panel-rows>
          </tab-panel>
       </tabs>
    </slide-out-panel>
@@ -46,7 +47,7 @@ import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
 import Tabs from '../Tabs/Tabs';
 import TabButton from '../Tabs/TabButton';
 import TabPanel from '../Tabs/TabPanel';
-import PanelRow from '../Panel/PanelRow';
+import PanelRows from '../PanelRows/PanelRows';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
 import FrostGlass from '../FrostGlass/FrostGlass';
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
@@ -56,6 +57,7 @@ export default {
    props: {
       heading: String,
       details: String,
+      id: String,
       watchlist: Object,
       subHeading: String,
       nextAired: Number,
@@ -64,15 +66,18 @@ export default {
    data() {
       return {
          open: false,
-         tabActive: 1
+         tabActive: 0
       }
    },
    mounted(){
-      this.tabSelect(this.watchlist.on.season);
+      this.tabSelect(`season_${this.watchlist.on.season}`);
    },
    methods: {
       toggleOpen(){
          this.open = !this.open;
+      },
+      tabButtonName(name){
+         return `S ${name.split('_')[1]}`;
       },
       tabSelect(selectedTab) {
          this.tabActive = selectedTab;
@@ -86,7 +91,7 @@ export default {
       Tabs,
       TabButton,
       TabPanel,
-      PanelRow,
+      PanelRows,
       BehindCountButton,
       FrostGlass,
       CountdownTimer

@@ -6,20 +6,21 @@ export function generateSeasons(show) {
    let size = objSize(episodes) - 1;
    let seasonNum = 1, j = 1, i = 0;
    let series = {};
-   series.seasons = [];
+   series.seasons = {};
    series.series = show.name;
    series.imgSrc = show.image_path;
    series.imgSrcSm = show.image_thumbnail_path;
    series.status = show.status;
    series.lastUpdated = new Date().getTime();
 
-   init['season_'+ seasonNum] = {};
+   init['season_'+ seasonNum] = [];
    for (i; i <= size; i++) {
-      init['season_'+ seasonNum][ j ] = {
+      init['season_'+ seasonNum].push({
          name: episodes[i].name,
          number: episodes[i].episode,
+         season: seasonNum,
          airDate: dateToMs( episodes[i].air_date )
-      };
+      });
 
       if(i > size - 1){
          break;
@@ -28,7 +29,7 @@ export function generateSeasons(show) {
       }else {
          j = 1;
          seasonNum++;
-         init['season_'+ seasonNum] = {};
+         init['season_'+ seasonNum] = [];
       }
 
       series.seasons = init;
@@ -49,28 +50,27 @@ export function initWatchlist(show, series) {
       unwatched: {}
    };
 
-   let init = {};
-   let total_seasons = objSize(show.seasons);
-   let onE = parseInt(series.episode);
-   let onS = parseInt(series.season);
-   let i = onS;
-   let total_episodes_onS = objSize(show.seasons[`season_${onS}`]);
+   let unwatched = show.seasons;
+   let onSeasonKey = `season_${series.season}`;
 
-   for(i; i <= total_seasons; i++){
-      let seasonsSize = objSize(show.seasons[`season_${i}`]);
-      init[`season_${i}`] = show.seasons[`season_${i}`];
-      init[`season_${i}`][0] = i;
+   for(let season in unwatched){
+      unwatched[season].forEach((episode) => {
+         let seasonNum = parseInt(season.split('_')[1]);
+         episode.watched = false;
 
-      for (let j = 1; j <= seasonsSize; j++) {
-         init[`season_${i}`][j].watched = false;
-
-         if(j < onE && i == onS){
-            init[`season_${i}`][j].watched = true;
+         if(seasonNum < series.season){
+            episode.watched = true;
          }
-      }
+      });
    }
 
-   list['unwatched'] = init;
+   unwatched[`season_${series.season}`].forEach((episode) => {
+      if(episode.number < series.episode){
+         episode.watched = true;
+      }
+   });
+
+   list['unwatched'] = unwatched;
 
    return list;
 }

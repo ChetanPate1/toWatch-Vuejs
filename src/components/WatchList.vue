@@ -6,13 +6,14 @@
       </div>
 
       <div class="col-xs-12 col-sm-6 fade-in"
-         v-for="(item, index) in watchlist"
+         v-for="(item, key, index) in watchlist"
          v-bind:class="{'col-md-3' : watchlistSize() > 3, 'col-md-4' : watchlistSize() < 3 }"
          :key="index">
          <watchlist-card
             :heading="myShows[item.showId].series"
             :sub-heading="concatSubHeading(item.on)"
             :details="currentEpisodeName(item, item.on)"
+            :id="key"
             :watchlist="item"
             :next-aired="nextAired(item)"
             :img-src="myShows[item.showId].imgSrc" >

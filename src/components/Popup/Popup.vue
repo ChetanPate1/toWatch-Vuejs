@@ -7,7 +7,7 @@
          <button class="close-button" @click="open = false" type="button">
             <span class="dripicons-cross"></span>
          </button>
-
+         
          <form name="form" v-on:submit.prevent="add(form)">
             <div class="form-element">
                <label for="series">Series Name</label>
@@ -36,11 +36,11 @@
             <div class="form-element" v-if="form.seriesRef && form.season">
                <label for="seasons">Episodes</label>
                <div class="select-series">
-                  <div class="col-xs-3" v-for="(episode, key) in shows[form.seriesRef].seasons[`season_${form.season}`]"
+                  <div class="col-xs-3" v-for="episode in shows[form.seriesRef].seasons[`season_${form.season}`]"
                      v-if="checkAired(episode)">
-                     <label class="radio" v-bind:class="{'selected' : form.episode == key }" >
-                        <input type="radio" v-model="form.episode" v-bind:value="key" >
-                        {{ key }}
+                     <label class="radio" v-bind:class="{'selected' : form.episode == episode.number }" >
+                        <input type="radio" v-model="form.episode" v-bind:value="episode.number " >
+                        {{ episode.number }}
                      </label>
                   </div>
                   <span class="selected-none" v-bind:class="{'selected': !form.season }">Select a episode</span>

@@ -16,4 +16,15 @@ export default {
 }
 </script>
 
-<style src="./Tabs.scss" lang="scss"></style>
+<style lang="scss">
+.tabs{
+   min-height: 70px;
+   width: 90%;
+   margin: auto;
+   overflow-x: auto;
+
+   .tab-button{
+      width: 20%;
+   }
+}
+</style>

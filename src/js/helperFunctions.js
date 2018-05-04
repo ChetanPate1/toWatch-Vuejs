@@ -1,12 +1,11 @@
 const today = new Date().getTime();
 
 export function objSize(obj) {
+   if(!obj) return;
    let count = 0;
    for (let prop in obj) {
       if (obj.hasOwnProperty(prop)) {
          ++count;
-      }else {
-         break;
       }
    }
    return count;
@@ -26,4 +25,11 @@ export function hasDaysPast(time, days) {
 
 export function timeNow(){
    return new Date().getTime();
+}
+
+export function isFutureTime(date){
+   date = parseInt(date, 0);
+   let delta = Math.abs((date - timeNow()))/1000;
+
+   return date - timeNow() < 0;
 }
