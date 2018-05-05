@@ -7,8 +7,7 @@
 
    <behind-count-button
       @click.native="toggleOpen()"
-      :un-watched="watchlist.unwatched"
-      :current-season="watchlist.on.season"
+      :seasons="watchlist.unwatched"
       :open="open">
    </behind-count-button>
 

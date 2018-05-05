@@ -30,7 +30,7 @@ import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 
-import { objSize } from '../js/helperFunctions';
+import { objSize } from '../js/helper-functions';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -63,7 +63,7 @@ export default {
          return `Season ${ on.season } Episode ${ on.episode }`;
       },
       currentEpisodeName(item, on) {
-         return item.unwatched['season_'+ on.season][on.episode].name;
+         return item.unwatched['season_'+ on.season][on.episode - 1].name;
       },
       nextAired(watchlist) {
          let nextAired, i = 1;

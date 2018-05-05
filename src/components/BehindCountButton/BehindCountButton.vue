@@ -7,29 +7,25 @@
 </template>
 
 <script>
-import { objSize, timeNow } from '@/js/helperFunctions';
+import { timeNow } from '@/js/helper-functions';
 export default {
    name: 'BehindCountButton',
    props: {
       open: Boolean,
-      unWatched: Object,
-      currentSeason: Number
+      seasons: Object
    },
    computed: {
       behindCount(){
-         let currentSeasonNum = parseInt(this.currentSeason, 0);
-         let seasonsLimit = objSize(this.unWatched) + currentSeasonNum;
-         let count = 0, j = 1, totalEpisodes = 0, season;
-         for (currentSeasonNum; currentSeasonNum < seasonsLimit; currentSeasonNum++) {
-            season = this.unWatched['season_' + currentSeasonNum];
-            totalEpisodes = objSize(season);
-            for (j; j < totalEpisodes; j++) {
-               if(!season[j].watched && season[j].airDate - timeNow() < 0){
+         var count = 0;
+
+         for (let season in this.seasons) {
+            this.seasons[season].forEach((episode) => {
+               if(!episode.watched && episode.airDate - timeNow() < 0){
                   count++;
                }
-            }
-            j = 1;
+            });
          }
+
          return (count > 0) ? '-'+ count : count;
       }
    }
