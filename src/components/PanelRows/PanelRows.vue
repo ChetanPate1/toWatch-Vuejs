@@ -22,10 +22,14 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { timeNow, objSize } from '@/js/helper-functions';
 
 export default {
    name: 'PanelRows',
+   data() {
+      return {
+         timeNow: new Date().getTime()
+      }
+   },
    props: {
       watchlistId: String,
       watchlistItem: Object,
@@ -48,8 +52,8 @@ export default {
       },
       aired(date) {
          date = parseInt(date, 0);
-         let delta = Math.abs((date - timeNow()))/1000;
-         let isAired = date - timeNow() < 0;
+         let delta = Math.abs((date - this.timeNow))/1000;
+         let isAired = date - this.timeNow < 0;
          let aired = { isAired: isAired };
 
          if( isAired ){

@@ -7,9 +7,14 @@
 </template>
 
 <script>
-import { timeNow } from '@/js/helper-functions';
+
 export default {
    name: 'BehindCountButton',
+   data(){
+      return {
+         now: new Date().getTime()
+      }
+   },
    props: {
       open: Boolean,
       seasons: Object
@@ -20,7 +25,7 @@ export default {
 
          for (let season in this.seasons) {
             this.seasons[season].forEach((episode) => {
-               if(!episode.watched && episode.airDate - timeNow() < 0){
+               if(!episode.watched && episode.airDate - this.now < 0){
                   count++;
                }
             });
