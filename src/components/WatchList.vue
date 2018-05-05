@@ -49,7 +49,10 @@ export default {
       ...mapActions([
          'getWatchlist',
          'getMyShows'
-      ])
+      ]),
+      addAbleShows(){
+
+      }
    },
    mounted() {
       this.$store.dispatch('getMyShows');
@@ -66,17 +69,17 @@ export default {
          return item.unwatched['season_'+ on.season][on.episode - 1].name;
       },
       nextAired(watchlist) {
-         let nextAired, i = 1;
          let show = this.myShows[watchlist.showId];
-         let seasons = objSize(show.seasons);
-         let latestSeason = show.seasons['season_' + seasons];
-         let latestSeasonSize = objSize(latestSeason);
+         let numberOfSeasons = objSize(show.seasons);
+         let latestSeason = show.seasons[`season_${numberOfSeasons}`];
 
-         for (i; i <= latestSeasonSize; i++) {
-            if (latestSeason[i].airDate - this.today > 0){
-               return latestSeason[i].airDate;
+         let nextAired = latestSeason.filter((episode) => {
+            if (episode.airDate - this.today > 0){
+               return episode.airDate;
             }
-         }
+         });
+
+         return nextAired[0].airDate;
       }
    },
    components: {

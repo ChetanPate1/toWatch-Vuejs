@@ -24,7 +24,7 @@ export function hasDaysPast(time, days) {
 }
 
 export function timeNow(){
-   return new Date().getTime();
+   return today;
 }
 
 export function isFutureTime(date){
