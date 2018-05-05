@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
-import { timeNow, objSize, isFutureTime } from '@/js/helperFunctions';
+import { timeNow, objSize, isFutureTime } from '@/js/helper-functions';
 import { initWatchlist } from '../../js/generators';
 
 const state = {
@@ -47,7 +47,7 @@ const actions = {
       if(!isCurrentSeasonOrOneLess || !isFutureTime(episodeDetails.airDate) || !isOneMoreOrOneLess){
          return;
       }
-
+      //this season or (one less && is last episode), one plus or minus 1 episode
       if(episodeNumber === prevSeason.length){
          if(isLastEpisodePrevSeason){
             seasonNumber = onSeason - 1;

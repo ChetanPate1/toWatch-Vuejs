@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { objSize, timeNow } from '@/js/helperFunctions';
+import { objSize, timeNow } from '@/js/helper-functions';
 export default {
    name: 'BehindCountButton',
    props: {

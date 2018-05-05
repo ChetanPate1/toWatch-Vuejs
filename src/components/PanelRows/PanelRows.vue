@@ -22,7 +22,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { timeNow, objSize } from '@/js/helperFunctions';
+import { timeNow, objSize } from '@/js/helper-functions';
 
 export default {
    name: 'PanelRows',

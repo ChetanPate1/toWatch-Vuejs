@@ -30,7 +30,7 @@ import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 
-import { objSize } from '../js/helperFunctions';
+import { objSize } from '../js/helper-functions';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {

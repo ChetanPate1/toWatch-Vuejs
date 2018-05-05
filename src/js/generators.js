@@ -1,4 +1,4 @@
-import { objSize, dateToMs } from './helperFunctions';
+import { objSize, dateToMs } from './helper-functions';
 
 export function generateSeasons(show) {
    let episodes = show.episodes;
