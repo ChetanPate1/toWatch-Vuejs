@@ -29,29 +29,40 @@ const actions = {
       ref.set(initSeries);
       ref.update(initSeries);
    },
-   toggleWatched ({ commit, dispatch }, { watchlistId, show, episodeDetails }) {
+   toggleWatched ({ commit, dispatch, state }, { watchlistId, show, episodeDetails }) {
       let episodeNumber = episodeDetails.number;
       let seasonNumber = episodeDetails.season;
       let onEpisode = show.on.episode;
       let onSeason = show.on.season;
-
-      let prevSeason = show.unwatched[`season_${onSeason - 1}`];
-      let prevSeasonLastEpisode = prevSeason[prevSeason.length - 1];
-      let isCurrentSeasonOrOneLess = onSeason === seasonNumber || onSeason - 1 === seasonNumber;
-
-      let isOneMoreOrOneLess = episodeNumber === onEpisode || episodeNumber === onEpisode - 1 || episodeNumber === prevSeasonLastEpisode.number;
-      let isLastEpisodePrevSeason = episodeNumber === prevSeasonLastEpisode.number && prevSeasonLastEpisode.season === onSeason - 1;
       let seasonKey = `season_${ seasonNumber }`;
       let seasonDetails = show.unwatched[seasonKey];
+      let isValidSeason = onSeason === seasonNumber;
+      var prevSeason = [];
+      var isOneMoreOrOneLess = episodeNumber === onEpisode || episodeNumber === onEpisode - 1;
+      var isLastEpisodePrevSeason = false;
 
-      if(!isCurrentSeasonOrOneLess || !isFutureTime(episodeDetails.airDate) || !isOneMoreOrOneLess){
+      if(onSeason - 1 < 1){
+         prevSeason = show.unwatched['season_1'];
+      }else {
+         prevSeason = show.unwatched[`season_${onSeason - 1}`];
+      }
+
+      let prevSeasonLastEpisode = prevSeason[prevSeason.length - 1];
+
+      isOneMoreOrOneLess = isOneMoreOrOneLess|| episodeNumber === prevSeasonLastEpisode.number;
+      isLastEpisodePrevSeason = episodeNumber === prevSeasonLastEpisode.number && prevSeasonLastEpisode.season === onSeason - 1;
+      isValidSeason = isValidSeason || onSeason - 1 === seasonNumber;
+
+      if(!isValidSeason || !isFutureTime(episodeDetails.airDate) || !isOneMoreOrOneLess){
          return;
       }
-      //this season or (one less && is last episode), one plus or minus 1 episode
+
       if(episodeNumber === prevSeason.length){
          if(isLastEpisodePrevSeason){
             seasonNumber = onSeason - 1;
             onSeason = onSeason - 1;
+         }else {
+            return;
          }
       }
 
@@ -66,6 +77,11 @@ const actions = {
          seasonDetails,
          show,
          onSeason
+      })
+      .then(() => {
+         const uid = firebase.auth().currentUser.uid;
+         const ref = firebase.database().ref(`watchlist/${ uid }/${ watchlistId }`);
+         ref.update(state.watchlist[watchlistId]);
       });
    },
    setCurrentSeason ({ commit }, { watchlistId, seasonDetails, show, onSeason }) {
@@ -74,26 +90,20 @@ const actions = {
       var numberOfSeasons = objSize(show.unwatched) + onSeason;
       var count = 0, on = { season: onSeason };
 
-      let countWatched = new Promise((resolve, reject) => {
-         show.unwatched[`season_${onSeason}`].forEach((episode) => {
-            if(episode.watched){
-               count++;
-            }
-         });
-
-         if(count == seasonDetails.length){
-            on.season = nextSeason;
-            on.episode = 1;
-         }else {
-            on.episode = count + 1;
+      show.unwatched[`season_${onSeason}`].forEach((episode) => {
+         if(episode.watched){
+            count++;
          }
-
-         return resolve(on);
       });
 
-      countWatched.then((on) => {
-         commit('SET_CURRENT_SEASON', { watchlistId , on });
-      });
+      if(count == seasonDetails.length){
+         on.season = nextSeason;
+         on.episode = 1;
+      }else {
+         on.episode = count + 1;
+      }
+
+      commit('SET_CURRENT_SEASON', { watchlistId , on });
    }
 }
 

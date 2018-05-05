@@ -63,7 +63,7 @@ export default {
          return `Season ${ on.season } Episode ${ on.episode }`;
       },
       currentEpisodeName(item, on) {
-         return item.unwatched['season_'+ on.season][on.episode].name;
+         return item.unwatched['season_'+ on.season][on.episode - 1].name;
       },
       nextAired(watchlist) {
          let nextAired, i = 1;
