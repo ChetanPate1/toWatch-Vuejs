@@ -1,5 +1,5 @@
 <template>
-<div class="tab-panel" :class="{ 'active' : active }" >
+<div class="tab-panel" v-bind:style="{ 'left': position() }" :class="{ 'active' : active }" >
    <slot></slot>
 </div>
 </template>
@@ -8,7 +8,14 @@
 export default {
    name: 'TabPanel',
    props: {
-      active: Boolean
+      active: Boolean,
+      width: Number,
+      number: Number
+   },
+   methods:{
+      position(){
+         return `${this.width * this.number}px`;
+      }
    }
 }
 </script>
@@ -19,25 +26,25 @@ export default {
    width: 100%;
    display: block;
    overflow-y: auto;
-   height: 360px;
+   height: 365px;
 
    .tab-panel{
       z-index: 100;
       padding: 0;
       position: absolute;
       height: 100%;
-      width: 100%;
+      width: 357px;
       top: 0;
       left: 0;
-      opacity: 0;
       display: block;
-      transform: translate(-100%, 0);
-      transition: all 400ms ease;
+      opacity: 0.5;
+      transform: scale(0.9);
+      transition: all 500ms ease;
 
       &.active{
+         transform: scale(1);
          z-index: 200;
          opacity: 1;
-         transform: translate(0, 0);
       }
    }
 

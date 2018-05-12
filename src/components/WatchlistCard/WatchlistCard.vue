@@ -12,26 +12,29 @@
    </behind-count-button>
 
    <slide-out-panel :open="open">
-      {{tabActive}}
       <tabs>
          <tab-button slot="tab-buttons"
-            v-for="(season, index) in watchlist.unwatched"
+            v-for="(season, key, index) in watchlist.unwatched"
             :key="index"
-            :name="tabButtonName(index)"
+            :name="tabButtonName(key)"
             :active="isTabSelected(index)"
             @click.native="tabSelect(index)">
          </tab-button>
 
-         <tab-panel slot="tab-panels"
-            v-for="(season, index) in watchlist.unwatched"
-            :active="isTabSelected(index)"
-            :key="index">
-            <panel-rows
-               :watchlist-id="id"
-               :watchlist-item="watchlist"
-               :season="season">
-            </panel-rows>
-         </tab-panel>
+         <tab-panels-container :active="tabActive" slot="tab-panels-container">
+            <tab-panel
+               v-for="(season, key, index) in watchlist.unwatched"
+               :active="isTabSelected(index)"
+               :number="index"
+               :width="357"
+               :key="key">
+               <panel-rows
+                  :watchlist-id="id"
+                  :watchlist-item="watchlist"
+                  :season="season">
+               </panel-rows>
+            </tab-panel>
+         </tab-panels-container>
       </tabs>
    </slide-out-panel>
 
@@ -43,9 +46,12 @@
 
 <script>
 import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
+
 import Tabs from '../Tabs/Tabs';
 import TabButton from '../Tabs/TabButton';
 import TabPanel from '../Tabs/TabPanel';
+import TabPanelsContainer from '../Tabs/TabPanelsContainer';
+
 import PanelRows from '../PanelRows/PanelRows';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
 import FrostGlass from '../FrostGlass/FrostGlass';
@@ -65,11 +71,11 @@ export default {
    data() {
       return {
          open: false,
-         tabActive: 0
+         tabActive: 1
       }
    },
    mounted(){
-      this.tabSelect(`season_${this.watchlist.on.season}`);
+      this.tabSelect(this.watchlist.on.season);
    },
    methods: {
       toggleOpen(){
@@ -90,6 +96,7 @@ export default {
       Tabs,
       TabButton,
       TabPanel,
+      TabPanelsContainer,
       PanelRows,
       BehindCountButton,
       FrostGlass,
