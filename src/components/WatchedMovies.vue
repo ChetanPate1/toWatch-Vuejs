@@ -1,7 +1,7 @@
 <template lang="html">
 <div class="container">
    <div class="row">
-
+      
 
       <no-content :message="noContentMessage" :condition="!watchedMovies"></no-content>
    </div>
@@ -24,11 +24,16 @@ export default {
          'watchedMovies',
       ]),
       ...mapActions([
-         'getWatedMovies'
+         'getWatedMovies',
+         'saveMovies'
       ])
    },
    mounted() {
       this.$store.dispatch('getWatchedMovies');
+
+
+
+
    },
    components: {
       NoContent

@@ -18,7 +18,6 @@ const actions = {
       });
    },
    saveMovies({ commit }, movie){
-
       const uid = firebase.auth().currentUser.uid;
       const ref = firebase.database().ref(`watchedMovies/${ uid }`).push(movie);
       ref.set(movie);
