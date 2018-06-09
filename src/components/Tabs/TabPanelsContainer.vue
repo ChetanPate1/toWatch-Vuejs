@@ -28,6 +28,7 @@ export default {
    mounted(){
       this.clientWidth = this.$refs.panels_container.clientWidth;
       this.panelsWidth = this.tabPanelWidth();
+      this.$emit('TabPanelWidth', this.clientWidth);
    }
 }
 </script>

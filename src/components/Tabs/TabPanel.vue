@@ -1,5 +1,5 @@
 <template>
-<div class="tab-panel" v-bind:style="{ 'left': position() }" :class="{ 'active' : active }" >
+<div class="tab-panel" v-bind:style="{ 'left': position(), 'width': panelWidth() }" :class="{ 'active' : active }" >
    <slot></slot>
 </div>
 </template>
@@ -7,15 +7,25 @@
 <script>
 export default {
    name: 'TabPanel',
+   data(){
+      return {
+         width: 320
+      }
+   },
    props: {
       active: Boolean,
-      width: Number,
       number: Number
    },
    methods:{
       position(){
          return `${this.width * this.number}px`;
+      },
+      panelWidth(){
+         return `${this.width}px`;
       }
+   },
+   beforeUpdate(){
+      this.width = this.$parent.clientWidth;
    }
 }
 </script>
@@ -33,7 +43,6 @@ export default {
       padding: 0;
       position: absolute;
       height: 100%;
-      width: 357px;
       top: 0;
       left: 0;
       display: block;

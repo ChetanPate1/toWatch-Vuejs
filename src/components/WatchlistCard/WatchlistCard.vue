@@ -17,16 +17,15 @@
             v-for="(season, key, index) in watchlist.unwatched"
             :key="index"
             :name="tabButtonName(key)"
-            :active="isTabSelected(index)"
-            @click.native="tabSelect(index)">
+            :active="isTabSelected(index + 1)"
+            @click.native="tabSelect(index + 1)">
          </tab-button>
 
          <tab-panels-container :active="tabActive" slot="tab-panels-container">
             <tab-panel
                v-for="(season, key, index) in watchlist.unwatched"
-               :active="isTabSelected(index)"
-               :number="index"
-               :width="357"
+               :active="isTabSelected(index + 1)"
+               :number="index + 1"
                :key="key">
                <panel-rows
                   :watchlist-id="id"

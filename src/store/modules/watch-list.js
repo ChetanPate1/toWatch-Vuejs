@@ -23,7 +23,7 @@ const actions = {
    addToWatchlist({ rootState }, series){
       let show = rootState.myShows.shows[series.seriesRef];
       let initSeries = initWatchlist(show, series);
-
+      console.log(initSeries);
       const uid = firebase.auth().currentUser.uid;
       const ref = firebase.database().ref(`watchlist/${ uid }`).push(initSeries);
       ref.set(initSeries);
@@ -53,16 +53,19 @@ const actions = {
       isLastEpisodePrevSeason = episodeNumber === prevSeasonLastEpisode.number && prevSeasonLastEpisode.season === onSeason - 1;
       isValidSeason = isValidSeason || onSeason - 1 === seasonNumber;
 
+console.log(!isValidSeason, !isFutureTime(episodeDetails.airDate), !isOneMoreOrOneLess);
+
       if(!isValidSeason || !isFutureTime(episodeDetails.airDate) || !isOneMoreOrOneLess){
          return;
       }
-
+      
       if(episodeNumber === prevSeason.length){
          if(isLastEpisodePrevSeason){
             seasonNumber = onSeason - 1;
             onSeason = onSeason - 1;
          }else {
-            return;
+            seasonNumber = onSeason;
+            onSeason = onSeason + 1;
          }
       }
 
