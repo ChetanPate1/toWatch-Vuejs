@@ -21,7 +21,6 @@
       </div>
       <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
    </div>
-
 </div>
 </template>
 
@@ -55,8 +54,9 @@ export default {
       }
    },
    mounted() {
-      this.$store.dispatch('getMyShows');
-      this.$store.dispatch('getWatchlist');
+      this.$store.dispatch('getMyShows').then(() => {
+         this.$store.dispatch('getWatchlist');
+      });
    },
    methods: {
       watchlistSize(){

@@ -23,11 +23,22 @@ const actions = {
    addToWatchlist({ rootState }, series){
       let show = rootState.myShows.shows[series.seriesRef];
       let initSeries = initWatchlist(show, series);
-      console.log(initSeries);
       const uid = firebase.auth().currentUser.uid;
       const ref = firebase.database().ref(`watchlist/${ uid }`).push(initSeries);
       ref.set(initSeries);
       ref.update(initSeries);
+   },
+   updatedWatched({ state }, watchlistId){
+      const watchlistItem = state.watchlist[watchlistId];
+      const showId = watchlistItem.showId;
+      let watched = {
+         watched: watchlistItem.unwatched,
+         on: watchlistItem.on
+      };
+
+      const uid = firebase.auth().currentUser.uid;
+      const ref = firebase.database().ref(`watched/${ uid }/${ showId }`);
+      ref.update(watched);
    },
    toggleWatched ({ commit, dispatch, state }, { watchlistId, show, episodeDetails }) {
       let episodeNumber = episodeDetails.number;
@@ -53,16 +64,16 @@ const actions = {
       isLastEpisodePrevSeason = episodeNumber === prevSeasonLastEpisode.number && prevSeasonLastEpisode.season === onSeason - 1;
       isValidSeason = isValidSeason || onSeason - 1 === seasonNumber;
 
-console.log(!isValidSeason, !isFutureTime(episodeDetails.airDate), !isOneMoreOrOneLess);
-
       if(!isValidSeason || !isFutureTime(episodeDetails.airDate) || !isOneMoreOrOneLess){
          return;
       }
-      
+
       if(episodeNumber === prevSeason.length){
          if(isLastEpisodePrevSeason){
-            seasonNumber = onSeason - 1;
-            onSeason = onSeason - 1;
+            if(episodeDetails.watched){
+               seasonNumber = onSeason - 1;
+               onSeason = onSeason - 1;
+            }
          }else {
             seasonNumber = onSeason;
             onSeason = onSeason + 1;
@@ -85,6 +96,8 @@ console.log(!isValidSeason, !isFutureTime(episodeDetails.airDate), !isOneMoreOrO
          const uid = firebase.auth().currentUser.uid;
          const ref = firebase.database().ref(`watchlist/${ uid }/${ watchlistId }`);
          ref.update(state.watchlist[watchlistId]);
+
+         dispatch('updatedWatched', watchlistId);
       });
    },
    setCurrentSeason ({ commit }, { watchlistId, seasonDetails, show, onSeason }) {
