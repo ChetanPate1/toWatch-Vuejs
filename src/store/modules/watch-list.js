@@ -40,6 +40,11 @@ const actions = {
       const ref = firebase.database().ref(`watched/${ uid }/${ showId }`);
       ref.update(watched);
    },
+   deleteWatchlist({ state }, watchlistId){
+      const uid = firebase.auth().currentUser.uid;
+      const watchlistItem = firebase.database().ref(`watchlist/${ uid }/${ watchlistId }`);
+      watchlistItem.remove();
+   },
    toggleWatched ({ commit, dispatch, state }, { watchlistId, show, episodeDetails }) {
       let episodeNumber = episodeDetails.number;
       let seasonNumber = episodeDetails.season;
@@ -103,7 +108,6 @@ const actions = {
    setCurrentSeason ({ commit }, { watchlistId, seasonDetails, show, onSeason }) {
       var nextSeason = onSeason + 1;
       var isLastSeason = show.unwatched['season_'+ nextSeason] == undefined;
-      var numberOfSeasons = objSize(show.unwatched) + onSeason;
       var count = 0, on = { season: onSeason };
 
       show.unwatched[`season_${onSeason}`].forEach((episode) => {
@@ -113,10 +117,24 @@ const actions = {
       });
 
       if(count == seasonDetails.length){
+         if(isLastSeason){
+            on.name = 'TBA';
+         }else {
+            on.name = show.unwatched['season_'+ on.season].filter((episode) => {
+               if(episode.number === on.episode){
+                  return episode.name;
+               }
+            });
+         }
          on.season = nextSeason;
          on.episode = 1;
       }else {
          on.episode = count + 1;
+         on.name = show.unwatched['season_'+ on.season].filter((episode) => {
+            if(episode.number === on.episode){
+               return episode.name;
+            }
+         });
       }
 
       commit('SET_CURRENT_SEASON', { watchlistId , on });

@@ -1,7 +1,10 @@
 <template lang="html">
 <div class="container" v-bind:class="{'container-lg' : watchlistSize() > 3 }">
    <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+         <button class="button" type="button" name="button margin-bottom-10" @click="isEditMode = true">Manage</button>
+      </div>
+      <div class="col-xs-6">
          <popup :shows="myShows"></popup>
       </div>
 
@@ -9,14 +12,19 @@
          v-for="(item, key, index) in watchlist"
          v-bind:class="{'col-md-3' : watchlistSize() > 3, 'col-md-4' : watchlistSize() < 3 }"
          :key="index">
+
+         <button v-if="isEditMode" type="button" name="button" @click="deleteItem(key)" class="button">
+            <span class="dripicons-trash"></span>
+         </button>
+
          <watchlist-card
             :heading="myShows[item.showId].series"
             :sub-heading="concatSubHeading(item.on)"
-            :details="currentEpisodeName(item, item.on)"
+            :details="item.on.name"
             :id="key"
             :watchlist="item"
             :next-aired="nextAired(item)"
-            :img-src="myShows[item.showId].imgSrc" >
+            :img-src="myShows[item.showId].imgSrc">
          </watchlist-card>
       </div>
       <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
@@ -37,7 +45,8 @@ export default {
    data() {
       return {
          today: new Date().getTime(),
-         noContentMessage: 'Your watch list is empty!'
+         noContentMessage: 'Your watch list is empty!',
+         isEditMode: false
       }
    },
    computed: {
@@ -47,7 +56,8 @@ export default {
       ]),
       ...mapActions([
          'getWatchlist',
-         'getMyShows'
+         'getMyShows',
+         'deleteWatchlist'
       ]),
       addAbleShows(){
 
@@ -62,11 +72,15 @@ export default {
       watchlistSize(){
          return objSize(this.watchlist);
       },
+      deleteItem(watchlistId){
+         this.$store
+            .dispatch('deleteWatchlist', watchlistId)
+            .then(() => {
+               this.isEditMode = false;
+            });
+      },
       concatSubHeading(on) {
          return `Season ${ on.season } Episode ${ on.episode }`;
-      },
-      currentEpisodeName(item, on) {
-         return item.unwatched['season_'+ on.season][on.episode - 1].name;
       },
       nextAired(watchlist) {
          let show = this.myShows[watchlist.showId];
@@ -79,7 +93,7 @@ export default {
             }
          });
 
-         return nextAired[0].airDate;
+         return nextAired.length ? nextAired[0].airDate : 0;
       }
    },
    components: {
