@@ -4,10 +4,10 @@
 
    <div class="popup" v-bind:class="{ 'open': open }">
       <div class="content">
-         <button class="close-button" @click="open = false" type="button">
+         <button class="close-button" @click="open = false; form = {}" type="button">
             <span class="dripicons-cross"></span>
          </button>
-         
+
          <form name="form" v-on:submit.prevent="add(form)">
             <div class="form-element">
                <label for="series">Series Name</label>
@@ -24,7 +24,7 @@
                <label for="seasons">Seasons</label>
                <div class="select-series">
                   <div class="col-xs-3" v-for="(season, key, index) in shows[form.seriesRef].seasons">
-                     <label class="radio" v-bind:class="{'selected' : form.season == index + 1 }" >
+                     <label class="radio" v-bind:class="{'selected' : form.season >= index + 1 }" >
                         <input type="radio" v-model="form.season" v-bind:value="index + 1" >
                         {{ index + 1 }}
                      </label>
@@ -38,7 +38,7 @@
                <div class="select-series">
                   <div class="col-xs-3" v-for="episode in shows[form.seriesRef].seasons[`season_${form.season}`]"
                      v-if="checkAired(episode)">
-                     <label class="radio" v-bind:class="{'selected' : form.episode == episode.number }" >
+                     <label class="radio" v-bind:class="{'selected' : form.episode >= episode.number }" >
                         <input type="radio" v-model="form.episode" v-bind:value="episode.number " >
                         {{ episode.number }}
                      </label>
@@ -88,6 +88,11 @@ export default {
          this.$store.dispatch('addToWatchlist', form)
             .then(() => {
                this.open = false;
+               this.form = {
+                  seriesRef: '',
+                  season: '',
+                  episode: ''
+               };
             });
       },
       checkAired(episode) {

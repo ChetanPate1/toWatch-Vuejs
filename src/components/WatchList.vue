@@ -13,9 +13,7 @@
          v-bind:class="{'col-md-3' : watchlistSize() > 3, 'col-md-4' : watchlistSize() < 3 }"
          :key="index">
 
-         <button v-if="isEditMode" type="button" name="button" @click="deleteItem(key)" class="button">
-            <span class="dripicons-trash"></span>
-         </button>
+         <span v-if="isEditMode" type="button" name="button" @click="deleteItem(key)" class="dripicons-trash margin-bottom-20"></span>
 
          <watchlist-card
             :heading="myShows[item.showId].series"

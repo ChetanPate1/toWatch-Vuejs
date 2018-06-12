@@ -95,7 +95,8 @@ const actions = {
          watchlistId,
          seasonDetails,
          show,
-         onSeason
+         onSeason,
+         episodeNumber
       })
       .then(() => {
          const uid = firebase.auth().currentUser.uid;
@@ -105,37 +106,54 @@ const actions = {
          dispatch('updatedWatched', watchlistId);
       });
    },
-   setCurrentSeason ({ commit }, { watchlistId, seasonDetails, show, onSeason }) {
+   setCurrentSeason ({ commit, rootState }, { watchlistId, seasonDetails, show, onSeason, episodeNumber }) {
+      let showStatus = rootState.myShows.shows[show.showId].status;
       var nextSeason = onSeason + 1;
-      var isLastSeason = show.unwatched['season_'+ nextSeason] == undefined;
       var count = 0, on = { season: onSeason };
+      const unwatched = show.unwatched;
+      let lastSeason = unwatched[`season_${objSize(unwatched)}`];
+      let lastEpisodeLastSeason = lastSeason[lastSeason.length - 1];
+      let isLastEpisodeLastSeason = onSeason == lastEpisodeLastSeason.season && lastEpisodeLastSeason.number == episodeNumber;
 
-      show.unwatched[`season_${onSeason}`].forEach((episode) => {
+      if(isLastEpisodeLastSeason){
+         if(showStatus === 'Running' || showStatus === 'In-Development'){
+            on.name = 'TBA';
+            on.episode = 1;
+            on.season = objSize(unwatched) + 1;
+         }else {
+            on.name = '';
+            on.season = onSeason;
+            on.episode = unwatched[`season_${onSeason}`].length - 1
+         }
+
+         if(showStatus === 'Running'){
+            on.name = 'TBA';
+            on.episode = 1;
+            on.season = objSize(unwatched) + 1;
+         }
+
+
+         commit('SET_CURRENT_SEASON', { watchlistId , on });
+         return;
+      }
+
+      unwatched[`season_${onSeason}`].forEach((episode) => {
          if(episode.watched){
             count++;
          }
       });
 
       if(count == seasonDetails.length){
-         if(isLastSeason){
-            on.name = 'TBA';
-         }else {
-            on.name = show.unwatched['season_'+ on.season].filter((episode) => {
-               if(episode.number === on.episode){
-                  return episode.name;
-               }
-            });
-         }
          on.season = nextSeason;
          on.episode = 1;
+         let episode = unwatched['season_'+ on.season].filter(episode => episode.number === on.episode);
+         on.name = episode[0].name;
       }else {
          on.episode = count + 1;
-         on.name = show.unwatched['season_'+ on.season].filter((episode) => {
-            if(episode.number === on.episode){
-               return episode.name;
-            }
-         });
+         let episode = unwatched['season_'+ on.season].filter(episode => episode.number === on.episode);
+         on.name = episode[0].name;
       }
+
 
       commit('SET_CURRENT_SEASON', { watchlistId , on });
    }

@@ -45,7 +45,8 @@ export function initWatchlist(show, series) {
       showId: series.seriesRef,
       on: {
          season: series.season,
-         episode: series.episode
+         episode: series.episode,
+         name: ''
       },
       unwatched: {}
    };
@@ -70,6 +71,7 @@ export function initWatchlist(show, series) {
       }
    });
 
+   list.on.name = unwatched[`season_${series.season}`][series.episode - 1].name
    list['unwatched'] = unwatched;
 
    return list;
