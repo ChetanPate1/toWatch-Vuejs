@@ -76,3 +76,12 @@ export function initWatchlist(show, series) {
 
    return list;
 }
+
+export function initRewatchlist(show){
+   let series = {
+      episode: 1,
+      season: 1
+   };
+   
+   return initWatchlist(show, series);
+}

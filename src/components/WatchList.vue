@@ -56,10 +56,7 @@ export default {
          'getWatchlist',
          'getMyShows',
          'deleteWatchlist'
-      ]),
-      addAbleShows(){
-
-      }
+      ])
    },
    mounted() {
       this.$store.dispatch('getMyShows').then(() => {

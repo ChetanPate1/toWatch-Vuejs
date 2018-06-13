@@ -4,7 +4,7 @@
 
    <div class="popup" v-bind:class="{ 'open': open }">
       <div class="content">
-         <button class="close-button" @click="open = false; form = {}" type="button">
+         <button class="close-button" @click="open = false" type="button">
             <span class="dripicons-cross"></span>
          </button>
 
