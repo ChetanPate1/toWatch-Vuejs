@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from './components/NavigationBar/NavigationBar';
 
 export default {
