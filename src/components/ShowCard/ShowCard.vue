@@ -1,17 +1,7 @@
 <template lang="html">
-   <div class="show-card" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+   <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+      <button class="icon-button dripicons-trash" tabindex="0" @click.stop></button>
       <h2>{{ heading }}</h2>
-
-      <div class="shutter-delete" v-bind:class="{'open' : deleteOpen }">
-         <h2>Delete from My Shows?</h2>
-         <div class="col-xs-6">
-            <button type="button" name="cancel" class="button" @click="deleteOpen = !deleteOpen">cancel</button>
-         </div>
-         <div class="col-xs-6">
-            <button type="button" name="delete" class="button red" @click="deleteShow()">delete</button>
-         </div>
-      </div>
-      <button class="button red delete-button" type="button" @click="deleteOpen = !deleteOpen">Delete</button>
    </div>
 </template>
 
@@ -55,75 +45,36 @@ export default {
    background-repeat: no-repeat;
    box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.5);
 
+   &.deleteable{
+      &:focus{
+         .icon-button{
+            transform: translate(0, 0);
+         }
+      }
+   }
+
    h2{
       font-size: 25px;
       letter-spacing: 1px;
       z-index: 10;
       font-weight: bold;
       position: relative;
+      z-index: 10;
       color: #ffffff;
    }
 
-   .delete-button{
+   .icon-button{
       z-index: 100;
       position: absolute;
-      right: 0;
-      left: 0;
-      bottom: 15px;
-      width: 90%;
-      margin: auto;
+      right: 15px;
+      top: 15px;
+      transition: 250ms all ease;
+      transform: translate(200%, 0);
 
-      &.red{
-         background-color: $danger-color;
-         color: #ffffff;
-      }
-
-      transform: translate(0, 100px);
-   }
-
-   &.deleteable{
-      &:focus, &:hover{
-         .delete-button{
-            transform: translate(0, 0);
-         }
-      }
-   }
-}
-
-.show-card{
-   overflow: hidden;
-
-   .shutter-delete{
-      z-index: 500;
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      opacity: 0;
-
-      h2{
-         text-align: center;
-         width: 100%;
-         position: absolute;
-         top: 100px;
-         left: 0;
-      }
-
-      .button{
-         margin: 210px auto 0 auto;
-         display: block;
-         max-width: 100px;
-      }
-
-      transform: translate(0, -115%);
-      transition: all 300ms ease;
-
-      &.open{
+      &:focus{
          transform: translate(0, 0);
-         opacity: 1;
       }
    }
+
 }
 </style>

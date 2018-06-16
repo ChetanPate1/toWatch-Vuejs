@@ -2,6 +2,11 @@ body{
    font-family: 'Nunito', sans-serif;
 }
 
+:focus {
+    outline: -webkit-focus-ring-color auto 5px;
+    outline-color: $base-color;
+}
+
 h1{
    margin-bottom: 30px;
    font-size: 60px;
