@@ -2,13 +2,13 @@
 <div>
    <button class="button pull-right margin-bottom-30" @click="open = true">Track a show</button>
 
-   <div class="popup" v-bind:class="{ 'open': open }">
-      <div class="content">
-         <button class="close-button" @click="open = false" type="button">
+   <div class="popup-background" v-bind:class="{ 'open': open }" @click="open = false">
+      <div class="content" @click.stop>
+         <button class="close-button" @click.stop="open = false" type="button">
             <span class="dripicons-cross"></span>
          </button>
 
-         <form name="form" v-on:submit.prevent="add(form)">
+         <form name="form" v-on:submit.prevent="add(form)" >
             <div class="form-element">
                <label for="series">Series Name</label>
                <span class="dripicons-chevron-down"></span>
@@ -108,20 +108,17 @@ export default {
 </script>
 
 <style lang="scss">
-.popup{
+.popup-background{
    position: fixed;
    top: 0;
    right: 0;
-   z-index: 1000;
-   background-color: transparent;
-   width: 500px;
+   z-index: 2000;
+   background-color: transparentize(#000000, 0.8);
+   width: 100%;
    height: 100%;
-   transition: all 500ms;
-   transform: translate(100%, 0);
-
-   @media(max-width: 991px){
-      width: 100%;
-   }
+   transition: opacity 500ms ease;
+   -ms-transform: translate(100%, 0);
+   transform: translate3d(100%, 0, 0);
 
    .content{
       position: absolute;
@@ -136,6 +133,9 @@ export default {
       background-color: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.05);
       box-shadow: 0 30px 65px -30px rgba(0, 0, 0, 0.3);
+      transition: all 500ms ease;
+      -ms-transform: translate(0, -100%);
+      transform: translate3d(0, -100%, 0);
 
       .close-button{
          position: absolute;
@@ -151,12 +151,6 @@ export default {
          &:hover{
             opacity: 1;
          }
-      }
-
-      @media(max-width: 991px){
-         top: 70px;
-         right: 20px;
-         width: 90%;
       }
    }
 
@@ -174,7 +168,13 @@ export default {
 
    &.open{
       opacity: 1;
-      transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+      transform: translate3d(0, 0, 0);
+
+      .content{
+         -ms-transform: translate(0, 0);
+         transform: translate3d(0, 0, 0);
+      }
    }
 }
 </style>
