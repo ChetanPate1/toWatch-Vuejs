@@ -1,6 +1,7 @@
 <template lang="html">
    <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
       <button class="icon-button dripicons-trash" tabindex="0" @click.stop></button>
+      <button class="icon-button dripicons-plus" tabindex="0" @click.stop></button>
       <h2>{{ heading }}</h2>
    </div>
 </template>
@@ -46,6 +47,10 @@ export default {
    box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.5);
 
    &.deleteable{
+      &:hover{
+         cursor: pointer;
+      }
+
       &:focus{
          .icon-button{
             transform: translate(0, 0);
@@ -63,18 +68,27 @@ export default {
       color: #ffffff;
    }
 
-   .icon-button{
-      z-index: 100;
-      position: absolute;
+   .dripicons-plus{
       right: 15px;
       top: 15px;
       transition: 250ms all ease;
-      transform: translate(200%, 0);
+      transform: translate(45px, 0);
+   }
+
+   .dripicons-trash{
+      left: 15px;
+      top: 15px;
+      transition: 250ms all ease;
+      transform: translate(-45px, 0);
+   }
+
+   .icon-button{
+      z-index: 100;
+      position: absolute;
 
       &:focus{
          transform: translate(0, 0);
       }
    }
-
 }
 </style>
