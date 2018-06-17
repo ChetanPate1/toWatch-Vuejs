@@ -1,24 +1,16 @@
 <template lang="html">
-<div class="container" v-bind:class="{'container-lg' : watchlistSize() > 3 }">
+<div class="container" v-bind:class="{'container-lg' : listSize() > 3 }">
    <popup :title="'Add To Watch List'" :size="'md'" ref="popup">
       <add-to-watchlist :shows="myShows"></add-to-watchlist>
    </popup>
 
    <div class="row">
-      <div class="col-xs-6">
-         <button class="button" type="button" name="button margin-bottom-10" @click="isEditMode = true">Manage</button>
-      </div>
-      <div class="col-xs-6">
+      <div class="col-xs-12">
          <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Track a show</button>
       </div>
 
-      <div class="col-xs-12 col-sm-6 fade-in"
-         v-for="(item, key, index) in watchlist"
-         v-bind:class="{'col-md-3' : watchlistSize() > 3, 'col-md-4' : watchlistSize() < 3 }"
-         :key="index">
-
-         <span v-if="isEditMode" type="button" name="button" @click="deleteItem(key)" class="dripicons-trash margin-bottom-20"></span>
-
+      <div class="col-xs-12 col-sm-6 fade-in" v-for="(item, key, index) in watchlist"
+           v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }" :key="index">
          <watchlist-card
             :heading="myShows[item.showId].series"
             :sub-heading="concatSubHeading(item.on)"
@@ -49,7 +41,6 @@ export default {
       return {
          today: new Date().getTime(),
          noContentMessage: 'Your watch list is empty!',
-         isEditMode: false,
          popupOpen: false
       }
    },
@@ -60,8 +51,7 @@ export default {
       ]),
       ...mapActions([
          'getWatchlist',
-         'getMyShows',
-         'deleteWatchlist'
+         'getMyShows'
       ])
    },
    mounted() {
@@ -70,15 +60,8 @@ export default {
       });
    },
    methods: {
-      watchlistSize(){
+      listSize(){
          return objSize(this.watchlist);
-      },
-      deleteItem(watchlistId){
-         this.$store
-            .dispatch('deleteWatchlist', watchlistId)
-            .then(() => {
-               this.isEditMode = false;
-            });
       },
       concatSubHeading(on) {
          return `Season ${ on.season } Episode ${ on.episode }`;

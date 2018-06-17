@@ -1,13 +1,29 @@
 <template lang="html">
+<div>
+   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+      <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this show?</h4>
+
+      <button class="button button-sm red pull-left"
+              type="button"
+              @click="$refs.confirmPopup.close('cancel')">Cancel
+      </button>
+
+      <button class="button button-sm pull-right"
+              type="button"
+              @click="$refs.confirmPopup.close('yes')">Yes
+      </button>
+   </popup>
+
    <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-      <button class="icon-button dripicons-trash" tabindex="0" @click.stop></button>
-      <button class="icon-button dripicons-plus" tabindex="0" @click.stop></button>
+      <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
+      <button class="icon-button dripicons-plus" tabindex="0" @click.stop="$parent.$refs.popup.open()"></button>
       <h2>{{ heading }}</h2>
    </div>
+</div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import Popup from '../Popup/Popup';
 
 export default {
    name: 'ShowCard',
@@ -23,9 +39,16 @@ export default {
       deleteable: Boolean
    },
    methods: {
-      deleteShow(){
-         this.$store.dispatch('deleteShow', this.reference);
+      confirmDelete(){
+         this.$refs.confirmPopup.open().then((result) => {
+            if(result){
+               this.$store.dispatch('deleteShow', this.reference);
+            }
+         });
       }
+   },
+   components: {
+      Popup
    }
 }
 </script>

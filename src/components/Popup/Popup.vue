@@ -1,8 +1,8 @@
 <template lang="html">
-   <div class="popup-background" v-bind:class="{ 'open': popupOpen }" @click="close()">
+   <div class="popup-background" v-bind:class="{ 'open': popupOpen }" @click="close('dismiss')">
       <div class="popup-content" @click.stop>
-         <h4>{{ title }}</h4>
-         <button class="close-button" @click.stop="close()" type="button">
+         <h4 class="popup-title">{{ title }}</h4>
+         <button class="close-button" @click.stop="close('dismiss')" type="button">
             <span class="dripicons-cross"></span>
          </button>
          <slot></slot>
@@ -25,9 +25,13 @@ export default {
    methods: {
       open(){
          this.popupOpen = true;
-      },
-      close(){
-         this.popupOpen = false;
+
+         return new Promise((resolve) => {
+            this.close = (reason) => {
+               this.popupOpen = false;
+               resolve(reason);
+            }
+         });
       }
    }
 }
@@ -84,19 +88,13 @@ export default {
       }
    }
 
-   h4{
+   .popup-title{
       font-weight: bold;
       margin: 0;
       position: absolute;
       z-index: 1;
       top: 20px;
-      left: 35px;
-   }
-
-   .button{
-      margin-top: 20px;
-      min-width: 50%;
-      float: right;
+      left: 30px;
    }
 
    &.open{

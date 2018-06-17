@@ -17,7 +17,7 @@
                   :shows="myShows"
                   :reference="key"
                   :key="index"
-                  :deleteable="true" >
+                  :deleteable="true">
                </show-card>
             </div>
          <no-content :message="noContentMessage" :condition="!myShows"></no-content>
@@ -51,9 +51,9 @@ export default {
       this.$store.dispatch('getMyShows');
    },
    components: {
-      NoContent,
       ShowCard,
-      SearchShows
+      SearchShows,
+      NoContent
    }
 }
 </script>

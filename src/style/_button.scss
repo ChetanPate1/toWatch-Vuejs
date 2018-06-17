@@ -36,10 +36,10 @@ button{
       }
    }
 
-
    &.red{
       color: $danger-color;
       border: 3px solid $danger-color;
+
       &:hover{
          border: 3px solid $danger-color;
          color: #ffffff;
@@ -50,5 +50,11 @@ button{
    &.full-width{
       width: 100%;
       max-width: auto;
+   }
+
+   &.button-sm{
+      min-width: 70px;
+      padding: 5px 15px;
+      font-size: 12px;
    }
 }

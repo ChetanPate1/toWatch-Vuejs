@@ -1,49 +1,69 @@
 <template lang="html">
-<div class="watchlist-card" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-   <h2>{{ heading }}</h2>
-   <h4>{{ details }}</h4>
-   <h5>On {{ subHeading }}</h5>
-   <h6>Next <small>Aired Episode</small></h6>
+<div>
+   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+      <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this show?</h4>
 
-   <behind-count-button
-      @click.native="toggleOpen()"
-      :seasons="watchlist.unwatched"
-      :open="open">
-   </behind-count-button>
+      <button class="button button-sm red pull-left"
+              type="button"
+              @click="$refs.confirmPopup.close('cancel')">Cancel
+      </button>
 
-   <slide-out-panel :open="open">
-      <tabs>
-         <tab-button slot="tab-buttons"
-            v-for="(season, key, index) in watchlist.unwatched"
-            :key="index"
-            :name="tabButtonName(key)"
-            :active="isTabSelected(index + 1)"
-            @click.native="tabSelect(index + 1)">
-         </tab-button>
+      <button class="button button-sm pull-right"
+              type="button"
+              @click="$refs.confirmPopup.close('yes')">Yes
+      </button>
+   </popup>
 
-         <tab-panels-container :active="tabActive" slot="tab-panels-container">
-            <tab-panel
+   <div class="watchlist-card" tabindex="0" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+      <button type="button" class="icon-button dripicons-trash" @click="confirmDelete()"></button>
+
+      <h2>{{ heading }}</h2>
+      <h4>{{ details }}</h4>
+      <h5>On {{ subHeading }}</h5>
+      <h6>Next <small>Aired Episode</small></h6>
+
+      <behind-count-button
+         @click.native="toggleOpen()"
+         :seasons="watchlist.unwatched"
+         :open="open">
+      </behind-count-button>
+
+      <slide-out-panel :open="open">
+         <tabs>
+            <tab-button slot="tab-buttons"
                v-for="(season, key, index) in watchlist.unwatched"
+               :key="index"
+               :name="tabButtonName(key)"
                :active="isTabSelected(index + 1)"
-               :number="index + 1"
-               :key="key">
-               <panel-rows
-                  :watchlist-id="id"
-                  :watchlist-item="watchlist"
-                  :season="season">
-               </panel-rows>
-            </tab-panel>
-         </tab-panels-container>
-      </tabs>
-   </slide-out-panel>
+               @click.native="tabSelect(index + 1)">
+            </tab-button>
 
-   <frost-glass :img-src="imgSrc">
-      <countdown-timer :to="nextAired"></countdown-timer>
-   </frost-glass>
+            <tab-panels-container :active="tabActive" slot="tab-panels-container">
+               <tab-panel
+                  v-for="(season, key, index) in watchlist.unwatched"
+                  :active="isTabSelected(index + 1)"
+                  :number="index + 1"
+                  :key="key">
+                  <panel-rows
+                     :watchlist-id="id"
+                     :watchlist-item="watchlist"
+                     :season="season">
+                  </panel-rows>
+               </tab-panel>
+            </tab-panels-container>
+         </tabs>
+      </slide-out-panel>
+
+      <frost-glass :img-src="imgSrc">
+         <countdown-timer :to="nextAired"></countdown-timer>
+      </frost-glass>
+   </div>
 </div>
+
 </template>
 
 <script>
+import Popup from '../Popup/Popup';
 import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
 
 import Tabs from '../Tabs/Tabs';
@@ -80,6 +100,14 @@ export default {
       toggleOpen(){
          this.open = !this.open;
       },
+      confirmDelete(){
+         this.$refs.confirmPopup.open().then((result) => {
+            if(result == 'yes'){
+               this.$store
+                  .dispatch('deleteWatchlist', this.id);
+            }
+         });
+      },
       tabButtonName(name){
          return `S ${name.split('_')[1]}`;
       },
@@ -91,6 +119,7 @@ export default {
       }
    },
    components: {
+      Popup,
       SlideOutPanel,
       Tabs,
       TabButton,

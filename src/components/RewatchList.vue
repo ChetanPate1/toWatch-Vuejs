@@ -1,10 +1,6 @@
 <template lang="html">
 <div class="container" v-bind:class="{'container-lg' : listSize() > 3 }">
    <div class="row">
-      <div class="col-xs-6">
-         <button class="button" type="button" name="button margin-bottom-10" @click="isEditMode = true">Manage</button>
-      </div>
-
       <div class="col-xs-12 col-sm-6 fade-in"
          v-for="(item, key, index) in rewatchlist"
          v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }"

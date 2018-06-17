@@ -130,3 +130,37 @@
     }
   }
 }
+
+.watchlist-card{
+   &:hover{
+      cursor: pointer;
+   }
+
+   &:focus{
+      .icon-button{
+         transform: translate(0, 0);
+      }
+   }
+   
+   .icon-button{
+      z-index: 100;
+      position: absolute;
+
+   }
+
+   .dripicons-trash{
+      left: 15px;
+      top: 15px;
+      transition: 250ms all ease;
+      transform: translate(-45px, 0);
+   }
+
+   .icon-button{
+      z-index: 100;
+      position: absolute;
+
+      &:focus{
+         transform: translate(0, 0);
+      }
+   }
+}

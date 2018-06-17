@@ -154,7 +154,6 @@ const actions = {
          on.name = episode[0].name;
       }
 
-
       commit('SET_CURRENT_SEASON', { watchlistId , on });
    }
 }
