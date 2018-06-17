@@ -1,6 +1,7 @@
 <template lang="html">
    <div class="popup-background" v-bind:class="{ 'open': popupOpen }" @click="close()">
       <div class="popup-content" @click.stop>
+         <h4>{{ title }}</h4>
          <button class="close-button" @click.stop="close()" type="button">
             <span class="dripicons-cross"></span>
          </button>
@@ -16,6 +17,10 @@ export default {
       return{
          popupOpen: false
       }
+   },
+   props: {
+      title: String,
+      size: String
    },
    methods: {
       open(){
@@ -43,34 +48,35 @@ export default {
 
    .popup-content{
       position: absolute;
-      right: 0;
-      top: 0;
+      top: 50%;
       left: 0;
-      bottom: 0;
-      margin: auto;
+      right: 0;
       display: block;
-      min-width: 400px;
-      min-height: 200px;
+      max-width: 400px;
+      margin: auto;
+      width: 100%;
+      height: auto;
       border-radius: 7px;
-      padding: 40px 30px 20px 30px;
+      padding: 70px 30px 20px 30px;
       background-color: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.05);
       box-shadow: 0 30px 65px -30px rgba(0, 0, 0, 0.3);
       transition: all 500ms ease;
       opacity: 0;
-      -ms-transform: translate(0, -50%);
-      transform: translate3d(0, -50%, 0);
+      -ms-transform: translate(0, -100%);
+      transform: translate3d(0, -100%, 0);
 
       .close-button{
          position: absolute;
-         top: 10px;
-         right: 10px;
+         top: 5px;
+         right: 5px;
          background-color: transparent;
          line-height: 1;
          border: none;
          padding: 10px;
          font-size: 20px;
          opacity: 0.6;
+         z-index: 5;
 
          &:hover{
             opacity: 1;
@@ -78,10 +84,13 @@ export default {
       }
    }
 
-   h3{
+   h4{
       font-weight: bold;
-      margin-bottom: 30px;
-      margin-top: 10px;
+      margin: 0;
+      position: absolute;
+      z-index: 1;
+      top: 20px;
+      left: 35px;
    }
 
    .button{
@@ -97,8 +106,8 @@ export default {
 
       .popup-content{
          opacity: 1;
-         -ms-transform: translate(0, 0);
-         transform: translate3d(0, 0, 0);
+         -ms-transform: translate(0, -50%);
+         transform: translate3d(0, -50%, 0);
       }
    }
 }
