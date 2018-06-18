@@ -1,7 +1,7 @@
 <template lang="html">
 <div class="container" v-bind:class="{'container-lg' : listSize() > 3 }">
    <div class="row">
-      <div class="col-xs-12 col-sm-6 fade-in"
+      <!-- <div class="col-xs-12 col-sm-6 fade-in"
          v-for="(item, key, index) in rewatchlist"
          v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }"
          :key="index">
@@ -16,8 +16,8 @@
             :rewatchlist="item"
             :img-src="myShows[item.showId].imgSrc">
          </rewatchlist-card>
-      </div>
-      <no-content :message="noContentMessage" :condition="!rewatchlist"></no-content>
+      </div> -->
+      <no-content :message="noContentMessage" :condition="true"></no-content>
    </div>
 </div>
 </template>
@@ -36,21 +36,21 @@ export default {
          isEditMode: false
       }
    },
-   computed: {
-      ...mapGetters([
-         'rewatchlist',
-         'myShows'
-      ]),
-      ...mapActions([
-         'getRewatchlist',
-         'getMyShows',
-         'deleteRewatchlist'
-      ])
-   },
+   // computed: {
+   //    ...mapGetters([
+   //       'rewatchlist',
+   //       'myShows'
+   //    ]),
+   //    ...mapActions([
+   //       'getRewatchlist',
+   //       'getMyShows',
+   //       'deleteRewatchlist'
+   //    ])
+   // },
    mounted() {
-      this.$store.dispatch('getMyShows').then(() => {
-         this.$store.dispatch('getRewatchlist');
-      });
+      // this.$store.dispatch('getMyShows').then(() => {
+      //    this.$store.dispatch('getRewatchlist');
+      // });
    },
    methods: {
       listSize(){

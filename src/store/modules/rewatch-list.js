@@ -28,9 +28,9 @@ const actions = {
       ref.set(initSeries);
       ref.update(initSeries);
    },
-   deleteWatchlist({ state }, watchlistId){
+   deleteRewatchlist({ state }, rewatchlistId){
       const uid = firebase.auth().currentUser.uid;
-      const item = firebase.database().ref(`rewatchlist/${ uid }/${ watchlistId }`);
+      const item = firebase.database().ref(`rewatchlist/${ uid }/${ rewatchlistId }`);
       item.remove();
    },
    toggleWatched ({ commit, dispatch, state }, { rewatchlistId, show, episodeDetails }) {
