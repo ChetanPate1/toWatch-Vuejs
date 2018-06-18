@@ -11,6 +11,9 @@ export function generateSeasons(show) {
    series.imgSrc = show.image_path;
    series.imgSrcSm = show.image_thumbnail_path;
    series.status = show.status;
+   series.youtubeUrl = show.youtube_link;
+   series.permalink = show.permalink;
+   series.description = show.description;
    series.lastUpdated = new Date().getTime();
 
    init['season_'+ seasonNum] = [];
@@ -82,6 +85,6 @@ export function initRewatchlist(show){
       episode: 1,
       season: 1
    };
-   
+
    return initWatchlist(show, series);
 }

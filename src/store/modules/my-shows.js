@@ -2,6 +2,9 @@ import firebase from 'firebase';
 import * as types from '../mutation-types';
 import axios from 'axios';
 import { generateSeasons } from '../../js/generators';
+import { hasDaysPast } from '../../js/helper-functions';
+
+const today = new Date();
 
 const state = {
    shows: {},
@@ -14,10 +17,11 @@ const getters = {
 }
 
 const actions = {
-   getMyShows({ commit }) {
+   getMyShows({ dispatch, commit }) {
       const uid = firebase.auth().currentUser.uid;
       const myShows = firebase.database().ref(`shows/${ uid }`);
       myShows.on('value', snapshot => {
+         dispatch('updateShows', snapshot.val());
          commit('GET_MY_SHOWS', snapshot.val());
       });
    },
@@ -28,7 +32,6 @@ const actions = {
          });
    },
    saveShow({ commit }, showPermalink){
-      let newShow = {};
       axios.get('https://www.episodate.com/api/show-details?q=' + showPermalink)
          .then(function(res) {
             let showSeasons = generateSeasons(res.data.tvShow);
@@ -45,6 +48,32 @@ const actions = {
       const uid = firebase.auth().currentUser.uid;
       const show = firebase.database().ref(`shows/${ uid }/${ ref }`);
       show.remove();
+   },
+   updateShows({ dispatch, commit }, shows){
+      Object.keys(shows).forEach((showId, index) => {
+         let permalink = shows[showId].permalink;
+         let lastUpdated = shows[showId].lastUpdated;
+         let status = shows[showId].status;
+
+         if(hasDaysPast(lastUpdated, 2) && status != 'Ended'){
+            dispatch('updateShow', { showId, permalink });
+         }
+      });
+   },
+   updateShow({ commit }, { showId, permalink }){
+      const uid = firebase.auth().currentUser.uid;
+      const showRef = firebase.database().ref(`shows/${ uid }/${ showId }`);
+
+      axios.get('https://www.episodate.com/api/show-details?q=' + permalink)
+         .then(function(res) {
+            if(res.status == 200){
+               if(res.data.length){
+                  let showSeasons = generateSeasons(res.data.tvShow);
+
+                  showRef.update(showSeasons);
+               }
+            }
+         });
    }
 }
 

@@ -38,7 +38,7 @@
       </div>
    </div>
 
-   <button class="button"
+   <button class="button button-sm pull-right"
       type="submit"
       :disabled="!form.seriesRef || !form.season || !form.episode">
       add

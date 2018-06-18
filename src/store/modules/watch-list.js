@@ -132,7 +132,6 @@ const actions = {
             on.season = objSize(unwatched) + 1;
          }
 
-
          commit('SET_CURRENT_SEASON', { watchlistId , on });
          return;
       }
