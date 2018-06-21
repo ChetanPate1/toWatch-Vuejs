@@ -78,3 +78,9 @@ export default {
    }
 }
 </script>
+
+<style lang="scss" scoped="true">
+h1{
+   color: #ffffff;
+}
+</style>

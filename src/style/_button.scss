@@ -12,16 +12,15 @@ button{
    line-height: 1.42857143;
    text-align: center;
    background-image: none;
-   border: 3px solid $base-color;
    border-radius: 6px;
-   color: $base-color;
-   background-color: transparent;
+   color: #ffffff;
+   border: none;
+   background-color: $base-color;
    transition: all 150ms ease;
 
    &:hover{
-      border: 3px solid $base-color;
       color: #ffffff;
-      background-color: $base-color;
+      background-color: lighten($base-color, 3%);
    }
 
    &[disabled]{

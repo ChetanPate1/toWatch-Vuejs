@@ -32,7 +32,7 @@ export default {
       padding: 0 15px;
       width: 100%;
       text-align: center;
-      color: #f1f1f1;
+      color: #2d2c2c;
       transform: translate(0, -50%);
    }
 

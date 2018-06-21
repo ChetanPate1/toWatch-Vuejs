@@ -64,6 +64,7 @@ export default {
    background-color: #f8f8f8;
    border-radius: 8px;
    padding: 20px 15px 0 15px;
+   background-color: #000000;
    background-position: center center;
    background-size: cover;
    background-repeat: no-repeat;

@@ -43,7 +43,7 @@ export default {
    top: 0;
    right: 0;
    z-index: 2000;
-   background-color: transparentize(#000000, 0.8);
+   background-color: transparentize(#000000, 0.5);
    width: 100%;
    height: 100%;
    transition: opacity 1000ms ease;
@@ -65,7 +65,7 @@ export default {
       background-color: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.05);
       box-shadow: 0 30px 65px -30px rgba(0, 0, 0, 0.3);
-      transition: all 500ms ease;
+      transition: all 800ms ease;
       opacity: 0;
       -ms-transform: translate(0, -100%);
       transform: translate3d(0, -100%, 0);
