@@ -10,11 +10,17 @@
                <router-link :to="{ path: '/rewatch-list'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-clockwise"></span> REWATCH LIST</a></router-link>
                <router-link :to="{ path: '/watch-list'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-preview"></span> WATCH LIST</a></router-link>
                <router-link :to="{ path: '/my-shows'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-monitor"></span>MY SHOWS</a></router-link>
+
+               <li ref="dropdownMenu" class="menu-container" v-bind:class="{ 'open' : dropdown }">
+                  <a href @click.prevent="dropdown = !dropdown"><span class="dripicons-user"></span> Me</a>
+                  <ul class="menu">
+                     <li><a @click.prevent="logout" href><span class="dripicons-exit"></span> SIGNOUT</a></li>
+                  </ul>
+               </li>
             </ul>
          </div>
          <ul class="links auth">
             <router-link :to="{ path: '/login'}" tag="li" v-if="!user.isLoggedIn"><a>SIGNIN</a></router-link>
-            <li v-if="user.isLoggedIn"><a @click.prevent="logout" href>SIGNOUT</a></li>
          </ul>
       </nav>
       <button class="navigation-button" type="button" name="button" @click="toggleOpen">MENU</button>
@@ -29,7 +35,8 @@ export default {
    name: 'NavigationBar',
    data() {
       return {
-         open: false
+         open: false,
+         dropdown: false
       }
    },
    computed: {
@@ -44,14 +51,29 @@ export default {
    beforeMount(){
       this.$store.dispatch('getCurrentUser');
    },
+   created () {
+      document.addEventListener('click', this.toggleDropdown);
+   },
+   destroyed () {
+      document.removeEventListener('click', this.toggleDropdown);
+   },
    methods: {
       toggleOpen() {
          this.open = !this.open;
+      },
+      toggleDropdown(e){
+         let el = this.$refs.dropdownMenu;
+         let target = e.target;
+
+         if ( el !== target && !el.contains(target)) {
+           this.dropdown = false;
+         }
       },
       logout(){
          this.$store.dispatch('signUserOut');
       }
    }
+
 }
 </script>
 
