@@ -43,10 +43,9 @@
 
    transition: transform 300ms ease;
    transform: translate(0, 350px) scale(1);
-   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+   box-shadow: 0 15px 20px rgba(0, 0, 0, 0.7);
 
    &:hover, &:focus{
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
       .behind{
          opacity: 0;
          transform: translate(60px, 0) scale(0);

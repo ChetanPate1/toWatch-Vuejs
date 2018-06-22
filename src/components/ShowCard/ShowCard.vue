@@ -61,14 +61,13 @@ export default {
    margin: 0 auto 25px auto;
    max-width: 250px;
    height: 369px;
-   background-color: #f8f8f8;
-   border-radius: 8px;
+   border-radius: 0;
    padding: 20px 15px 0 15px;
    background-color: #000000;
    background-position: center center;
    background-size: cover;
    background-repeat: no-repeat;
-   box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+   box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.7);
 
    &.deleteable{
       &:hover{

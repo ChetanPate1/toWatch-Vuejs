@@ -65,20 +65,19 @@ export default {
 
 <style lang="scss">
 .search-results{
-   background-color: #ffffff;
    width: 100%;
-   border-radius: 0 0 6px 6px;
-   -webkit-box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.3);
-   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.3);
-   -webkit-transition: all 500ms ease;
+   border-radius: 6px;
+   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
    transition: all 500ms ease;
-   -webkit-transform: translate(-100%, 0);
    transform: translate(-100%, 0);
    max-height: 220px;
    overflow-y: auto;
    opacity: 0;
+   background-color: rgba(0, 0, 0, 0.6);
 
    .result{
+      margin: 0 0 5px 0;
+      background-color: #ffffff;
       display: block;
       float: left;
       width: 100%;
@@ -98,23 +97,24 @@ export default {
       }
 
       .number{
-         font-size: 14px;
-         line-height: 2;
+         font-size: 12px;
+         line-height: 30px;
          width: 7%;
+         color: $base-color;
       }
 
       .name{
          padding: 0 5px 0 0;
          font-size: 14px;
          font-weight: bold;
-         width: 53%;
+         width: 68%;
          line-height: 2;
       }
 
       .network{
-         font-size: 12px;
-         width: 40%;
-         padding: 5px;
+         font-size: 10px;
+         width: 25%;
+         padding: 8px;
          text-align: center;
          background-color: #f2f2f2;
          border-radius: 5px;

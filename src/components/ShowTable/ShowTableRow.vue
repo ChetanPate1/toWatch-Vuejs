@@ -15,11 +15,11 @@ export default {
    display: inline-block;
    width: 100%;
    background-color: $navbar-colour;
-   color: #ffffff;
+   color: #989898;
    border-radius: 6px;
    padding: 8px 20px;
    margin-bottom: 10px;
-   box-shadow: 0 8px 40px -10px rgba(0, 0, 0, 0.2);
+   box-shadow: 0 8px 40px -10px rgba(0, 0, 0, 0.6);
 
    @for $i from 1 through 12 {
       .col-xs-#{$i}{
