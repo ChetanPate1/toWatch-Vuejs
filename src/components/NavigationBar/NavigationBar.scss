@@ -150,3 +150,35 @@
       left: 15px;
    }
 }
+
+.navigation-bar{
+   .menu-container{
+      position: relative;
+      &.open{
+         > .menu{
+            display: block;
+         }
+      }
+   }
+
+   .menu{
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 1000;
+      display: none;
+      float: left;
+      min-width: 200px;
+      padding: 5px 0;
+      font-size: 14px;
+      text-align: left;
+      list-style: none;
+      background-color: $navbar-colour;
+      border-radius: 0 0 6px 6px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+      li{
+         display: block;
+      }
+   }
+
+}

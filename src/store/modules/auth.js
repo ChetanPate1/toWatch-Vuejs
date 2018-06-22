@@ -40,6 +40,8 @@ const actions = {
                router.push('login');
             }
          });
+
+
    }
 }
 
