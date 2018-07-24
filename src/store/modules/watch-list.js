@@ -91,7 +91,7 @@ const actions = {
          seasonNumber
       });
 
-      dispatch('setCurrentSeason', {
+      dispatch('setWatchlistCurrentSeason', {
          watchlistId,
          seasonDetails,
          show,
@@ -106,7 +106,7 @@ const actions = {
          dispatch('updatedWatched', watchlistId);
       });
    },
-   setCurrentSeason ({ commit, rootState }, { watchlistId, seasonDetails, show, onSeason, episodeNumber }) {
+   setWatchlistCurrentSeason ({ commit, rootState }, { watchlistId, seasonDetails, show, onSeason, episodeNumber }) {
       let showStatus = rootState.myShows.shows[show.showId].status;
       var nextSeason = onSeason + 1;
       var count = 0, on = { season: onSeason };
@@ -132,7 +132,7 @@ const actions = {
             on.season = objSize(unwatched) + 1;
          }
 
-         commit('SET_CURRENT_SEASON', { watchlistId , on });
+         commit('SET_WATCHLIST_CURRENT_SEASON', { watchlistId , on });
          return;
       }
 
@@ -153,7 +153,7 @@ const actions = {
          on.name = episode[0].name;
       }
 
-      commit('SET_CURRENT_SEASON', { watchlistId , on });
+      commit('SET_WATCHLIST_CURRENT_SEASON', { watchlistId , on });
    }
 }
 
@@ -165,7 +165,7 @@ const mutations = {
       let episodeIndex = episodeNumber - 1;
       state.watchlist[watchlistId].unwatched[`season_${seasonNumber}`][episodeIndex].watched = !state.watchlist[watchlistId].unwatched[`season_${seasonNumber}`][episodeIndex].watched;
    },
-   [types.SET_CURRENT_SEASON](state, { watchlistId, on }) {
+   [types.SET_WATCHLIST_CURRENT_SEASON](state, { watchlistId, on }) {
       state.watchlist[watchlistId].on = on;
    }
 }

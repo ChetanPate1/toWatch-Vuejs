@@ -25,6 +25,7 @@ const actions = {
       let initSeries = initWatchlist(show, series);
       const uid = firebase.auth().currentUser.uid;
       const ref = firebase.database().ref(`rewatchlist/${ uid }`).push(initSeries);
+
       ref.set(initSeries);
       ref.update(initSeries);
    },
@@ -33,7 +34,7 @@ const actions = {
       const item = firebase.database().ref(`rewatchlist/${ uid }/${ rewatchlistId }`);
       item.remove();
    },
-   toggleWatched ({ commit, dispatch, state }, { rewatchlistId, show, episodeDetails }) {
+   toggleRewatched ({ commit, dispatch, state }, { rewatchlistId, show, episodeDetails }) {
       let episodeNumber = episodeDetails.number;
       let seasonNumber = episodeDetails.season;
       let onEpisode = show.on.episode;
@@ -73,13 +74,13 @@ const actions = {
          }
       }
 
-      commit('TOGGLE_WATCHED', {
+      commit('TOGGLE_REWATCHED', {
          rewatchlistId,
          episodeNumber,
          seasonNumber
       });
 
-      dispatch('setCurrentSeason', {
+      dispatch('setRewatchlistCurrentSeason', {
          rewatchlistId,
          seasonDetails,
          show,
@@ -90,11 +91,9 @@ const actions = {
          const uid = firebase.auth().currentUser.uid;
          const ref = firebase.database().ref(`rewatchlist/${ uid }/${ rewatchlistId }`);
          ref.update(state.rewatchlist[rewatchlistId]);
-
-         dispatch('updatedWatched', watchlistId);
       });
    },
-   setCurrentSeason ({ commit, rootState }, { rewatchlistId, seasonDetails, show, onSeason, episodeNumber }) {
+   setRewatchlistCurrentSeason ({ commit, rootState }, { rewatchlistId, seasonDetails, show, onSeason, episodeNumber }) {
       let showStatus = rootState.myShows.shows[show.showId].status;
       var nextSeason = onSeason + 1;
       var count = 0, on = { season: onSeason };
@@ -104,8 +103,7 @@ const actions = {
       let isLastEpisodeLastSeason = onSeason == lastEpisodeLastSeason.season && lastEpisodeLastSeason.number == episodeNumber;
 
       if(isLastEpisodeLastSeason){
-
-         commit('SET_CURRENT_SEASON', { rewatchlistId , on });
+         commit('SET_REWATCHLIST_CURRENT_SEASON', { rewatchlistId , on });
          return;
       }
 
@@ -126,7 +124,7 @@ const actions = {
          on.name = episode[0].name;
       }
 
-      commit('SET_CURRENT_SEASON', { rewatchlistId , on });
+      commit('SET_REWATCHLIST_CURRENT_SEASON', { rewatchlistId , on });
    }
 }
 
@@ -134,11 +132,11 @@ const mutations = {
    [types.GET_REWATCHLIST](state, snapshot) {
       state.rewatchlist = snapshot;
    },
-   [types.TOGGLE_WATCHED](state, { rewatchlistId, episodeNumber, seasonNumber }) {
+   [types.TOGGLE_REWATCHED](state, { rewatchlistId, episodeNumber, seasonNumber }) {
       let episodeIndex = episodeNumber - 1;
       state.rewatchlist[rewatchlistId].unwatched[`season_${seasonNumber}`][episodeIndex].watched = !state.rewatchlist[rewatchlistId].unwatched[`season_${seasonNumber}`][episodeIndex].watched;
    },
-   [types.SET_CURRENT_SEASON](state, { rewatchlistId, on }) {
+   [types.SET_REWATCHLIST_CURRENT_SEASON](state, { rewatchlistId, on }) {
       state.rewatchlist[rewatchlistId].on = on;
    }
 }

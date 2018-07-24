@@ -71,7 +71,7 @@ import TabButton from '../Tabs/TabButton';
 import TabPanel from '../Tabs/TabPanel';
 import TabPanelsContainer from '../Tabs/TabPanelsContainer';
 
-import PanelRows from '../PanelRows/PanelRows';
+import PanelRows from './PanelRows';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
 import FrostGlass from '../FrostGlass/FrostGlass';
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
