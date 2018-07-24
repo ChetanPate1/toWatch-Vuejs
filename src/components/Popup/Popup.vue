@@ -5,7 +5,10 @@
          <button class="close-button" @click.stop="close('dismiss')" type="button">
             <span class="dripicons-cross"></span>
          </button>
-         <slot></slot>
+         <div class="popup-container">
+            <slot></slot>
+         </div>
+
       </div>
    </div>
 </template>
@@ -46,6 +49,7 @@ export default {
    background-color: transparentize(#000000, 0.5);
    width: 100%;
    height: 100%;
+   overflow: auto;
    transition: opacity 1000ms ease;
    -ms-transform: translate(100%, 0);
    transform: translate3d(100%, 0, 0);
@@ -57,6 +61,8 @@ export default {
       right: 0;
       display: block;
       max-width: 400px;
+      max-height: 700px;
+      overflow-y: auto;
       margin: auto;
       width: 100%;
       height: auto;
@@ -95,6 +101,11 @@ export default {
       z-index: 1;
       top: 20px;
       left: 30px;
+   }
+
+   .popup-container{
+      max-height: 700px;
+      overflow-y: auto;
    }
 
    &.open{

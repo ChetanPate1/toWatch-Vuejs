@@ -37,8 +37,7 @@ export default {
    },
    methods: {
       ...mapActions([
-         'toggleWatched',
-         'setCurrentSeason'
+         'toggleWatched'
       ]),
       watched(episodeDetails){
          let show = this.watchlistItem;

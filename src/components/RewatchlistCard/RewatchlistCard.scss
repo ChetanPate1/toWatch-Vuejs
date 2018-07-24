@@ -1,4 +1,4 @@
-.watchlist-card{
+.rewatchlist-card{
   position: relative;
   overflow: hidden;
   display: block;
@@ -31,30 +31,15 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.26);
   }
 
-  h6{
-    z-index: 20;
-    position: absolute;
-    bottom: 60px;
-    font-weight: bold;
-    left: 0;
-    width: 100%;
-    padding: 10px 0 10px 15px;
-    color: #ffffff;
-    font-size: 16px;
-    text-transform: uppercase;
-    background-color: rgba(0, 0, 0, 0.2);
-
-    small{
-      text-transform: none;
-      color: inherit;
-    }
-  }
-
   h2, h5{
     z-index: 10;
     font-weight: bold;
     position: relative;
     color: #ffffff;
+  }
+
+  .more-button {
+      transform: translate(0, 390px);
   }
 
   @media(max-width: 767px){
@@ -68,7 +53,7 @@
 }
 
 
-.watchlist-card{
+.rewatchlist-card{
   .more-button{
     z-index: 300;
     position: absolute;
@@ -86,16 +71,10 @@
 
   .tab-panels{
     height: 340px;
-
-    .button.red{
-      width: 90%;
-      display: block;
-      margin: 25px auto 10px auto;
-    }
   }
 }
 
-.watchlist-card{
+.rewatchlist-card{
    &:hover{
       cursor: pointer;
    }
