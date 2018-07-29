@@ -58,9 +58,9 @@ export default {
    overflow: hidden;
    position: relative;
    display: block;
-   margin: 0 auto 25px auto;
-   max-width: 250px;
-   height: 369px;
+   margin: 0 auto 60px auto;
+   max-width: 210px;
+   height: 320px;
    border-radius: 0;
    padding: 20px 15px 0 15px;
    background-color: #000000;
@@ -82,8 +82,7 @@ export default {
    }
 
    h2{
-      font-size: 25px;
-      letter-spacing: 1px;
+      font-size: 22px;
       z-index: 10;
       font-weight: bold;
       position: relative;
