@@ -7,16 +7,16 @@
 
       <div class="search-results" v-bind:class="{'show' : foundMovies }">
 
-         <div class="result" v-for="(movie, index) in foundMovies" @click="addSeries(movie)">
-            <img class="underlay-image" v-bind:src="movie.Poster" >
+         <div class="search-result" v-for="(movie, index) in foundMovies" @click="addMovie(movie)">
+            <img class="underlay-image" v-bind:src="movie.Poster">
             <div class="col-xs-4">
                <img class="poster img-responsive" v-bind:src="movie.Poster" >
             </div>
             <div class="col-xs-8">
                <h3>{{ movie.Title }}</h3>
                <p>{{ movie.Plot }}</p>
+               <button class="button pull-right" type="button" @click="addMovie(movie)" :disabled="sendStatus.disableButton">Add to Collection</button>
             </div>
-
          </div>
       </div>
    </div>
@@ -35,11 +35,6 @@ export default {
             disableButton: false,
             loader: false,
             validation: ''
-         },
-         toast: {
-            content: '',
-            action: '',
-            show: false
          }
       }
    },
@@ -48,23 +43,26 @@ export default {
          'foundMovies'
       ]),
       ...mapActions([
-         'findMovies'
+         'findMovies',
+         'saveMovie'
       ])
    },
    methods: {
-      addMovie(movieDetails) {
-         this.sendStatus.loader = true;
+      addMovie(movie) {
          this.sendStatus.disableButton = true;
 
-         this.$store.dispatch('saveShow', movieDetails)
+         this.$store.dispatch('saveMovie', movie)
             .then(() => {
-               this.sendStatus.loader = false
-               this.sendStatus.disableButton = false;
                this.name = '';
             });
       },
       findShow(){
-         this.$store.dispatch('findMovies', this.name);
+         this.sendStatus.disableButton = true;
+
+         this.$store.dispatch('findMovies', this.name)
+            .then(() => {
+               this.sendStatus.disableButton = false;
+            });
       }
    }
 }
@@ -77,17 +75,17 @@ export default {
    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
    transition: all 500ms ease;
    transform: translate(-100%, 0);
-   max-height: 325px;
+   max-height: 350px;
    overflow-y: auto;
    opacity: 0;
-   background-color: rgba(0, 0, 0, 0.6);
+   background-color: #ffffff;
 
    .poster{
       margin-top: 20px;
       box-shadow: 0 20px 65px 6px rgba(0, 0, 0, 0.4);
    }
 
-   .result{
+   .search-result{
       position: relative;
       margin: 0 0 5px 0;
       background-color: #ffffff;
@@ -97,11 +95,6 @@ export default {
       padding: 10px 15px;
       border-radius: 5px;
       overflow: hidden;
-
-      &:hover{
-         cursor: pointer;
-         background-color: $base-color;
-      }
 
       .underlay-image{
          position: absolute;

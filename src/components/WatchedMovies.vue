@@ -40,13 +40,11 @@ export default {
          'watchedMovies',
       ]),
       ...mapActions([
-         'getWatedMovies',
-         'saveMovies'
+         'getWatchedMovies'
       ])
    },
    mounted() {
       this.$store.dispatch('getWatchedMovies');
-      this.$store.dispatch('saveMovies', 'the 100')
    },
    components: {
       SearchMovies,
