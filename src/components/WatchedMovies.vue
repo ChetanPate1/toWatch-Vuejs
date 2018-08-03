@@ -7,11 +7,11 @@
    </div>
 
    <div class="row">
-      <div class="col-md-4" v-for="movie in watchedMovies">
+      <div class="col-md-3" v-for="movie in watchedMovies">
          <show-table>
             <show-table-row>
                <div class="col-xs-12">
-                  {{ movie.title }}
+                  {{ movie.Title }}
                </div>
             </show-table-row>
          </show-table>

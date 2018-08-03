@@ -33,10 +33,12 @@ const actions = {
       if(!movie){
          return;
       }
-      axios.get(`http://www.omdbapi.com/?t=${ movie.replace(/ /g,'+') }`, {
+      axios.get('http://www.omdbapi.com', {
          params: {
             apikey: '7174c422',
-            plot: 'full'
+            plot: 'full',
+            t: movie.split(',')[0],
+            y: movie.split(',')[1]
          }
       })
       .then(function (response) {

@@ -2,12 +2,11 @@
 <form v-on:submit.prevent="findShow">
    <div class="form-element search">
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
-      <input type="text" name="name" v-model="name">
+      <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
       <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
       <div class="search-results" v-bind:class="{'show' : foundMovies }">
-
-         <div class="search-result" v-for="(movie, index) in foundMovies" @click="addMovie(movie)">
+         <div class="search-result" v-for="(movie, index) in foundMovies">
             <img class="underlay-image" v-bind:src="movie.Poster">
             <div class="col-xs-4">
                <img class="poster img-responsive" v-bind:src="movie.Poster" >
@@ -54,6 +53,9 @@ export default {
          this.$store.dispatch('saveMovie', movie)
             .then(() => {
                this.name = '';
+               setTimeout(() => {
+                  this.sendStatus.disableButton = false;
+               }, 1000);
             });
       },
       findShow(){
@@ -69,6 +71,11 @@ export default {
 </script>
 
 <style lang="scss">
+.search{
+   position: fixed;
+   top: 100px;
+   left: 400px;
+}
 .search-results{
    width: 100%;
    border-radius: 6px;
