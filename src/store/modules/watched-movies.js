@@ -4,12 +4,14 @@ import axios from 'axios';
 
 const state = {
    watchedMovies: {},
-   foundMovies: []
+   foundMovies: [],
+   movieDetails: {}
 }
 
 const getters = {
    watchedMovies: state => state.watchedMovies,
-   foundMovies: state => state.foundMovies
+   foundMovies: state => state.foundMovies,
+   movieDetails: state => state.movieDetails
 }
 
 const actions = {
@@ -51,12 +53,24 @@ const actions = {
       const uid = firebase.auth().currentUser.uid;
       const movie = firebase.database().ref(`watchedMovies/${ uid }/${ ref }`);
       movie.remove();
+   },
+   getMovieDetails({ commit }, ref){
+      const uid = firebase.auth().currentUser.uid;
+      const movieDetails = firebase.database().ref(`watchedMovies/${ uid }/${ ref }`);
+
+      movieDetails.on('value', snapshot => {
+         console.log(snapshot.val());
+         commit('GET_MOVIE_DETAILS', snapshot.val());
+      });
    }
 }
 
 const mutations = {
    [types.GET_WATCHED_MOVIES](state, snapshot) {
       state.watchedMovies = snapshot;
+   },
+   [types.GET_MOVIE_DETAILS](state, snapshot){
+      state.movieDetails = snapshot;
    },
    [types.UPDATE_FOUND_MOVIES](state, movies) {
       state.foundMovies = movies;

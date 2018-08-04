@@ -71,11 +71,6 @@ export default {
 </script>
 
 <style lang="scss">
-.search{
-   position: fixed;
-   top: 100px;
-   left: 400px;
-}
 .search-results{
    width: 100%;
    border-radius: 6px;

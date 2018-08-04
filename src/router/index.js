@@ -7,6 +7,7 @@ import WatchList from '@/components/WatchList';
 import RewatchList from '@/components/RewatchList';
 import Watched from '@/components/Watched';
 import WatchedMovies from '@/components/WatchedMovies';
+import MovieDetails from '@/components/MovieDetails';
 
 import * as firebase from 'firebase';
 
@@ -61,6 +62,14 @@ const router = new Router({
          path: '/watched-movies',
          name: 'watchedMovies',
          component: WatchedMovies,
+         meta: {
+            requiresAuth: true
+         }
+      },
+      {
+         path: '/movie-details/:reference',
+         name: 'movieDetails',
+         component: MovieDetails,
          meta: {
             requiresAuth: true
          }

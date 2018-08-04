@@ -71,7 +71,7 @@ export default {
       background-color: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.05);
       box-shadow: 0 30px 65px -30px rgba(0, 0, 0, 0.3);
-      transition: all 800ms ease;
+      transition: all 500ms ease;
       opacity: 0;
       -ms-transform: translate(0, -100%);
       transform: translate3d(0, -100%, 0);
