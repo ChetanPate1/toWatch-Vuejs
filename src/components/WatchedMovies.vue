@@ -1,14 +1,21 @@
 <template lang="html">
-<div class="container">
+<div class="container-fluid">
+   <div class="row margin-bottom-20">
+      <div class="col-xs-12">
+         <search-movies></search-movies>
+      </div>
+   </div>
+
    <div class="row">
-      <div class="col-md-4" v-for="movie in watchedMovies">
-         <show-table>
-            <show-table-row>
-               <div class="col-xs-12">
-                  {{ movie.title }}
-               </div>
-            </show-table-row>
-         </show-table>
+      <div class="col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies">
+         <movie-card
+            :heading="movie.Title"
+            :img-src="movie.Poster"
+            :shows="watchedMovies"
+            :reference="key"
+            :key="index"
+            :deleteable="true">
+         </movie-card>
       </div>
       <no-content :message="noContentMessage" :condition="!watchedMovies"></no-content>
    </div>
@@ -16,7 +23,8 @@
 </template>
 
 <script>
-import ShowTable from './ShowTable/ShowTable';
+import SearchMovies from './SearchMovies/SearchMovies';
+import MovieCard from './MovieCard/MovieCard';
 import ShowTableRow from './ShowTable/ShowTableRow';
 import NoContent from './NoContent/NoContent';
 import { mapGetters, mapActions } from 'vuex';
@@ -33,15 +41,15 @@ export default {
          'watchedMovies',
       ]),
       ...mapActions([
-         'getWatedMovies',
-         'saveMovies'
+         'getWatchedMovies'
       ])
    },
    mounted() {
       this.$store.dispatch('getWatchedMovies');
    },
    components: {
-      ShowTable,
+      SearchMovies,
+      MovieCard,
       ShowTableRow,
       NoContent
    }

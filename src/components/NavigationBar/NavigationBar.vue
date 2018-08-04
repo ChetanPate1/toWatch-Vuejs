@@ -5,7 +5,7 @@
             <a class="brand"><strong>toWatch</strong></a>
             <ul class="links margin-top-xs-40">
                <router-link :to="{ path: '/most-popular'}" tag="li" v-if="!user.isLoggedIn"><a><span class="dripicons-star"></span> MOST POPULAR</a></router-link>
-               <router-link :to="{ path: '/watched-movies'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-preview"></span> WATCHED MOVIES</a></router-link>
+               <router-link :to="{ path: '/watched-movies'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-camcorder"></span> WATCHED MOVIES</a></router-link>
                <router-link :to="{ path: '/watched'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-preview"></span> WATCHED</a></router-link>
                <router-link :to="{ path: '/rewatch-list'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-clockwise"></span> REWATCH LIST</a></router-link>
                <router-link :to="{ path: '/watch-list'}" tag="li" v-if="user.isLoggedIn"><a><span class="dripicons-preview"></span> WATCH LIST</a></router-link>

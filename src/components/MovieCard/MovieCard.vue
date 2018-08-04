@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
    <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-      <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this show?</h4>
+      <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this movie?</h4>
 
       <button class="button button-sm red pull-left"
               type="button"
@@ -14,9 +14,13 @@
       </button>
    </popup>
 
-   <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+   <div class="movie-card"
+      @click.stop="goToMovieDetails(reference)"
+      tabindex="0"
+      v-bind:class="{ 'deleteable': deleteable }"
+      v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+
       <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
-      <button class="icon-button dripicons-plus" tabindex="0" @click.stop="$parent.$refs.popup.open()"></button>
       <h2>{{ heading }}</h2>
    </div>
 </div>
@@ -26,7 +30,7 @@
 import Popup from '../Popup/Popup';
 
 export default {
-   name: 'ShowCard',
+   name: 'MovieCard',
    data() {
       return {
          deleteOpen: false
@@ -39,10 +43,13 @@ export default {
       deleteable: Boolean
    },
    methods: {
+      goToMovieDetails(reference){
+         this.$router.push({ name: 'movieDetails', params: { reference }})
+      },
       confirmDelete(){
          this.$refs.confirmPopup.open().then((result) => {
-            if(result){
-               this.$store.dispatch('deleteShow', this.reference);
+            if(result == 'yes'){
+               this.$store.dispatch('deleteMovie', this.reference);
             }
          });
       }
@@ -54,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss">
-.show-card{
+.movie-card{
    overflow: hidden;
    position: relative;
    display: block;
@@ -70,11 +77,8 @@ export default {
    box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.7);
 
    &.deleteable{
-      &:hover{
+      &:hover, &:focus{
          cursor: pointer;
-      }
-
-      &:focus{
          .icon-button{
             transform: translate(0, 0);
          }
@@ -88,13 +92,6 @@ export default {
       position: relative;
       z-index: 10;
       color: #ffffff;
-   }
-
-   .dripicons-plus{
-      right: 15px;
-      top: 15px;
-      transition: 250ms all ease;
-      transform: translate(45px, 0);
    }
 
    .dripicons-trash{
