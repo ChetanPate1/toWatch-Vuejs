@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
    <div class="poster-xl-bg-container">
-      <div class="container">
+      <div class="container fade-in">
          <div class="row">
             <div class="col-xs-12">
                <div class="movie-details">
@@ -57,7 +57,7 @@ export default {
 
       setTimeout(() => {
          this.showPoster = true;
-      }, 800);
+      }, 1000);
    },
    components: {}
 }

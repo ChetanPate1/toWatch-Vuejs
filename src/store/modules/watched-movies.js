@@ -23,7 +23,7 @@ const actions = {
       });
    },
    saveMovie({ commit }, movie){
-      movie.PosterXL = movie.Poster.replace('300.jpg', '1000.jpg');
+      movie.PosterXL = movie.Poster.replace('300.jpg', '720.jpg');
 
       const uid = firebase.auth().currentUser.uid;
       const ref = firebase.database().ref(`watchedMovies/${ uid }`).push(movie);
@@ -59,7 +59,6 @@ const actions = {
       const movieDetails = firebase.database().ref(`watchedMovies/${ uid }/${ ref }`);
 
       movieDetails.on('value', snapshot => {
-         console.log(snapshot.val());
          commit('GET_MOVIE_DETAILS', snapshot.val());
       });
    }
