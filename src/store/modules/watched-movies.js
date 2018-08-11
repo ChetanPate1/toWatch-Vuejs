@@ -23,10 +23,8 @@ const actions = {
       });
    },
    saveMovie({ commit }, movie){
-
-      //210
-      //720 lg
-      let posterUrl = movie.Poster.substring(0, posterUrl.length - 7);
+      let poster = movie.Poster;
+      let posterUrl = poster.substring(0, poster.length - 7);
       movie.Poster = posterUrl + '210.jpg';
       movie.PosterXL = posterUrl + '720.jpg';
 
@@ -50,9 +48,11 @@ const actions = {
       })
       .then(function (response) {
          let array = [];
-         let poster = response.data.Poster;
-         response.data.Poster = poster.split('300.jpg')[0] + '140.jpg';
+         let posterUrl = response.data.Poster;
+         let poster = posterUrl.substring(0, posterUrl.length - 7);
+         response.data.Poster = poster + '140.jpg';
          array.push(response.data);
+
          commit('UPDATE_FOUND_MOVIES', array);
       });
    },
