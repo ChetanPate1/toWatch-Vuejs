@@ -1,13 +1,18 @@
 <template lang="html">
 <form v-on:submit.prevent="findShow">
    <div class="form-element search">
-      <button type="button" class="dripicons-cross" @click="emptyFoundMovies" v-if="foundMovies.length"></button>
+      <button type="button" class="dripicons-cross"
+         @click="empty"
+         v-if="foundMovies.length">
+      </button>
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
       <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
-      <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
+      <button type="submit" class="dripicons-search"
+         :disabled="sendStatus.disableButton">
+      </button>
 
       <div class="search-results" v-bind:class="{'show' : foundMovies }">
-         <div class="search-result" v-for="(movie, index) in foundMovies">
+         <div class="search-result" v-for="movie in foundMovies">
             <img class="underlay-image" v-bind:src="movie.Poster">
             <div class="col-xs-4">
                <img class="poster img-responsive" v-bind:src="movie.Poster" >
@@ -15,7 +20,10 @@
             <div class="col-xs-8">
                <h3>{{ movie.Title }}</h3>
                <p>{{ movie.Plot }}</p>
-               <button class="button pull-right" type="button" @click="addMovie(movie)" :disabled="sendStatus.disableButton">Add to Collection</button>
+               <button class="button pull-right" type="button"
+                  @click="addMovie(movie)"
+                  :disabled="sendStatus.disableButton">Add to Collection
+               </button>
             </div>
          </div>
       </div>
@@ -62,11 +70,14 @@ export default {
       },
       findShow(){
          this.sendStatus.disableButton = true;
-         console.log('find');
+
          this.$store.dispatch('findMovies', this.name)
             .then(() => {
                this.sendStatus.disableButton = false;
             });
+      },
+      empty(){
+         this.$store.dispatch('emptyFoundMovies');
       }
    }
 }
