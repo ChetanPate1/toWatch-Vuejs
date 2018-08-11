@@ -23,7 +23,12 @@ const actions = {
       });
    },
    saveMovie({ commit }, movie){
-      movie.PosterXL = movie.Poster.replace('300.jpg', '720.jpg');
+
+      //210
+      //720 lg
+      let posterUrl = movie.Poster.substring(0, posterUrl.length - 7);
+      movie.Poster = posterUrl + '210.jpg';
+      movie.PosterXL = posterUrl + '720.jpg';
 
       const uid = firebase.auth().currentUser.uid;
       const ref = firebase.database().ref(`watchedMovies/${ uid }`).push(movie);
@@ -35,7 +40,7 @@ const actions = {
       if(!movie){
          return;
       }
-      axios.get('http://www.omdbapi.com', {
+      axios.get('https://www.omdbapi.com', {
          params: {
             apikey: '7174c422',
             plot: 'full',
@@ -45,9 +50,14 @@ const actions = {
       })
       .then(function (response) {
          let array = [];
+         let poster = response.data.Poster;
+         response.data.Poster = poster.split('300.jpg')[0] + '140.jpg';
          array.push(response.data);
          commit('UPDATE_FOUND_MOVIES', array);
       });
+   },
+   emptyFoundMovies({ commit }){
+      commit('EMPTY_FOUND_MOVIES');
    },
    deleteMovie({ commit }, ref){
       const uid = firebase.auth().currentUser.uid;

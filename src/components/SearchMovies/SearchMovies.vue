@@ -1,6 +1,7 @@
 <template lang="html">
 <form v-on:submit.prevent="findShow">
    <div class="form-element search">
+      <button type="button" class="dripicons-cross" @click="emptyFoundMovies" v-if="foundMovies.length"></button>
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
       <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
       <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
@@ -43,7 +44,8 @@ export default {
       ]),
       ...mapActions([
          'findMovies',
-         'saveMovie'
+         'saveMovie',
+         'emptyFoundMovies'
       ])
    },
    methods: {
@@ -60,7 +62,7 @@ export default {
       },
       findShow(){
          this.sendStatus.disableButton = true;
-
+         console.log('find');
          this.$store.dispatch('findMovies', this.name)
             .then(() => {
                this.sendStatus.disableButton = false;
@@ -77,7 +79,7 @@ export default {
    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
    transition: all 500ms ease;
    transform: translate(-100%, 0);
-   max-height: 350px;
+   height: auto;
    overflow-y: auto;
    opacity: 0;
    background-color: #ffffff;
