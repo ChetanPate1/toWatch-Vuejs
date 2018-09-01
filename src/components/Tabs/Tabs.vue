@@ -12,19 +12,19 @@
 
 <script>
 export default {
-   name: 'Tabs'
-}
+  name: "Tabs"
+};
 </script>
 
 <style lang="scss">
-.tabs{
-   min-height: 70px;
-   width: 90%;
-   margin: auto;
-   overflow-x: auto;
+.tabs {
+  height: 90px;
+  width: 90%;
+  margin: auto;
+  overflow-y: auto;
 
-   .tab-button{
-      width: 20%;
-   }
+  .tab-button {
+    width: 20%;
+  }
 }
 </style>
