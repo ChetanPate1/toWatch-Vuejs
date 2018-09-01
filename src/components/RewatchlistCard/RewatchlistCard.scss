@@ -38,7 +38,20 @@
   }
 
   .more-button {
-      transform: translate(0, 390px);
+      transform: translate(0, 390px) scale(1);
+
+      &.open{
+        transform: translate(0, 0) scale(0.5) rotate(45deg);
+        .behind{
+          opacity: 0;
+          transform: translate(60px, 0) scale(0);
+        }
+
+      .dripicons-plus{
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+    }
   }
 
   @media(max-width: 767px){
