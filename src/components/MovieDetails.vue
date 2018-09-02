@@ -34,124 +34,120 @@
 </template>
 
 <script>
-
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'MoviesDetails',
-   data() {
-      return {
-         showPoster: false
-      }
-   },
-   computed: {
-      ...mapGetters([
-         'movieDetails',
-      ]),
-      ...mapActions([
-         'getMovieDetails'
-      ])
-   },
-   mounted() {
-      this.$store.dispatch('getMovieDetails', this.$route.params.reference);
+  name: "MoviesDetails",
+  data() {
+    return {
+      showPoster: false
+    };
+  },
+  computed: {
+    ...mapGetters(["movieDetails"]),
+    ...mapActions(["getMovieDetails"])
+  },
+  mounted() {
+    this.$store.dispatch("getMovieDetails", this.$route.params.reference);
 
-      setTimeout(() => {
-         this.showPoster = true;
-      }, 1000);
-   },
-   components: {}
-}
+    setTimeout(() => {
+      this.showPoster = true;
+    }, 1000);
+  },
+  components: {}
+};
 </script>
 
 <style lang="scss">
-.poster-xl-bg-container{
-   position: relative;
-   min-height: 1270px;
-   width: 100%;
+.poster-xl-bg-container {
+  position: relative;
+  min-height: 1270px;
+  width: 100%;
 
-   &:after{
-      position: absolute;
-      content: '';
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-      background: linear-gradient(to top, $body-color 40%,rgba(255,255,255,0) 100%);
-   }
+  &:after {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: linear-gradient(
+      to top,
+      $body-color 40%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
 
-   .poster-background{
-      position: absolute;
-      z-index: 5;
-      top: 0;
-      left: 0;
-      right: 0;
-      margin:  auto;
-      max-width: 720px;
-      opacity: 0;
-      transform: translate3d(0, 50px, 0);
-      transition: all ease 1800ms;
+  .poster-background {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    max-width: 720px;
+    opacity: 0;
+    transform: translate3d(0, 50px, 0);
+    transition: all ease 1800ms;
 
-      &.enter{
-         opacity: 0.3;
-         transform: translate3d(0, 0, 0);
-      }
-   }
+    &.enter {
+      opacity: 0.3;
+      transform: translate3d(0, 0, 0);
+    }
+  }
 
-   .movie-details{
-      position: relative;
-      z-index: 100;
-      margin-top: 100px;
+  .movie-details {
+    position: relative;
+    z-index: 100;
+    margin-top: 100px;
 
-      h1{
-         color: #ffffff;
-
-         .year{
-            position: relative;
-            display: inline;
-            font-size: 12px;
-            padding: 3px 10px;
-            text-align: center;
-            border: 1px solid #ffffff;
-            border-radius: 3px;
-            font-weight: 100;
-            top: -5px;
-         }
-
-         .runtime{
-            font-size: 12px;
-         }
-      }
-
-      h4{
-         color: #4a4a4a;
-      }
-
-      h5{
-         color: $base-color;
-      }
-
-      p{
-         font-size: 16px;
-         color: #e0e0e0;
-         line-height: 1.8;
-      }
-   }
-
-
-   .ratings{
-      position: relative;
+    h1 {
       color: #ffffff;
-      z-index: 100;
 
-      .rating{
-         h4{
-            font-weight: bold;
-         }
+      .year {
+        position: relative;
+        display: inline;
+        font-size: 12px;
+        padding: 3px 10px;
+        text-align: center;
+        border: 1px solid #ffffff;
+        border-radius: 3px;
+        font-weight: 100;
+        top: -5px;
       }
-   }
 
+      .runtime {
+        font-size: 12px;
+      }
+    }
+
+    h4 {
+      color: #4a4a4a;
+    }
+
+    h5 {
+      color: $base-color;
+    }
+
+    p {
+      font-size: 16px;
+      color: #e0e0e0;
+      line-height: 1.8;
+    }
+  }
+
+  .ratings {
+    position: relative;
+    color: #ffffff;
+    z-index: 100;
+
+    .rating {
+      h4 {
+        font-weight: bold;
+      }
+    }
+  }
 }
-
-
 </style>
