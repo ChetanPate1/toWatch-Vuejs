@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
-import { timeNow, objSize, isFutureTime } from '@/js/helper-functions';
+import { timeNow, objSize, isFutureTime, sortSeasons } from '@/js/helper-functions';
 import { initWatchlist } from '../../js/generators';
 
 const state = {
