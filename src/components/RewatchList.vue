@@ -28,52 +28,51 @@
 </div>
 </template>
 <script>
-import RewatchlistCard from './RewatchlistCard/RewatchlistCard';
-import NoContent from './NoContent/NoContent';
-import Popup from './Popup/Popup';
-import AddToRewatchlist from './AddToRewatchlist/AddToRewatchlist';
+import RewatchlistCard from "./RewatchlistCard/RewatchlistCard";
+import NoContent from "./NoContent/NoContent";
+import Popup from "./Popup/Popup";
+import AddToRewatchlist from "./AddToRewatchlist/AddToRewatchlist";
 
-import { objSize } from '../js/helper-functions';
-import { mapGetters, mapActions } from 'vuex';
+import { objSize, sortSeasons } from "../js/helper-functions";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'RewatchList',
-   data() {
-      return {
-         noContentMessage: 'Your rewatch list is empty!',
-         isEditMode: false
-      }
-   },
-   computed: {
-      ...mapGetters([
-         'rewatchlist',
-         'myShows'
-      ]),
-      ...mapActions([
-         'getRewatchlist',
-         'getMyShows',
-      ])
-   },
-   mounted() {
-      this.$store.dispatch('getMyShows').then(() => {
-         this.$store.dispatch('getRewatchlist');
-      });
-   },
-   methods: {
-      listSize(){
-         return objSize(this.rewatchlist);
-      },
-      concatSubHeading(on) {
-         return `Season ${ on.season } Episode ${ on.episode }`;
-      }
-   },
-   components: {
-      NoContent,
-      RewatchlistCard,
-      Popup,
-      AddToRewatchlist
-   }
-}
+  name: "RewatchList",
+  data() {
+    return {
+      noContentMessage: "Your rewatch list is empty!",
+      isEditMode: false
+    };
+  },
+  computed: {
+    ...mapGetters(["rewatchlist", "myShows"]),
+    ...mapActions(["getRewatchlist", "getMyShows"])
+  },
+  mounted() {
+    this.$store.dispatch("getMyShows").then(() => {
+      this.$store.dispatch("getRewatchlist");
+    });
+  },
+  methods: {
+    listSize() {
+      return objSize(this.rewatchlist);
+    },
+    concatSubHeading(on) {
+      return `Season ${on.season} Episode ${on.episode}`;
+    },
+    x(season) {
+      season.unwatched = sortSeasons(season.unwatched);
+      console.log(season.unwatched);
+      return season;
+    }
+  },
+  components: {
+    NoContent,
+    RewatchlistCard,
+    Popup,
+    AddToRewatchlist
+  }
+};
 </script>
 
 <style lang="css">
