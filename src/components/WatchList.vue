@@ -27,66 +27,60 @@
 </template>
 
 <script>
-import WatchlistCard from './WatchlistCard/WatchlistCard';
-import NoContent from './NoContent/NoContent';
-import Popup from './Popup/Popup';
-import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
-
-import { objSize } from '../js/helper-functions';
-import { mapGetters, mapActions } from 'vuex';
+import WatchlistCard from "./WatchlistCard/WatchlistCard";
+import NoContent from "./NoContent/NoContent";
+import Popup from "./Popup/Popup";
+import AddToWatchlist from "./AddToWatchlist/AddToWatchlist";
+import { initWatchlist } from "../js/generators";
+import { objSize } from "../js/helper-functions";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'WatchList',
-   data() {
-      return {
-         today: new Date().getTime(),
-         noContentMessage: 'Your watch list is empty!',
-         popupOpen: false
-      }
-   },
-   computed: {
-      ...mapGetters([
-         'watchlist',
-         'myShows'
-      ]),
-      ...mapActions([
-         'getWatchlist',
-         'getMyShows'
-      ])
-   },
-   mounted() {
-      this.$store.dispatch('getMyShows').then(() => {
-         this.$store.dispatch('getWatchlist');
+  name: "WatchList",
+  data() {
+    return {
+      today: new Date().getTime(),
+      noContentMessage: "Your watch list is empty!",
+      popupOpen: false
+    };
+  },
+  computed: {
+    ...mapGetters(["watchlist", "myShows"]),
+    ...mapActions(["getWatchlist", "getMyShows"])
+  },
+  mounted() {
+    this.$store.dispatch("getMyShows").then(() => {
+      this.$store.dispatch("getWatchlist");
+    });
+  },
+  methods: {
+    listSize() {
+      return objSize(this.watchlist);
+    },
+    concatSubHeading(on) {
+      return `Season ${on.season} Episode ${on.episode}`;
+    },
+    nextAired(watchlist) {
+      let show = this.myShows[watchlist.showId];
+      let numberOfSeasons = objSize(show.seasons);
+      let latestSeason = show.seasons[`season_${numberOfSeasons}`];
+
+      let nextAired = latestSeason.filter(episode => {
+        if (episode.airDate - this.today > 0) {
+          return episode.airDate;
+        }
       });
-   },
-   methods: {
-      listSize(){
-         return objSize(this.watchlist);
-      },
-      concatSubHeading(on) {
-         return `Season ${ on.season } Episode ${ on.episode }`;
-      },
-      nextAired(watchlist) {
-         let show = this.myShows[watchlist.showId];
-         let numberOfSeasons = objSize(show.seasons);
-         let latestSeason = show.seasons[`season_${numberOfSeasons}`];
 
-         let nextAired = latestSeason.filter((episode) => {
-            if (episode.airDate - this.today > 0){
-               return episode.airDate;
-            }
-         });
-
-         return nextAired.length ? nextAired[0].airDate : 0;
-      }
-   },
-   components: {
-      WatchlistCard,
-      NoContent,
-      Popup,
-      AddToWatchlist
-   }
-}
+      return nextAired.length ? nextAired[0].airDate : 0;
+    }
+  },
+  components: {
+    WatchlistCard,
+    NoContent,
+    Popup,
+    AddToWatchlist
+  }
+};
 </script>
 
 <style lang="scss"></style>
