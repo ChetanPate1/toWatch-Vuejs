@@ -4,11 +4,13 @@ import { timeNow, objSize, isFutureTime, sortSeasons } from '@/js/helper-functio
 import { initWatchlist } from '../../js/generators';
 
 const state = {
-    rewatchlist: {}
+    rewatchlist: {},
+    rewatchDetails: {}
 }
 
 const getters = {
-    rewatchlist: state => state.rewatchlist
+    rewatchlist: state => state.rewatchlist,
+    rewatchDetails: state => state.rewatchDetails
 }
 
 const actions = {
@@ -24,6 +26,14 @@ const actions = {
             });
 
             commit('GET_REWATCHLIST', rewatchlistSort);
+        });
+    },
+    getRewatchDetails({ commit }, ref) {
+        const uid = firebase.auth().currentUser.uid;
+        const rewatchDetails = firebase.database().ref(`rewatchlist/${uid}/${ref}`);
+
+        rewatchDetails.on('value', snapshot => {
+            commit('GET_REWATCH_DETAILS', snapshot.val());
         });
     },
     addToRewatchlist({ rootState }, series) {
@@ -137,6 +147,9 @@ const actions = {
 const mutations = {
     [types.GET_REWATCHLIST](state, snapshot) {
         state.rewatchlist = snapshot;
+    },
+    [types.GET_REWATCH_DETAILS](state, snapshot) {
+        state.rewatchDetails = snapshot;
     },
     [types.TOGGLE_REWATCHED](state, { rewatchlistId, episodeNumber, seasonNumber }) {
         let episodeIndex = episodeNumber - 1;

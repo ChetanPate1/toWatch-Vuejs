@@ -56,76 +56,73 @@
       <frost-glass :img-src="imgSrc"></frost-glass>
    </div>
 </div>
-
-
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
-import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
-import BehindCountButton from '../BehindCountButton/BehindCountButton';
+import Popup from "../Popup/Popup";
+import SlideOutPanel from "../SlideOutPanel/SlideOutPanel";
+import BehindCountButton from "../BehindCountButton/BehindCountButton";
 
-import Tabs from '../Tabs/Tabs';
-import TabButton from '../Tabs/TabButton';
-import TabPanel from '../Tabs/TabPanel';
-import TabPanelsContainer from '../Tabs/TabPanelsContainer';
+import Tabs from "../Tabs/Tabs";
+import TabButton from "../Tabs/TabButton";
+import TabPanel from "../Tabs/TabPanel";
+import TabPanelsContainer from "../Tabs/TabPanelsContainer";
 
-import PanelRows from './PanelRows';
-import FrostGlass from '../FrostGlass/FrostGlass';
+import PanelRows from "./PanelRows";
+import FrostGlass from "../FrostGlass/FrostGlass";
 
 export default {
-   name: 'RewatchlistCard',
-   props: {
-      heading: String,
-      details: String,
-      id: String,
-      rewatchlist: Object,
-      subHeading: String,
-      imgSrc: String
-   },
-   data() {
-      return {
-         open: false,
-         tabActive: 1
-      }
-   },
-   mounted(){
-      this.tabSelect(this.rewatchlist.on.season);
-   },
-   methods: {
-      toggleOpen(){
-         this.open = !this.open;
-      },
-      confirmDelete(){
-         this.$refs.confirmPopup.open().then((result) => {
-            if(result == 'yes'){
-               this.$store
-                  .dispatch('deleteRewatchlist', this.id);
-            }
-         });
-      },
-      tabButtonName(name){
-         return `S ${name.split('_')[1]}`;
-      },
-      tabSelect(selectedTab) {
-         this.tabActive = selectedTab;
-      },
-      isTabSelected(number) {
-         return this.tabActive == number;
-      }
-   },
-   components: {
-      Popup,
-      SlideOutPanel,
-      Tabs,
-      TabButton,
-      TabPanel,
-      TabPanelsContainer,
-      PanelRows,
-      FrostGlass,
-      BehindCountButton
-   }
-}
+  name: "RewatchlistCard",
+  props: {
+    heading: String,
+    details: String,
+    id: String,
+    rewatchlist: Object,
+    subHeading: String,
+    imgSrc: String
+  },
+  data() {
+    return {
+      open: false,
+      tabActive: 1
+    };
+  },
+  mounted() {
+    this.tabSelect(this.rewatchlist.on.season);
+  },
+  methods: {
+    toggleOpen() {
+      this.open = !this.open;
+    },
+    confirmDelete() {
+      this.$refs.confirmPopup.open().then(result => {
+        if (result == "yes") {
+          this.$store.dispatch("deleteRewatchlist", this.id);
+        }
+      });
+    },
+    tabButtonName(name) {
+      return `S ${name.split("_")[1]}`;
+    },
+    tabSelect(selectedTab) {
+      this.tabActive = selectedTab;
+    },
+    isTabSelected(number) {
+      return this.tabActive == number;
+    }
+  },
+  components: {
+    Popup,
+    SlideOutPanel,
+    Tabs,
+    TabButton,
+    TabPanel,
+    TabPanelsContainer,
+    PanelRows,
+    FrostGlass,
+    BehindCountButton
+  }
+};
 </script>
 
 <style src="./RewatchlistCard.scss" lang="scss"></style>

@@ -14,7 +14,6 @@
                <show-card
                   :heading="show.series"
                   :img-src="show.imgSrc"
-                  :shows="myShows"
                   :reference="key"
                   :key="index"
                   :deleteable="true">
@@ -27,35 +26,31 @@
 </template>
 
 <script>
-import ShowCard from './ShowCard/ShowCard';
-import SearchShows from './SearchShows/SearchShows';
-import NoContent from './NoContent/NoContent';
-import { mapGetters, mapActions } from 'vuex';
+import ShowCard from "./ShowCard/ShowCard";
+import SearchShows from "./SearchShows/SearchShows";
+import NoContent from "./NoContent/NoContent";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'MyShows',
-   data() {
-      return {
-         noContentMessage: 'Your show collection is empty!'
-      }
-   },
-   computed: {
-      ...mapGetters([
-         'myShows'
-      ]),
-      ...mapActions([
-         'getMyShows'
-      ])
-   },
-   mounted() {
-      this.$store.dispatch('getMyShows');
-   },
-   components: {
-      ShowCard,
-      SearchShows,
-      NoContent
-   }
-}
+  name: "MyShows",
+  data() {
+    return {
+      noContentMessage: "Your show collection is empty!"
+    };
+  },
+  computed: {
+    ...mapGetters(["myShows"]),
+    ...mapActions(["getMyShows"])
+  },
+  mounted() {
+    this.$store.dispatch("getMyShows");
+  },
+  components: {
+    ShowCard,
+    SearchShows,
+    NoContent
+  }
+};
 </script>
 
 <style lang="css">

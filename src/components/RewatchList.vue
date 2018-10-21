@@ -59,11 +59,6 @@ export default {
     },
     concatSubHeading(on) {
       return `Season ${on.season} Episode ${on.episode}`;
-    },
-    x(season) {
-      season.unwatched = sortSeasons(season.unwatched);
-      console.log(season.unwatched);
-      return season;
     }
   },
   components: {

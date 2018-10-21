@@ -17,13 +17,7 @@ const actions = {
         const watchlist = firebase.database().ref(`watchlist/${uid}`);
 
         watchlist.on('value', snapshot => {
-            let watchlistSort = snapshot.val();
-
-            Object.keys(watchlistSort).map((key) => {
-                watchlistSort[key].unwatched = sortSeasons(watchlistSort[key].unwatched);
-            });
-
-            commit('GET_WATCHLIST', watchlistSort);
+            commit('GET_WATCHLIST', snapshot.val());
         });
     },
     addToWatchlist({ rootState }, series) {
