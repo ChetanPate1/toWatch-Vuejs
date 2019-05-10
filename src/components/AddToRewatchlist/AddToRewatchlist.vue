@@ -46,42 +46,39 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'AddToRewatchlist',
-   data() {
-      return {
-         form: {
-            seriesRef: '',
-            season: '',
-            episode: ''
-         },
-         today: new Date().getTime()
-      }
-   },
-   props: {
-      shows: Object
-   },
-   computed: {
-      ...mapActions([
-         'addToRewatchlist'
-      ])
-   },
-   methods:{
-      add(form){
-         this.$store.dispatch('addToRewatchlist', form)
-            .then(() => {
-               this.form = {
-                  seriesRef: '',
-                  season: '',
-                  episode: ''
-               };
-               this.$parent.close();
-            });
-      }
-   }
-}
+  name: "AddToRewatchlist",
+  data() {
+    return {
+      form: {
+        seriesRef: "",
+        season: "",
+        episode: ""
+      },
+      today: new Date().getTime()
+    };
+  },
+  props: {
+    shows: Object
+  },
+  computed: {
+    ...mapActions(["addToRewatchlist"])
+  },
+  methods: {
+    add(form) {
+      this.$store.dispatch("addToRewatchlist", form).then(() => {
+        this.form = {
+          seriesRef: "",
+          season: "",
+          episode: ""
+        };
+        this.$parent.close();
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss">

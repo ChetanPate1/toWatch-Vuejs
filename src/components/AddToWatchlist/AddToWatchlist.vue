@@ -47,50 +47,47 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'AddToWatchlist',
-   data() {
-      return {
-         form: {
-            seriesRef: '',
-            season: '',
-            episode: ''
-         },
-         today: new Date().getTime()
-      }
-   },
-   props: {
-      shows: Object
-   },
-   computed: {
-      ...mapActions([
-         'addToWatchlist'
-      ])
-   },
-   methods:{
-      add(form){
-         this.$store.dispatch('addToWatchlist', form)
-            .then(() => {
-               this.form = {
-                  seriesRef: '',
-                  season: '',
-                  episode: ''
-               };
-               this.$parent.close();
-            });
+  name: "AddToWatchlist",
+  data() {
+    return {
+      form: {
+        seriesRef: "",
+        season: "",
+        episode: ""
       },
-      checkAired(episode) {
-         if(typeof episode === 'object'){
-            let date = parseInt(episode.airDate);
-            return date - this.today < 0 || episode.number == 1;
-         }else {
-            return false;
-         }
+      today: new Date().getTime()
+    };
+  },
+  props: {
+    shows: Object
+  },
+  computed: {
+    ...mapActions(["addToWatchlist"])
+  },
+  methods: {
+    add(form) {
+      this.$store.dispatch("addToWatchlist", form).then(() => {
+        this.form = {
+          seriesRef: "",
+          season: "",
+          episode: ""
+        };
+        this.$parent.close();
+      });
+    },
+    checkAired(episode) {
+      if (typeof episode === "object") {
+        let date = parseInt(episode.airDate);
+        return date - this.today < 0 || episode.number == 1;
+      } else {
+        return false;
       }
-   }
-}
+    }
+  }
+};
 </script>
 
 <style lang="css">
