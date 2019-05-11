@@ -11,13 +11,13 @@ import watchedMovies from './modules/watched-movies';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-   modules: {
-      auth,
-      mostPopular,
-      myShows,
-      watchlist,
-      rewatchlist,
-      watched,
-      watchedMovies
-   }
+  modules: {
+    auth,
+    mostPopular,
+    myShows,
+    watchlist,
+    rewatchlist,
+    watched,
+    watchedMovies
+  }
 });

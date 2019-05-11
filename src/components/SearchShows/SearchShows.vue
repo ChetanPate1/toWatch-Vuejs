@@ -2,14 +2,19 @@
 <form v-on:submit.prevent="findShow">
    <div class="form-element search">
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
-      <input type="text" name="showName" v-model="showName">
+      <input class="show-search" type="text" name="showName" v-model="form.showName">
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" @click="setType('movie')">Movie</button>
+        <button type="button" class="btn btn-default" @click="setType('series')">Series</button>
+      </div>
+
       <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
       <div class="search-results" v-bind:class="{'show' : foundShows }">
-         <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show.permalink)">
+         <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show.imdbID)">
             <div class="number">{{ index + 1 }}.</div>
-            <div class="name">{{ show.name }}</div>
-            <div class="network">{{ show.network }}</div>
+            <div class="name">{{ show.Title }}</div>
          </div>
       </div>
    </div>
@@ -17,128 +22,143 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'SearchShows',
-   data() {
-      return {
-         showName: '',
-         sendStatus: {
-            disableButton: false,
-            loader: false,
-            validation: ''
-         },
-         toast: {
-            content: '',
-            action: '',
-            show: false
-         }
-      }
-   },
-   computed: {
-      ...mapGetters([
-         'foundShows'
-      ]),
-      ...mapActions([
-         'searchForShow'
-      ])
-   },
-   methods: {
-      addSeries(series) {
-         this.sendStatus.loader = true;
-         this.sendStatus.disableButton = true;
-
-         this.$store.dispatch('saveShow', series)
-            .then(() => {
-               this.sendStatus.loader = false
-               this.sendStatus.disableButton = false;
-               this.showName = '';
-            });
+  name: "SearchShows",
+  data() {
+    return {
+      form: {
+        showName: "",
+        type: "series"
       },
-      findShow(){
-         this.$store.dispatch('searchForShow', this.showName);
+      sendStatus: {
+        disableButton: false,
+        loader: false,
+        validation: ""
+      },
+      toast: {
+        content: "",
+        action: "",
+        show: false
       }
-   }
-}
+    };
+  },
+  computed: {
+    ...mapGetters(["foundShows"]),
+    ...mapActions(["searchForShow"])
+  },
+  methods: {
+    addSeries(id) {
+      this.sendStatus.loader = true;
+      this.sendStatus.disableButton = true;
+
+      this.$store.dispatch("saveShow", id).then(() => {
+        this.sendStatus.loader = false;
+        this.sendStatus.disableButton = false;
+        this.form.showName = "";
+      });
+    },
+    setType(type) {
+      this.type = type;
+    },
+    findShow() {
+      this.$store.dispatch("searchForShow", this.form);
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-.search-results{
-   width: 100%;
-   border-radius: 6px;
-   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
-   transition: all 500ms ease;
-   transform: translate(-100%, 0);
-   max-height: 220px;
-   overflow-y: auto;
-   opacity: 0;
-   background-color: rgba(0, 0, 0, 0.6);
+.btn-group {
+  position: absolute;
+  right: 50px;
+  top: 5px;
+}
 
-   .result{
-      margin: 0 0 5px 0;
-      background-color: #ffffff;
-      display: block;
+.show-search {
+  padding-right: 140px;
+}
+
+.search-results {
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  transition: all 500ms ease;
+  transform: translate(-100%, 0);
+  max-height: 220px;
+  overflow-y: auto;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  .result {
+    margin: 0 0 5px 0;
+    background-color: #ffffff;
+    display: block;
+    float: left;
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $base-color;
+      .name,
+      .number {
+        color: #ffffff;
+      }
+    }
+
+    .number,
+    .name,
+    .network {
       float: left;
-      width: 100%;
-      padding: 10px 15px;
+    }
+
+    .number {
+      font-size: 12px;
+      line-height: 30px;
+      width: 7%;
+      color: $base-color;
+    }
+
+    .name {
+      padding: 0 5px 0 0;
+      font-size: 14px;
+      font-weight: bold;
+      width: 68%;
+      line-height: 2;
+    }
+
+    .network {
+      font-size: 10px;
+      width: 25%;
+      padding: 8px;
+      text-align: center;
+      background-color: #f2f2f2;
       border-radius: 5px;
+    }
 
-      &:hover{
-         cursor: pointer;
-         background-color: $base-color;
-         .name, .number{
-            color: #ffffff;
-         }
+    @media (max-width: 500px) {
+      padding-top: 20px;
+      min-height: 60px;
+
+      .number,
+      .name {
+        padding: 4px 0 0 0;
+        font-size: 12px;
+        line-height: 1;
       }
-
-      .number, .name, .network{
-         float: left;
+      .name {
+        padding: 4px 10px 0 0;
       }
+    }
+  }
 
-      .number{
-         font-size: 12px;
-         line-height: 30px;
-         width: 7%;
-         color: $base-color;
-      }
-
-      .name{
-         padding: 0 5px 0 0;
-         font-size: 14px;
-         font-weight: bold;
-         width: 68%;
-         line-height: 2;
-      }
-
-      .network{
-         font-size: 10px;
-         width: 25%;
-         padding: 8px;
-         text-align: center;
-         background-color: #f2f2f2;
-         border-radius: 5px;
-      }
-
-      @media(max-width: 500px){
-         padding-top: 20px;
-         min-height: 60px;
-
-         .number, .name{
-            padding: 4px 0 0 0;
-            font-size: 12px;
-            line-height: 1;
-         }
-         .name{
-            padding: 4px 10px 0 0;
-         }
-      }
-   }
-
-   &.show{
-      -webkit-transform: translate(0, 0);
-      transform: translate(0, 0);
-      opacity: 1;
-   }
+  &.show {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 1;
+  }
 }
 </style>

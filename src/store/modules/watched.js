@@ -3,33 +3,33 @@ import * as types from '../mutation-types';
 import { timeNow, objSize, isFutureTime } from '@/js/helper-functions';
 
 const state = {
-   watched: {}
+  watched: {}
 }
 
 const getters = {
-   watched: state => state.watched
+  watched: state => state.watched
 }
 
 const actions = {
-   getWatched({ commit }) {
-      const uid = firebase.auth().currentUser.uid;
-      const watched = firebase.database().ref(`watched/${ uid }`);
+  getWatched({ commit }) {
+    const uid = firebase.auth().currentUser.uid;
+    const watched = firebase.database().ref(`watched/${uid}`);
 
-      watched.on('value', snapshot => {
-         commit('GET_WATCHED', snapshot.val());
-      });
-   }
+    watched.on('value', snapshot => {
+      commit('GET_WATCHED', snapshot.val());
+    });
+  }
 }
 
 const mutations = {
-   [types.GET_WATCHED](state, snapshot) {
-      state.watched = snapshot;
-   }
+  [types.GET_WATCHED](state, snapshot) {
+    state.watched = snapshot;
+  }
 }
 
 export default {
-   state,
-   getters,
-   mutations,
-   actions
+  state,
+  getters,
+  mutations,
+  actions
 }

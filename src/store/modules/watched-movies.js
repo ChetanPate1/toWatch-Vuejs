@@ -43,8 +43,7 @@ const actions = {
         apikey: '7174c422',
         plot: 'full',
         t: movie.split(',')[0],
-        y: movie.split(',')[1],
-        season: '8'
+        y: movie.split(',')[1]
       }
     })
       .then(function (response) {
