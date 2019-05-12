@@ -1,14 +1,13 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
-import { timeNow, objSize, isFutureTime } from '@/js/helper-functions';
 
 const state = {
   watched: {}
-}
+};
 
 const getters = {
   watched: state => state.watched
-}
+};
 
 const actions = {
   getWatched({ commit }) {
@@ -19,13 +18,13 @@ const actions = {
       commit('GET_WATCHED', snapshot.val());
     });
   }
-}
+};
 
 const mutations = {
   [types.GET_WATCHED](state, snapshot) {
     state.watched = snapshot;
   }
-}
+};
 
 export default {
   state,

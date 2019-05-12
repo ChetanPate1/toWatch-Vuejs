@@ -31,17 +31,17 @@
          <tabs>
             <tab-button slot="tab-buttons"
                v-for="(season, key, index) in rewatchlist.unwatched"
-               :key="index"
-               :name="tabButtonName(key)"
-               :active="isTabSelected(index + 1)"
-               @click.native="tabSelect(index + 1)">
+               :key="season.season"
+               :name="tabButtonName(season.season)"
+               :active="isTabSelected(season.season)"
+               @click.native="tabSelect(season.season)">
             </tab-button>
 
             <tab-panels-container :active="tabActive" slot="tab-panels-container">
                <tab-panel
                   v-for="(season, key, index) in rewatchlist.unwatched"
-                  :active="isTabSelected(index + 1)"
-                  :number="index + 1"
+                  :active="isTabSelected(season.season)"
+                  :number="season.season"
                   :key="key">
                   <panel-rows
                      :rewatchlist-id="id"
@@ -101,8 +101,8 @@ export default {
         }
       });
     },
-    tabButtonName(name) {
-      return `S ${name.split("_")[1]}`;
+    tabButtonName(number) {
+      return number < 10 ? `S0${number}` : `S${number}`;
     },
     tabSelect(selectedTab) {
       this.tabActive = selectedTab;

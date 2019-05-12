@@ -32,17 +32,17 @@
          <tabs>
             <tab-button slot="tab-buttons"
                v-for="(season, key, index) in watchlist.unwatched"
-               :key="index"
-               :name="tabButtonName(key)"
-               :active="isTabSelected(index + 1)"
-               @click.native="tabSelect(index + 1)">
+               :key="season.season"
+               :name="tabButtonName(season.season)"
+               :active="isTabSelected(season.season)"
+               @click.native="tabSelect(season.season)">
             </tab-button>
 
             <tab-panels-container :active="tabActive" slot="tab-panels-container">
                <tab-panel
                   v-for="(season, key, index) in watchlist.unwatched"
-                  :active="isTabSelected(index + 1)"
-                  :number="index + 1"
+                  :active="isTabSelected(season.season)"
+                  :number="season.season"
                   :key="key">
                   <panel-rows
                      :watchlist-id="id"
@@ -63,74 +63,73 @@
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
-import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
+import Popup from "../Popup/Popup";
+import SlideOutPanel from "../SlideOutPanel/SlideOutPanel";
 
-import Tabs from '../Tabs/Tabs';
-import TabButton from '../Tabs/TabButton';
-import TabPanel from '../Tabs/TabPanel';
-import TabPanelsContainer from '../Tabs/TabPanelsContainer';
+import Tabs from "../Tabs/Tabs";
+import TabButton from "../Tabs/TabButton";
+import TabPanel from "../Tabs/TabPanel";
+import TabPanelsContainer from "../Tabs/TabPanelsContainer";
 
-import PanelRows from './PanelRows';
-import BehindCountButton from '../BehindCountButton/BehindCountButton';
-import FrostGlass from '../FrostGlass/FrostGlass';
-import CountdownTimer from '../CountdownTimer/CountdownTimer';
+import PanelRows from "./PanelRows";
+import BehindCountButton from "../BehindCountButton/BehindCountButton";
+import FrostGlass from "../FrostGlass/FrostGlass";
+import CountdownTimer from "../CountdownTimer/CountdownTimer";
 
 export default {
-   name: 'WatchlistCard',
-   props: {
-      heading: String,
-      details: String,
-      id: String,
-      watchlist: Object,
-      subHeading: String,
-      nextAired: Number,
-      imgSrc: String
-   },
-   data() {
-      return {
-         open: false,
-         tabActive: 1
-      }
-   },
-   mounted(){
-      this.tabSelect(this.watchlist.on.season);
-   },
-   methods: {
-      toggleOpen(){
-         this.open = !this.open;
-      },
-      confirmDelete(){
-         this.$refs.confirmPopup.open().then((result) => {
-            if(result == 'yes'){
-               this.$store
-                  .dispatch('deleteWatchlist', this.id);
-            }
-         });
-      },
-      tabButtonName(name){
-         return `S ${name.split('_')[1]}`;
-      },
-      tabSelect(selectedTab) {
-         this.tabActive = selectedTab;
-      },
-      isTabSelected(number) {
-         return this.tabActive == number;
-      }
-   },
-   components: {
-      Popup,
-      SlideOutPanel,
-      Tabs,
-      TabButton,
-      TabPanel,
-      TabPanelsContainer,
-      PanelRows,
-      BehindCountButton,
-      FrostGlass,
-      CountdownTimer
-   }
-}
+  name: "WatchlistCard",
+  props: {
+    heading: String,
+    details: String,
+    id: String,
+    watchlist: Object,
+    subHeading: String,
+    nextAired: Number,
+    imgSrc: String
+  },
+  data() {
+    return {
+      open: false,
+      tabActive: 1
+    };
+  },
+  mounted() {
+    this.tabSelect(this.watchlist.on.season);
+  },
+  methods: {
+    toggleOpen() {
+      this.open = !this.open;
+    },
+    confirmDelete() {
+      this.$refs.confirmPopup.open().then(result => {
+        if (result == "yes") {
+          this.$store.dispatch("deleteWatchlist", this.id);
+        }
+      });
+    },
+    tabButtonName(number) {
+      return number < 10 ? `S0${number}` : `S${number}`;
+    },
+    tabSelect(selectedTab) {
+      this.tabActive = selectedTab;
+    },
+    isTabSelected(number) {
+      return this.tabActive == number;
+    }
+  },
+  components: {
+    Popup,
+    SlideOutPanel,
+    Tabs,
+    TabButton,
+    TabPanel,
+    TabPanelsContainer,
+    PanelRows,
+    BehindCountButton,
+    FrostGlass,
+    CountdownTimer
+  }
+};
 </script>
 
 <style src="./WatchlistCard.scss" lang="scss"></style>

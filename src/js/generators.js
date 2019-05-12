@@ -18,7 +18,11 @@ export async function generateSeasons(show) {
     if (res.data.Response == 'True') {
       episodes.push({
         season: index + 1,
-        episodes: res.data.Episodes
+        episodes: res.data.Episodes.map(item => {
+          return {
+            ...item, Episode: parseInt(item.Episode)
+          };
+        })
       });
     }
   });
@@ -27,41 +31,30 @@ export async function generateSeasons(show) {
 }
 
 export function initWatchlist(show, series) {
-  let list = {
-    lastUpdated: new Date().getTime(),
-    upToDate: false,
+  return {
     showId: series.seriesRef,
     on: {
       season: series.season,
       episode: series.episode,
-      name: ''
+      name: show.episodes[series.season - 1].episodes[series.episode - 1].Title
     },
-    unwatched: {}
+    unwatched: show.episodes.map(season => {
+      return {
+        ...season,
+        episodes: season.episodes.map(item => {
+          if (season.season < series.season) {
+            return { ...item, watched: true };
+          }
+
+          if (season.season == series.season && item.Episode <= series.episode) {
+            return { ...item, watched: true };
+          }
+
+          return { ...item, watched: false };
+        })
+      };
+    })
   };
-
-  let unwatched = show.episodes;
-
-  for (let season in unwatched) {
-    unwatched[season].forEach((episode) => {
-      let seasonNum = parseInt(season.split('_')[1]);
-      episode.watched = false;
-
-      if (seasonNum < series.season) {
-        episode.watched = true;
-      }
-    });
-  }
-
-  unwatched[`season_${series.season}`].forEach((episode) => {
-    if (episode.number < series.episode) {
-      episode.watched = true;
-    }
-  });
-
-  list.on.name = unwatched[`season_${series.season}`][series.episode - 1].name
-  list['unwatched'] = unwatched;
-
-  return list;
 }
 
 export function initRewatchlist(show) {

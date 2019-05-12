@@ -4,9 +4,8 @@
       <label for="series">Series Name</label>
       <span class="dripicons-chevron-down"></span>
       <select name="series" v-model="form.seriesRef" @change="form.season = ''; form.episode = ''">
-         <option v-for="(show, key, index) in shows" v-bind:value="key"
-           v-if="(show.status == 'In Development' || show.status == 'Running')" >
-           {{ show.series }}
+         <option v-for="(show, key, index) in shows" v-bind:value="key">
+           {{ show.Title }}
          </option>
       </select>
    </div>
@@ -14,10 +13,9 @@
    <div class="form-element" v-if="form.seriesRef">
       <label for="seasons">Seasons</label>
       <div class="select-series">
-         <div class="col-xs-3" v-for="(season, key, index) in shows[form.seriesRef].seasons">
-           <label class="radio" v-bind:class="{'selected' : form.season >= index + 1 }" >
-               <input type="radio" v-model="form.season" v-bind:value="index + 1" >
-               {{ index + 1 }}
+         <div class="col-xs-3" v-for="(item, key, index) in shows[form.seriesRef].episodes">
+           <label class="radio" v-bind:class="{'selected' : form.season >= item.season }" >
+               <input type="radio" v-model="form.season" v-bind:value="item.season">{{ item.season }}
            </label>
          </div>
          <span class="selected-none" v-bind:class="{'selected': !form.seriesRef }">Select a season</span>
@@ -27,11 +25,11 @@
    <div class="form-element" v-if="form.seriesRef && form.season">
       <label for="seasons">Episodes</label>
       <div class="select-series">
-         <div class="col-xs-3" v-for="episode in shows[form.seriesRef].seasons[`season_${form.season}`]"
+         <div class="col-xs-3" v-for="(episode, key, index) in shows[form.seriesRef].episodes[form.season - 1].episodes"
            v-if="checkAired(episode)">
-           <label class="radio" v-bind:class="{'selected' : form.episode >= episode.number }" >
-               <input type="radio" v-model="form.episode" v-bind:value="episode.number" >
-               {{ episode.number }}
+           <label class="radio" v-bind:class="{'selected' : form.episode >= episode.Episode }" >
+               <input type="radio" v-model="form.episode" v-bind:value="episode.Episode" >
+               {{ episode.Episode }}
            </label>
          </div>
          <span class="selected-none" v-bind:class="{'selected': !form.season }">Select a episode</span>
@@ -81,7 +79,7 @@ export default {
     },
     checkAired(episode) {
       if (typeof episode === "object") {
-        let date = parseInt(episode.airDate);
+        let date = new Date(episode.Released).getTime();
         return date - this.today < 0 || episode.number == 1;
       } else {
         return false;

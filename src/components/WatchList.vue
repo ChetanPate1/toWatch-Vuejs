@@ -12,13 +12,13 @@
       <div class="col-xs-12 col-sm-6 fade-in" v-for="(item, key, index) in watchlist"
            v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }" :key="index">
          <watchlist-card
-            :heading="myShows[item.showId].series"
+            :heading="myShows[item.showId].Title"
             :sub-heading="concatSubHeading(item.on)"
             :details="item.on.name"
             :id="key"
             :watchlist="item"
             :next-aired="nextAired(item)"
-            :img-src="myShows[item.showId].imgSrc">
+            :img-src="myShows[item.showId].Poster">
          </watchlist-card>
       </div>
       <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
@@ -62,16 +62,16 @@ export default {
     },
     nextAired(watchlist) {
       let show = this.myShows[watchlist.showId];
-      let numberOfSeasons = objSize(show.seasons);
-      let latestSeason = show.seasons[`season_${numberOfSeasons}`];
+      let numberOfSeasons = show.episodes.length;
+      let latestSeason = show.episodes[numberOfSeasons - 1];
 
-      let nextAired = latestSeason.filter(episode => {
-        if (episode.airDate - this.today > 0) {
-          return episode.airDate;
+      let nextAired = latestSeason.episodes.filter(episode => {
+        if (episode.Released - this.today > 0) {
+          return new Date(episode.Released).getTime();
         }
       });
 
-      return nextAired.length ? nextAired[0].airDate : 0;
+      return nextAired.length ? nextAired[0] : 0;
     }
   },
   components: {

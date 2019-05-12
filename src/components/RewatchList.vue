@@ -15,12 +15,12 @@
          :key="index">
 
          <rewatchlist-card
-            :heading="myShows[item.showId].series"
+            :heading="myShows[item.showId].Title"
             :sub-heading="concatSubHeading(item.on)"
             :details="item.on.name"
             :id="key"
             :rewatchlist="item"
-            :img-src="myShows[item.showId].imgSrc">
+            :img-src="myShows[item.showId].Poster">
          </rewatchlist-card>
       </div>
       <no-content :message="noContentMessage" :condition="!rewatchlist"></no-content>
