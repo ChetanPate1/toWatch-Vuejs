@@ -19,16 +19,7 @@ const actions = {
     const rewatchlist = firebase.database().ref(`rewatchlist/${uid}`);
 
     rewatchlist.on('value', snapshot => {
-      let rewatchlistSort = snapshot.val();
-
-      if (rewatchlistSort) {
-        Object.keys(rewatchlistSort).map((key) => {
-          rewatchlistSort[key].unwatched = sortSeasons(rewatchlistSort[key].unwatched);
-        });
-      }
-
-
-      commit('GET_REWATCHLIST', rewatchlistSort);
+      commit('GET_REWATCHLIST', snapshot.val());
     });
   },
   getRewatchDetails({ commit }, ref) {

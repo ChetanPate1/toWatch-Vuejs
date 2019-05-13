@@ -20,7 +20,7 @@ export default {
   },
   props: {
     open: Boolean,
-    seasons: Object
+    seasons: Array
   },
   computed: {
     behindCount() {
