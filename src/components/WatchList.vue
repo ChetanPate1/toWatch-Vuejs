@@ -13,7 +13,7 @@
            v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }" :key="index">
          <watchlist-card
             :heading="myShows[item.showId].Title"
-            :sub-heading="concatSubHeading(item.on)"
+            :sub-heading="concatSubHeading(item)"
             :details="item.on.name"
             :id="key"
             :watchlist="item"
@@ -57,8 +57,8 @@ export default {
     listSize() {
       return objSize(this.watchlist);
     },
-    concatSubHeading(on) {
-      return `Season ${on.season} Episode ${on.episode}`;
+    concatSubHeading(item) {
+      return `Season ${item.on.season} Episode ${item.on.episode}`;
     },
     nextAired(watchlist) {
       let show = this.myShows[watchlist.showId];

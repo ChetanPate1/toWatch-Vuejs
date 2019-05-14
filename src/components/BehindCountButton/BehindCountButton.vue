@@ -25,7 +25,6 @@ export default {
   computed: {
     behindCount() {
       var count = 0;
-      console.log(this.seasons);
 
       for (let season in this.seasons) {
         this.seasons[season].episodes.forEach(episode => {

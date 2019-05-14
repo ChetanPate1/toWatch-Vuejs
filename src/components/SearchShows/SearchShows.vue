@@ -86,7 +86,7 @@ export default {
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
   transition: all 500ms ease;
   transform: translate(-100%, 0);
-  max-height: 220px;
+  max-height: 500px;
   overflow-y: auto;
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.6);
