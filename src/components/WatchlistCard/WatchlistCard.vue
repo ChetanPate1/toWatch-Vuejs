@@ -15,7 +15,7 @@
    </popup>
 
    <div class="watchlist-card" tabindex="0" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-      <button type="button" class="icon-button dripicons-trash" @click="confirmDelete()"></button>
+      <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id, watchlist.showId)"></button>
 
       <h2>{{ heading }}</h2>
       <h4>{{ details }}</h4>
@@ -100,10 +100,10 @@ export default {
     toggleOpen() {
       this.open = !this.open;
     },
-    confirmDelete() {
+    confirmDelete(id, seriesRef) {
       this.$refs.confirmPopup.open().then(result => {
         if (result == "yes") {
-          this.$store.dispatch("deleteWatchlist", this.id);
+          this.$store.dispatch("deleteWatchlist", { id, seriesRef });
         }
       });
     },

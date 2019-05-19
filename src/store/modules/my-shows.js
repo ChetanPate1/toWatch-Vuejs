@@ -9,7 +9,7 @@ const today = new Date();
 const state = {
   shows: {},
   foundShows: []
-}
+};
 
 const getters = {
   myShows: state => state.shows,
@@ -78,7 +78,7 @@ const actions = {
         generateSeasons(res.data).then(show => showRef.update(show));
       });
   }
-}
+};
 
 const mutations = {
   [types.GET_MY_SHOWS](state, snapshot) {
@@ -90,11 +90,11 @@ const mutations = {
   [types.EMPTY_FOUND_SHOWS](state) {
     state.foundShows = [];
   }
-}
+};
 
 export default {
   state,
   getters,
   mutations,
   actions
-}
+};

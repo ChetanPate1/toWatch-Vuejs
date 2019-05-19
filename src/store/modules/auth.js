@@ -8,11 +8,11 @@ const state = {
     email: '',
     isLoggedIn: false
   }
-}
+};
 
 const getters = {
   user: state => state.user
-}
+};
 
 const actions = {
   signUserIn({ commit }, cred) {
@@ -41,7 +41,7 @@ const actions = {
         }
       });
   }
-}
+};
 
 const mutations = {
   [types.SIGN_IN_USER](state, user) {
@@ -58,11 +58,11 @@ const mutations = {
       isLoggedIn: false
     };
   }
-}
+};
 
 export default {
   state,
   getters,
   actions,
   mutations
-}
+};

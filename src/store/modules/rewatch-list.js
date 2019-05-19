@@ -1,17 +1,16 @@
 import firebase from 'firebase';
 import * as types from '../mutation-types';
-import { timeNow, objSize, isFutureTime, sortSeasons } from '@/js/helper-functions';
 import { initWatchlist } from '../../js/generators';
 
 const state = {
   rewatchlist: {},
   rewatchDetails: {}
-}
+};
 
 const getters = {
   rewatchlist: state => state.rewatchlist,
   rewatchDetails: state => state.rewatchDetails
-}
+};
 
 const actions = {
   getRewatchlist({ commit }) {
@@ -30,18 +29,21 @@ const actions = {
       commit('GET_REWATCH_DETAILS', snapshot.val());
     });
   },
-  addToRewatchlist({ rootState }, series) {
+  addToRewatchlist({ dispatch, rootState }, series) {
     let show = rootState.myShows.shows[series.seriesRef];
     let initSeries = initWatchlist(show, series);
     const uid = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref(`rewatchlist/${uid}`).push(initSeries);
+    dispatch("showToast", { title: "Added", message: `${show.Title} added to rewatchlist.` });
 
     ref.set(initSeries);
     ref.update(initSeries);
   },
-  deleteRewatchlist({ state }, rewatchlistId) {
+  deleteRewatchlist({ dispatch, getters, state }, { id, seriesRef }) {
     const uid = firebase.auth().currentUser.uid;
-    const item = firebase.database().ref(`rewatchlist/${uid}/${rewatchlistId}`);
+    const item = firebase.database().ref(`rewatchlist/${uid}/${id}`);
+    dispatch("showToast", { title: "Deleted", message: `${getters.myShows[seriesRef].Title} deleted from rewatchlist.` });
+
     item.remove();
   },
   toggleRewatched({ rootState }, { rewatchlistId, seriesRef, episode, season }) {
@@ -74,4 +76,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

@@ -15,7 +15,7 @@
    </popup>
 
    <div class="rewatchlist-card" tabindex="0" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-      <button type="button" class="icon-button dripicons-trash" @click="confirmDelete()"></button>
+      <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id, rewatchlist.showId)"></button>
 
       <h2>{{ heading }}</h2>
       <h4>{{ details }}</h4>
@@ -94,10 +94,10 @@ export default {
     toggleOpen() {
       this.open = !this.open;
     },
-    confirmDelete() {
+    confirmDelete(id, seriesRef) {
       this.$refs.confirmPopup.open().then(result => {
         if (result == "yes") {
-          this.$store.dispatch("deleteRewatchlist", this.id);
+          this.$store.dispatch("deleteRewatchlist", { id, seriesRef });
         }
       });
     },

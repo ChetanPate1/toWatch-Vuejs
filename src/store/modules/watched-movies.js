@@ -6,13 +6,13 @@ const state = {
   watchedMovies: {},
   foundMovies: [],
   movieDetails: {}
-}
+};
 
 const getters = {
   watchedMovies: state => state.watchedMovies,
   foundMovies: state => state.foundMovies,
   movieDetails: state => state.movieDetails
-}
+};
 
 const actions = {
   getWatchedMovies({ commit }) {
@@ -38,6 +38,7 @@ const actions = {
     if (!movie) {
       return;
     }
+
     axios.get('https://www.omdbapi.com', {
       params: {
         apikey: '7174c422',
@@ -62,6 +63,7 @@ const actions = {
   deleteMovie({ commit }, ref) {
     const uid = firebase.auth().currentUser.uid;
     const movie = firebase.database().ref(`watchedMovies/${uid}/${ref}`);
+
     movie.remove();
   },
   getMovieDetails({ commit }, ref) {
@@ -72,7 +74,7 @@ const actions = {
       commit('GET_MOVIE_DETAILS', snapshot.val());
     });
   }
-}
+};
 
 const mutations = {
   [types.GET_WATCHED_MOVIES](state, snapshot) {
@@ -87,11 +89,11 @@ const mutations = {
   [types.EMPTY_FOUND_MOVIES](state) {
     state.foundMovies = [];
   }
-}
+};
 
 export default {
   state,
   getters,
   mutations,
   actions
-}
+};

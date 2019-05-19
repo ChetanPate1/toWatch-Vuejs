@@ -7,6 +7,7 @@ import watchlist from './modules/watch-list';
 import rewatchlist from './modules/rewatch-list';
 import watched from './modules/watched';
 import watchedMovies from './modules/watched-movies';
+import toast from './modules/toast';
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     watchlist,
     rewatchlist,
     watched,
-    watchedMovies
+    watchedMovies,
+    toast
   }
 });

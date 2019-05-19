@@ -19,11 +19,12 @@ const actions = {
       commit('GET_WATCHLIST', snapshot.val());
     });
   },
-  addToWatchlist({ rootState }, series) {
+  addToWatchlist({ dispatch, rootState }, series) {
     const show = rootState.myShows.shows[series.seriesRef];
     const initSeries = initWatchlist(show, series);
     const uid = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref(`watchlist/${uid}`).push(initSeries);
+    dispatch("showToast", { title: "Added", message: `${show.Title} added to watchlist.` });
 
     ref.set(initSeries);
     ref.update(initSeries);
@@ -40,9 +41,11 @@ const actions = {
 
     ref.update(watched);
   },
-  deleteWatchlist({ state }, watchlistId) {
+  deleteWatchlist({ dispatch, getters }, { id, seriesRef }) {
     const uid = firebase.auth().currentUser.uid;
-    const watchlistItem = firebase.database().ref(`watchlist/${uid}/${watchlistId}`);
+    const watchlistItem = firebase.database().ref(`watchlist/${uid}/${id}`);
+    dispatch("showToast", { title: "Deleted", message: `${getters.myShows[seriesRef].Title} deleted from watchlist.` });
+
     watchlistItem.remove();
   },
   toggleWatched({ dispatch, rootState }, { watchlistId, seriesRef, episode, season }) {
@@ -68,4 +71,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

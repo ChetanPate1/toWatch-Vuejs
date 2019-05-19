@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <navigation-bar></navigation-bar>
-    <router-view/>
+    <Toast>
+      <navigation-bar></navigation-bar>
+      <router-view/>
+    </Toast>
   </div>
 </template>
 
 <script>
 import NavigationBar from "./components/NavigationBar/NavigationBar";
+import Toast from "./components/Toast/Toast";
 
 export default {
   name: "app",
   components: {
-    NavigationBar
+    NavigationBar,
+    Toast
   }
 };
 </script>
