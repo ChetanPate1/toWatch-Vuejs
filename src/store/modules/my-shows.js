@@ -62,7 +62,7 @@ const actions = {
     const show = firebase.database().ref(`shows/${uid}/${ref}`);
     show.remove();
   },
-  updateShow({ commit, rootState }, showId) {
+  updateShow({ commit, dispatch, rootState }, showId) {
     const { imdbID, Title } = rootState.myShows.shows[showId];
     const uid = firebase.auth().currentUser.uid;
     const showRef = firebase.database().ref(`shows/${uid}/${showId}`);
