@@ -63,7 +63,7 @@ const actions = {
     show.remove();
   },
   updateShow({ commit, rootState }, showId) {
-    const { imdbID } = rootState.myShows.shows[showId];
+    const { imdbID, Title } = rootState.myShows.shows[showId];
     const uid = firebase.auth().currentUser.uid;
     const showRef = firebase.database().ref(`shows/${uid}/${showId}`);
 
@@ -75,7 +75,10 @@ const actions = {
       }
     })
       .then(res => {
-        generateSeasons(res.data).then(show => showRef.update(show));
+        generateSeasons(res.data).then(show => {
+          showRef.update(show);
+          dispatch("showToast", { title: "Updated", message: `${Title} episode have been updated.` });
+        });
       });
   }
 };
