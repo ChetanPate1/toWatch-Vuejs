@@ -32,113 +32,106 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'SearchMovies',
-   data() {
-      return {
-         name: '',
-         sendStatus: {
-            disableButton: false,
-            loader: false,
-            validation: ''
-         }
+  name: "SearchMovies",
+  data() {
+    return {
+      name: "",
+      sendStatus: {
+        disableButton: false,
+        loader: false,
+        validation: ""
       }
-   },
-   computed: {
-      ...mapGetters([
-         'foundMovies'
-      ]),
-      ...mapActions([
-         'findMovies',
-         'saveMovie',
-         'emptyFoundMovies'
-      ])
-   },
-   methods: {
-      addMovie(movie) {
-         this.sendStatus.disableButton = true;
+    };
+  },
+  computed: {
+    ...mapGetters(["foundMovies"]),
+    ...mapActions(["findMovies", "saveMovie", "emptyFoundMovies"])
+  },
+  methods: {
+    addMovie(movie) {
+      this.sendStatus.disableButton = true;
 
-         this.$store.dispatch('saveMovie', movie)
-            .then(() => {
-               this.name = '';
-               setTimeout(() => {
-                  this.sendStatus.disableButton = false;
-               }, 1000);
-            });
-      },
-      findShow(){
-         this.sendStatus.disableButton = true;
+      this.$store.dispatch("saveMovie", movie).then(() => {
+        this.name = "";
+        setTimeout(() => {
+          this.sendStatus.disableButton = false;
+        }, 1000);
+      });
+    },
+    findShow() {
+      this.sendStatus.disableButton = true;
 
-         this.$store.dispatch('findMovies', this.name)
-            .then(() => {
-               this.sendStatus.disableButton = false;
-            });
-      },
-      empty(){
-         this.$store.dispatch('emptyFoundMovies');
-      }
-   }
-}
+      this.$store.dispatch("findMovies", this.name).then(() => {
+        this.sendStatus.disableButton = false;
+      });
+    },
+    empty() {
+      this.$store.dispatch("emptyFoundMovies");
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-.search-results{
-   width: 100%;
-   border-radius: 6px;
-   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
-   transition: all 500ms ease;
-   transform: translate(-100%, 0);
-   height: auto;
-   overflow-y: auto;
-   opacity: 0;
-   background-color: #ffffff;
+.search-results {
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  transition: all 500ms ease;
+  transform: translate(-100%, 0);
+  height: auto;
+  overflow-y: auto;
+  opacity: 0;
+  background-color: #ffffff;
 
-   .poster{
-      margin-top: 20px;
-      box-shadow: 0 20px 65px 6px rgba(0, 0, 0, 0.4);
-   }
+  .poster {
+    margin-top: 20px;
+    box-shadow: 0 20px 65px 6px rgba(0, 0, 0, 0.4);
+  }
 
-   .search-result{
-      position: relative;
-      margin: 0 0 5px 0;
-      background-color: #ffffff;
-      display: block;
-      float: left;
-      width: 100%;
-      padding: 10px 15px;
-      border-radius: 5px;
-      overflow: hidden;
+  .search-result {
+    position: relative;
+    margin: 0 0 5px 0;
+    background-color: #ffffff;
+    display: block;
+    float: left;
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    overflow: hidden;
 
-      .underlay-image{
-         position: absolute;
-         left: -15px;
-         top: 0;
-         width: 106%;
-         filter: blur(4px);
-         opacity: 0.4;
+    .underlay-image {
+      position: absolute;
+      left: -15px;
+      top: 0;
+      width: 106%;
+      filter: blur(4px);
+      opacity: 0.4;
+    }
+
+    @media (max-width: 500px) {
+      padding-top: 20px;
+      min-height: 60px;
+
+      .number,
+      .name {
+        padding: 4px 0 0 0;
+        font-size: 12px;
+        line-height: 1;
       }
-
-      @media(max-width: 500px){
-         padding-top: 20px;
-         min-height: 60px;
-
-         .number, .name{
-            padding: 4px 0 0 0;
-            font-size: 12px;
-            line-height: 1;
-         }
-         .name{
-            padding: 4px 10px 0 0;
-         }
+      .name {
+        padding: 4px 10px 0 0;
       }
-   }
+    }
+  }
 
-   &.show{
-      -webkit-transform: translate(0, 0);
-      transform: translate(0, 0);
-      opacity: 1;
-   }
+  &.show {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 1;
+  }
 }
 </style>

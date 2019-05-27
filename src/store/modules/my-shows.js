@@ -36,11 +36,25 @@ const actions = {
         commit('UPDATE_FOUND_SHOWS', res.data.Search);
       });
   },
-  saveShow({ commit }, id) {
+  saveShow({ commit, dispatch, rootState }, movie) {
+    const alreadyAdded = Object.keys(rootState.myShows.shows).filter(id =>
+      rootState.myShows.shows[id].imdbID === movie.imdbID);
+
+    if (alreadyAdded.length) {
+      const id = alreadyAdded[0];
+
+      commit('EMPTY_FOUND_SHOWS');
+
+      return dispatch("showToast", {
+        title: "Already Added!",
+        message: `${rootState.myShows.shows[id].Title} already added to my shows.`
+      });
+    }
+
     axios.get('https://www.omdbapi.com', {
       params: {
         apikey: '7174c422',
-        i: id,
+        i: movie.imdbID,
         type: 'series'
       }
     })

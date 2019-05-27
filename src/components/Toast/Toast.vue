@@ -1,10 +1,7 @@
 <template lang="html">
-<div style="position: relative; overflow: hidden">
-  <div class="toast" v-bind:class="{show: toast.show}">
-    <h5>{{ toast.title }}</h5>
-    <p>{{ toast.message }}</p>
-  </div>
-  <slot></slot>
+<div class="toast" v-bind:class="{show: show}">
+  <h5>{{ title }}</h5>
+  <p>{{ message }}</p>
 </div>
 </template>
 
@@ -13,8 +10,10 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Toast",
-  computed: {
-    ...mapGetters(["toast"])
+  props: {
+    title: String,
+    message: String,
+    show: Boolean
   },
   methods: {
     dismiss() {

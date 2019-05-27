@@ -4,15 +4,10 @@
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
       <input class="show-search" type="text" name="showName" v-model="form.showName">
 
-      <div class="btn-group">
-        <button type="button" class="btn btn-default" @click="setType('movie')">Movie</button>
-        <button type="button" class="btn btn-default" @click="setType('series')">Series</button>
-      </div>
-
       <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
       <div class="search-results" v-bind:class="{'show' : foundShows }">
-         <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show.imdbID)">
+         <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show)">
             <div class="number">{{ index + 1 }}.</div>
             <div class="name">{{ show.Title }}</div>
          </div>
@@ -29,11 +24,10 @@ export default {
   data() {
     return {
       form: {
-        showName: "",
-        type: "series"
+        showName: ""
       },
       sendStatus: {
-        disableButton: false,
+        disableButton: true,
         loader: false,
         validation: ""
       },
@@ -49,11 +43,11 @@ export default {
     ...mapActions(["searchForShow"])
   },
   methods: {
-    addSeries(id) {
+    addSeries(show) {
       this.sendStatus.loader = true;
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch("saveShow", id).then(() => {
+      this.$store.dispatch("saveShow", show).then(() => {
         this.sendStatus.loader = false;
         this.sendStatus.disableButton = false;
         this.form.showName = "";
