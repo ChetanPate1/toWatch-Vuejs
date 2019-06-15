@@ -9,7 +9,7 @@ import Watched from '@/components/Watched';
 import WatchedMovies from '@/components/WatchedMovies';
 import MovieDetails from '@/components/MovieDetails';
 
-import * as firebase from 'firebase';
+import { auth } from 'firebase';
 
 Vue.use(Router);
 
@@ -76,18 +76,17 @@ const router = new Router({
     },
     { path: '/', redirect: '/most-popular' }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { x: 0, y: 0 }
   }
 });
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    firebase
-      .auth()
+    auth()
       .onAuthStateChanged(user => {
         if (user) {
-          next()
+          next();
         } else {
           commit('SIGN_OUT_USER', user);
           next({ path: 'login' });

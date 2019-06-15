@@ -1,4 +1,3 @@
-import { objSize, dateToMs } from './helper-functions';
 import axios from 'axios';
 
 const apikey = '7174c422';
@@ -33,11 +32,7 @@ export async function generateSeasons(show) {
 export function initWatchlist(show, series) {
   return {
     showId: series.seriesRef,
-    on: {
-      season: series.season,
-      episode: series.episode,
-      name: show.episodes[series.season - 1].episodes[series.episode - 1].Title
-    },
+    on: nextEpisode(show, series),
     unwatched: show.episodes.map(season => {
       return {
         ...season,
@@ -57,6 +52,29 @@ export function initWatchlist(show, series) {
   };
 }
 
+function nextEpisode(show, series) {
+  const currentSeason = show.episodes.filter(s => s.season === series.season);
+  const nextSeason = show.episodes.filter(s => s.season === series.season + 1);
+  let next = currentSeason[0].episodes.filter(item => item.Episode === series.episode + 1);
+  let season = 1;
+
+  if (!next.length && !nextSeason.length) {
+    season = currentSeason[0].season;
+    next = currentSeason[0].episodes.filter(item => item.Episode === series.episode);
+  }
+
+  if (!next.length) {
+    season = nextSeason[0].season;
+    next = nextSeason[0].episodes.filter(item => item.Episode === 1);
+  }
+
+  return {
+    season,
+    episode: next[0].Episode,
+    name: next[0].Title
+  };
+}
+
 export function initRewatchlist(show) {
   let series = {
     episode: 1,
@@ -64,8 +82,4 @@ export function initRewatchlist(show) {
   };
 
   return initWatchlist(show, series);
-}
-
-function formatDate(date) {
-  return date.split(' ')[0];
 }
