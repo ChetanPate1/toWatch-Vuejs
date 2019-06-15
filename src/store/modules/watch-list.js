@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import { auth, database } from 'firebase';
 import * as types from '../mutation-types';
 import { initWatchlist } from '../../js/generators';
 
@@ -12,8 +12,8 @@ const getters = {
 
 const actions = {
   getWatchlist({ commit }) {
-    const uid = firebase.auth().currentUser.uid;
-    const watchlist = firebase.database().ref(`watchlist/${uid}`);
+    const uid = auth().currentUser.uid;
+    const watchlist = database().ref(`watchlist/${uid}`);
 
     watchlist.on('value', snapshot => {
       commit('GET_WATCHLIST', snapshot.val());
@@ -22,8 +22,8 @@ const actions = {
   addToWatchlist({ dispatch, rootState }, series) {
     const show = rootState.myShows.shows[series.seriesRef];
     const initSeries = initWatchlist(show, series);
-    const uid = firebase.auth().currentUser.uid;
-    const ref = firebase.database().ref(`watchlist/${uid}`).push(initSeries);
+    const uid = auth().currentUser.uid;
+    const ref = database().ref(`watchlist/${uid}`).push(initSeries);
     dispatch("showToast", { title: "Added", message: `${show.Title} added to watchlist.` });
 
     ref.set(initSeries);
@@ -32,8 +32,8 @@ const actions = {
   updatedWatched({ state }, watchlistId) {
     const watchlistItem = state.watchlist[watchlistId];
     const showId = watchlistItem.showId;
-    const uid = firebase.auth().currentUser.uid;
-    const ref = firebase.database().ref(`watched/${uid}/${showId}`);
+    const uid = auth().currentUser.uid;
+    const ref = database().ref(`watched/${uid}/${showId}`);
     let watched = {
       watched: watchlistItem.unwatched,
       on: watchlistItem.on
@@ -42,8 +42,8 @@ const actions = {
     ref.update(watched);
   },
   deleteWatchlist({ dispatch, getters }, { id, seriesRef }) {
-    const uid = firebase.auth().currentUser.uid;
-    const watchlistItem = firebase.database().ref(`watchlist/${uid}/${id}`);
+    const uid = auth().currentUser.uid;
+    const watchlistItem = database().ref(`watchlist/${uid}/${id}`);
     dispatch("showToast", { title: "Deleted", message: `${getters.myShows[seriesRef].Title} deleted from watchlist.` });
 
     watchlistItem.remove();
@@ -51,8 +51,8 @@ const actions = {
   toggleWatched({ dispatch, rootState }, { watchlistId, seriesRef, episode, season }) {
     const show = rootState.myShows.shows[seriesRef];
     const updatedShow = initWatchlist(show, { seriesRef, episode, season });
-    const uid = firebase.auth().currentUser.uid;
-    const ref = firebase.database().ref(`watchlist/${uid}/${watchlistId}`);
+    const uid = auth().currentUser.uid;
+    const ref = database().ref(`watchlist/${uid}/${watchlistId}`);
 
     ref.update(updatedShow);
 

@@ -1,5 +1,5 @@
 import * as types from '../mutation-types';
-import * as firebase from 'firebase';
+import { auth } from 'firebase';
 import router from '@/router';
 
 const state = {
@@ -16,7 +16,7 @@ const getters = {
 
 const actions = {
   signUserIn({ commit }, cred) {
-    firebase.auth()
+    auth()
       .signInWithEmailAndPassword(cred.email, cred.password)
       .then(user => {
         commit('SIGN_IN_USER', user);
@@ -24,14 +24,14 @@ const actions = {
       });
   },
   signUserOut({ commit }) {
-    firebase.auth()
+    auth()
       .signOut()
       .then(() => {
         commit('SIGN_OUT_USER');
       });
   },
   getCurrentUser({ commit }) {
-    firebase.auth()
+    auth()
       .onAuthStateChanged(user => {
         if (user) {
           commit('SIGN_IN_USER', user);

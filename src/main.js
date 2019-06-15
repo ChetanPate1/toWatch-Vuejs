@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import App from './App';
-import * as firebase from 'firebase';
+import { initializeApp } from 'firebase';
 import router from './router';
 import store from './store';
 
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
-firebase.initializeApp({
+initializeApp({
   apiKey: "AIzaSyAMCU6AWLekinzJm7Vv_dlC_AOkkKc90-c",
   authDomain: "to-watch-dev.firebaseapp.com",
   databaseURL: "https://to-watch-dev.firebaseio.com",

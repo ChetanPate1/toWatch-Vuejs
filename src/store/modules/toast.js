@@ -17,7 +17,7 @@ const actions = {
       commit('TOAST_DISMISS', timestamp);
     }, 4000);
   },
-  dismissToast({ commit }) {
+  dismissToast({ commit }, timestamp) {
     commit('TOAST_DISMISS', timestamp);
   }
 };

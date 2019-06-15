@@ -1,10 +1,7 @@
-import firebase from 'firebase';
+import { auth, database } from 'firebase';
 import * as types from '../mutation-types';
 import axios from 'axios';
 import { generateSeasons } from '../../js/generators';
-import { hasDaysPast } from '../../js/helper-functions';
-
-const today = new Date();
 
 const state = {
   shows: {},
@@ -18,8 +15,8 @@ const getters = {
 
 const actions = {
   getMyShows({ commit }) {
-    const uid = firebase.auth().currentUser.uid;
-    const myShows = firebase.database().ref(`shows/${uid}`);
+    const uid = auth().currentUser.uid;
+    const myShows = database().ref(`shows/${uid}`);
     myShows.on('value', snapshot => {
       commit('GET_MY_SHOWS', snapshot.val());
     });
@@ -61,8 +58,8 @@ const actions = {
       .then(res => {
         generateSeasons(res.data).then(show => {
           if (show.episodes.length > 0) {
-            const uid = firebase.auth().currentUser.uid;
-            const ref = firebase.database().ref(`shows/${uid}`).push(show);
+            const uid = auth().currentUser.uid;
+            const ref = database().ref(`shows/${uid}`).push(show);
             ref.set(show);
             ref.update(show);
 
@@ -72,14 +69,14 @@ const actions = {
       });
   },
   deleteShow({ commit }, ref) {
-    const uid = firebase.auth().currentUser.uid;
-    const show = firebase.database().ref(`shows/${uid}/${ref}`);
+    const uid = auth().currentUser.uid;
+    const show = database().ref(`shows/${uid}/${ref}`);
     show.remove();
   },
   updateShow({ commit, dispatch, rootState }, showId) {
     const { imdbID, Title } = rootState.myShows.shows[showId];
-    const uid = firebase.auth().currentUser.uid;
-    const showRef = firebase.database().ref(`shows/${uid}/${showId}`);
+    const uid = auth().currentUser.uid;
+    const showRef = database().ref(`shows/${uid}/${showId}`);
 
     axios.get('https://www.omdbapi.com', {
       params: {
