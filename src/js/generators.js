@@ -56,7 +56,7 @@ function nextEpisode(show, series) {
   const currentSeason = show.episodes.filter(s => s.season === series.season);
   const nextSeason = show.episodes.filter(s => s.season === series.season + 1);
   let next = currentSeason[0].episodes.filter(item => item.Episode === series.episode + 1);
-  let season = 1;
+  let season = series.season;
 
   if (!next.length && !nextSeason.length) {
     season = currentSeason[0].season;

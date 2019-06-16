@@ -20,7 +20,7 @@
       <h2>{{ heading }}</h2>
       <h4>{{ details }}</h4>
       <h5>On {{ subHeading }}</h5>
-      <h6>Next <small>Aired Episode</small></h6>
+      <h6 v-if="nextAired">Next <small>Aired Episode</small></h6>
 
       <behind-count-button
          @click.native="toggleOpen()"
@@ -54,7 +54,7 @@
          </tabs>
       </slide-out-panel>
 
-      <frost-glass :img-src="imgSrc">
+      <frost-glass :img-src="imgSrc" v-if="nextAired">
          <countdown-timer :to="nextAired"></countdown-timer>
       </frost-glass>
    </div>

@@ -27,7 +27,7 @@ export default {
         showName: ""
       },
       sendStatus: {
-        disableButton: true,
+        disableButton: false,
         loader: false,
         validation: ""
       },

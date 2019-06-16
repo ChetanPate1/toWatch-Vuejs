@@ -29,12 +29,13 @@ const actions = {
     ref.set(initSeries);
     ref.update(initSeries);
   },
-  updatedWatched({ state }, watchlistId) {
+  updatedWatched({ state, rootState }, watchlistId) {
     const watchlistItem = state.watchlist[watchlistId];
     const showId = watchlistItem.showId;
     const uid = auth().currentUser.uid;
     const ref = database().ref(`watched/${uid}/${showId}`);
-    let watched = {
+    const watched = {
+      show: rootState.myShows.shows[showId].Title,
       watched: watchlistItem.unwatched,
       on: watchlistItem.on
     };

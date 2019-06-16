@@ -71,6 +71,9 @@ const actions = {
   deleteShow({ commit }, ref) {
     const uid = auth().currentUser.uid;
     const show = database().ref(`shows/${uid}/${ref}`);
+    const watched = database().ref(`watched/${uid}/${ref}`);
+
+    watched.remove();
     show.remove();
   },
   updateShow({ commit, dispatch, rootState }, showId) {

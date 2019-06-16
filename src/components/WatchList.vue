@@ -65,13 +65,11 @@ export default {
       let numberOfSeasons = show.episodes.length;
       let latestSeason = show.episodes[numberOfSeasons - 1];
 
-      let nextAired = latestSeason.episodes.filter(episode => {
-        if (episode.Released - this.today > 0) {
-          return new Date(episode.Released).getTime();
-        }
-      });
+      let nextAired = latestSeason.episodes.filter(
+        episode => new Date(episode.Released).getTime() - this.today > 0
+      );
 
-      return nextAired.length ? nextAired[0] : 0;
+      return nextAired.length ? new Date(nextAired[0].Released).getTime() : 0;
     }
   },
   components: {

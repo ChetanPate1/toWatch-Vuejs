@@ -1,8 +1,11 @@
 <template lang="html">
 <div>
    <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-      <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this show?</h4>
-
+      <h4 class="margin-top-0 margin-bottom-10">Are you sure you want to delete this show?</h4>
+      <p class="margin-bottom-30">
+        Delete for watched aswell?
+      </p>
+      
       <button class="button button-sm red pull-left"
               type="button"
               @click="$refs.confirmPopup.close('cancel')">Cancel

@@ -24,7 +24,7 @@
                   {{ index + 1 }}
                </div>
                <div class="col-xs-3">
-                  {{ myShows[key].Title }}
+                  {{ item.show }}
                </div>
                <div class="col-xs-3">
                   {{ item.on.name }}
@@ -66,13 +66,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["watched", "myShows"]),
-    ...mapActions(["getWatched", "getMyShows"])
+    ...mapGetters(["watched"]),
+    ...mapActions(["getWatched"])
   },
   mounted() {
-    this.$store.dispatch("getMyShows").then(() => {
-      this.$store.dispatch("getWatched");
-    });
+    this.$store.dispatch("getWatched");
   },
   methods: {
     concatSubHeading(on) {
