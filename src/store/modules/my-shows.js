@@ -1,5 +1,5 @@
 import { auth, database } from 'firebase';
-import * as types from '../mutation-types';
+import { GET_MY_SHOWS, UPDATE_FOUND_SHOWS, EMPTY_FOUND_SHOWS } from '../mutation-types';
 import axios from 'axios';
 import { generateSeasons } from '../../js/generators';
 
@@ -22,13 +22,14 @@ const actions = {
     });
   },
   searchForShow({ commit }, { type, showName }) {
-    axios.get('https://www.omdbapi.com', {
-      params: {
-        apikey: '7174c422',
-        s: showName,
-        type
-      }
-    })
+    axios
+      .get('https://www.omdbapi.com', {
+        params: {
+          apikey: '7174c422',
+          s: showName,
+          type
+        }
+      })
       .then(res => {
         commit('UPDATE_FOUND_SHOWS', res.data.Search);
       });
@@ -48,13 +49,14 @@ const actions = {
       });
     }
 
-    axios.get('https://www.omdbapi.com', {
-      params: {
-        apikey: '7174c422',
-        i: movie.imdbID,
-        type: 'series'
-      }
-    })
+    axios
+      .get('https://www.omdbapi.com', {
+        params: {
+          apikey: '7174c422',
+          i: movie.imdbID,
+          type: 'series'
+        }
+      })
       .then(res => {
         generateSeasons(res.data).then(show => {
           if (show.episodes.length > 0) {
@@ -68,12 +70,14 @@ const actions = {
         });
       });
   },
-  deleteShow({ commit }, ref) {
+  deleteShow({ commit }, { ref, deleteFromWatched }) {
     const uid = auth().currentUser.uid;
     const show = database().ref(`shows/${uid}/${ref}`);
     const watched = database().ref(`watched/${uid}/${ref}`);
 
-    watched.remove();
+    if (deleteFromWatched) {
+      watched.remove();
+    }
     show.remove();
   },
   updateShow({ commit, dispatch, rootState }, showId) {
@@ -81,13 +85,14 @@ const actions = {
     const uid = auth().currentUser.uid;
     const showRef = database().ref(`shows/${uid}/${showId}`);
 
-    axios.get('https://www.omdbapi.com', {
-      params: {
-        apikey: '7174c422',
-        i: imdbID,
-        type: 'series'
-      }
-    })
+    axios
+      .get('https://www.omdbapi.com', {
+        params: {
+          apikey: '7174c422',
+          i: imdbID,
+          type: 'series'
+        }
+      })
       .then(res => {
         generateSeasons(res.data).then(show => {
           showRef.update(show);
@@ -98,13 +103,13 @@ const actions = {
 };
 
 const mutations = {
-  [types.GET_MY_SHOWS](state, snapshot) {
+  [GET_MY_SHOWS](state, snapshot) {
     state.shows = snapshot;
   },
-  [types.UPDATE_FOUND_SHOWS](state, foundShows) {
+  [UPDATE_FOUND_SHOWS](state, foundShows) {
     state.foundShows = foundShows;
   },
-  [types.EMPTY_FOUND_SHOWS](state) {
+  [EMPTY_FOUND_SHOWS](state) {
     state.foundShows = [];
   }
 };

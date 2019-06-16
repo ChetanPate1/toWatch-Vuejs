@@ -1,6 +1,12 @@
 <template lang="html">
 <form name="form" v-on:submit.prevent="add(form)">
-   <div class="form-element">
+  
+  <div class="form-element" v-if="hideSeriesSelect && form.seriesRef">
+      <label for="series">Series Name</label>
+      {{ shows[form.seriesRef].Title }}
+   </div>
+
+   <div class="form-element" v-if="!hideSeriesSelect">
       <label for="series">Series Name</label>
       <span class="dripicons-chevron-down"></span>
       <select name="series" v-model="form.seriesRef" @change="form.season = ''; form.episode = ''">
@@ -61,7 +67,8 @@ export default {
     };
   },
   props: {
-    shows: Object
+    shows: Object,
+    hideSeriesSelect: Boolean
   },
   computed: {
     ...mapActions(["addToWatchlist"])

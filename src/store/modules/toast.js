@@ -1,4 +1,4 @@
-import * as types from '../mutation-types';
+import { TOAST_MESSAGE, TOAST_DISMISS } from '../mutation-types';
 
 const state = {
   toasts: []
@@ -23,10 +23,10 @@ const actions = {
 };
 
 const mutations = {
-  [types.TOAST_MESSAGE](state, toast) {
+  [TOAST_MESSAGE](state, toast) {
     state.toasts.push({ ...toast, show: true });
   },
-  [types.TOAST_DISMISS](state, timestamp) {
+  [TOAST_DISMISS](state, timestamp) {
     state.toasts.map(toast => {
       if (toast.timestamp === timestamp) {
         toast.show = false;

@@ -1,4 +1,4 @@
-import * as types from '../mutation-types';
+import { SIGN_IN_USER, SIGN_OUT_USER } from '../mutation-types';
 import { auth } from 'firebase';
 import router from '@/router';
 
@@ -44,14 +44,14 @@ const actions = {
 };
 
 const mutations = {
-  [types.SIGN_IN_USER](state, user) {
+  [SIGN_IN_USER](state, user) {
     state.user = {
       uid: user.uid,
       email: user.email,
       isLoggedIn: true
     };
   },
-  [types.SIGN_OUT_USER](state) {
+  [SIGN_OUT_USER](state) {
     state.user = {
       uid: '',
       email: '',

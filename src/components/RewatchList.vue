@@ -8,7 +8,7 @@
       <div class="col-xs-12">
          <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Rewatch a show</button>
       </div>
-
+      
       <div class="col-xs-12 col-sm-6 fade-in"
          v-for="(item, key, index) in rewatchlist"
          v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }"

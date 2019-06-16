@@ -1,15 +1,13 @@
 import { auth, database } from 'firebase';
-import * as types from '../mutation-types';
+import { GET_REWATCHLIST, TOGGLE_REWATCHED } from '../mutation-types';
 import { initWatchlist } from '../../js/generators';
 
 const state = {
-  rewatchlist: {},
-  rewatchDetails: {}
+  rewatchlist: {}
 };
 
 const getters = {
-  rewatchlist: state => state.rewatchlist,
-  rewatchDetails: state => state.rewatchDetails
+  rewatchlist: state => state.rewatchlist
 };
 
 const actions = {
@@ -21,30 +19,39 @@ const actions = {
       commit('GET_REWATCHLIST', snapshot.val());
     });
   },
-  getRewatchDetails({ commit }, ref) {
-    const uid = auth().currentUser.uid;
-    const rewatchDetails = database().ref(`rewatchlist/${uid}/${ref}`);
-
-    rewatchDetails.on('value', snapshot => {
-      commit('GET_REWATCH_DETAILS', snapshot.val());
-    });
-  },
-  addToRewatchlist({ dispatch, rootState }, series) {
+  addToRewatchlist({ state, dispatch, rootState }, series) {
     let show = rootState.myShows.shows[series.seriesRef];
     let initSeries = initWatchlist(show, series);
     const uid = auth().currentUser.uid;
-    const ref = database().ref(`rewatchlist/${uid}`).push(initSeries);
-    dispatch("showToast", { title: "Added", message: `${show.Title} added to rewatchlist.` });
+    const ref = database().ref(`rewatchlist/${uid}`);
+    let exists = [];
 
-    ref.set(initSeries);
-    ref.update(initSeries);
+    if (state.rewatchlist) {
+      exists = Object.keys(state.rewatchlist).filter(r => state.rewatchlist[r].showId === series.seriesRef);
+    }
+
+    if (exists.length) {
+      dispatch("showToast", {
+        title: "Series already added!",
+        message: `${show.Title} is already added to your rewatchlist.`
+      });
+    } else {
+      let rewatch = ref.push(initSeries);
+      rewatch.set(initSeries);
+      rewatch.update(initSeries);
+      dispatch("showToast", { title: "Added", message: `${show.Title} added to rewatchlist.` });
+    }
+
   },
   deleteRewatchlist({ dispatch, getters }, { id, seriesRef }) {
     const uid = auth().currentUser.uid;
     const item = database().ref(`rewatchlist/${uid}/${id}`);
-    dispatch("showToast", { title: "Deleted", message: `${getters.myShows[seriesRef].Title} deleted from rewatchlist.` });
-
     item.remove();
+
+    dispatch("showToast", {
+      title: "Deleted",
+      message: `${getters.myShows[seriesRef].Title} deleted from rewatchlist.`
+    });
   },
   toggleRewatched({ rootState }, { rewatchlistId, seriesRef, episode, season }) {
     const show = rootState.myShows.shows[seriesRef];
@@ -56,18 +63,12 @@ const actions = {
 };
 
 const mutations = {
-  [types.GET_REWATCHLIST](state, snapshot) {
+  [GET_REWATCHLIST](state, snapshot) {
     state.rewatchlist = snapshot;
   },
-  [types.GET_REWATCH_DETAILS](state, snapshot) {
-    state.rewatchDetails = snapshot;
-  },
-  [types.TOGGLE_REWATCHED](state, { rewatchlistId, episodeNumber, seasonNumber }) {
+  [TOGGLE_REWATCHED](state, { rewatchlistId, episodeNumber, seasonNumber }) {
     let episodeIndex = episodeNumber - 1;
     state.rewatchlist[rewatchlistId].unwatched[`season_${seasonNumber}`][episodeIndex].watched = !state.rewatchlist[rewatchlistId].unwatched[`season_${seasonNumber}`][episodeIndex].watched;
-  },
-  [types.SET_REWATCHLIST_CURRENT_SEASON](state, { rewatchlistId, on }) {
-    state.rewatchlist[rewatchlistId].on = on;
   }
 };
 

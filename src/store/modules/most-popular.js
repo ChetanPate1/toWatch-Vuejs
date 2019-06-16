@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as types from '../mutation-types';
+import { SET_MOST_POPULAR_SHOWS } from '../mutation-types';
 
 const state = {
   shows: []
@@ -19,7 +19,7 @@ const actions = {
 };
 
 const mutations = {
-  [types.SET_MOST_POPULAR_SHOWS](state, shows) {
+  [SET_MOST_POPULAR_SHOWS](state, shows) {
     state.shows = shows;
   }
 };

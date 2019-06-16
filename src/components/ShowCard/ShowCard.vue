@@ -2,9 +2,11 @@
 <div>
    <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
       <h4 class="margin-top-0 margin-bottom-10">Are you sure you want to delete this show?</h4>
-      <p class="margin-bottom-30">
-        Delete for watched aswell?
-      </p>
+      <div class="margin-bottom-30">
+        <checkbox name="checkbox" v-model="deleteFromWatched">
+            Delete for watched as well?
+         </checkbox>
+      </div>
       
       <button class="button button-sm red pull-left"
               type="button"
@@ -13,13 +15,13 @@
 
       <button class="button button-sm pull-right"
               type="button"
-              @click="$refs.confirmPopup.close('yes')">Yes
+              @click="$refs.confirmPopup.close({ answer: 'yes', deleteFromWatched })">Yes
       </button>
    </popup>
 
    <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
       <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
-      <button class="icon-button dripicons-plus" tabindex="0" @click.stop="$parent.$refs.popup.open()"></button>
+      <button class="icon-button dripicons-plus" tabindex="0" @click.stop="openAddToWatchlist()"></button>
       <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="update()"></button>
       <h2>{{ heading }}</h2>
    </div>
@@ -28,13 +30,15 @@
 
 <script>
 import Popup from "../Popup/Popup";
+import Checkbox from "../FormElements/Checkbox";
 import { mapActions } from "vuex";
 
 export default {
   name: "ShowCard",
   data() {
     return {
-      deleteOpen: false
+      deleteOpen: false,
+      deleteFromWatched: false
     };
   },
   props: {
@@ -50,16 +54,28 @@ export default {
     update() {
       this.$store.dispatch("updateShow", this.reference);
     },
+    openAddToWatchlist() {
+      this.$parent.$refs.popup.open();
+      this.$parent.$refs.addToWatchlist.form = {
+        seriesRef: this.reference,
+        episode: "",
+        season: ""
+      };
+    },
     confirmDelete() {
       this.$refs.confirmPopup.open().then(result => {
-        if (result) {
-          this.$store.dispatch("deleteShow", this.reference);
+        if (result.answer) {
+          this.$store.dispatch("deleteShow", {
+            ref: this.reference,
+            deleteFromWatched: result.deleteFromWatched
+          });
         }
       });
     }
   },
   components: {
-    Popup
+    Popup,
+    Checkbox
   }
 };
 </script>

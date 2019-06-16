@@ -1,5 +1,5 @@
 import { auth, database } from 'firebase';
-import * as types from '../mutation-types';
+import { GET_WATCHED_MOVIES, GET_MOVIE_DETAILS, UPDATE_FOUND_MOVIES, EMPTY_FOUND_MOVIES } from '../mutation-types';
 import axios from 'axios';
 
 const state = {
@@ -53,14 +53,15 @@ const actions = {
       return;
     }
 
-    axios.get('https://www.omdbapi.com', {
-      params: {
-        apikey: '7174c422',
-        plot: 'full',
-        t: movie.split(',')[0],
-        y: movie.split(',')[1]
-      }
-    })
+    axios
+      .get('https://www.omdbapi.com', {
+        params: {
+          apikey: '7174c422',
+          plot: 'full',
+          t: movie.split(',')[0],
+          y: movie.split(',')[1]
+        }
+      })
       .then(function (response) {
         let array = [];
         let posterUrl = response.data.Poster;
@@ -74,11 +75,16 @@ const actions = {
   emptyFoundMovies({ commit }) {
     commit('EMPTY_FOUND_MOVIES');
   },
-  deleteMovie({ commit }, ref) {
+  deleteMovie({ commit, dispatch }, ref) {
     const uid = auth().currentUser.uid;
     const movie = database().ref(`watchedMovies/${uid}/${ref}`);
 
     movie.remove();
+
+    dispatch("showToast", {
+      title: "Deleted",
+      message: 'Movie Deleted'
+    });
   },
   getMovieDetails({ commit }, ref) {
     const uid = auth().currentUser.uid;
@@ -91,16 +97,16 @@ const actions = {
 };
 
 const mutations = {
-  [types.GET_WATCHED_MOVIES](state, snapshot) {
+  [GET_WATCHED_MOVIES](state, snapshot) {
     state.watchedMovies = snapshot;
   },
-  [types.GET_MOVIE_DETAILS](state, snapshot) {
+  [GET_MOVIE_DETAILS](state, snapshot) {
     state.movieDetails = snapshot;
   },
-  [types.UPDATE_FOUND_MOVIES](state, movies) {
+  [UPDATE_FOUND_MOVIES](state, movies) {
     state.foundMovies = movies;
   },
-  [types.EMPTY_FOUND_MOVIES](state) {
+  [EMPTY_FOUND_MOVIES](state) {
     state.foundMovies = [];
   }
 };

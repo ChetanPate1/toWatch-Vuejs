@@ -1,5 +1,5 @@
 import { auth, database } from 'firebase';
-import * as types from '../mutation-types';
+import { GET_WATCHED } from '../mutation-types';
 
 const state = {
   watched: {}
@@ -21,7 +21,7 @@ const actions = {
 };
 
 const mutations = {
-  [types.GET_WATCHED](state, snapshot) {
+  [GET_WATCHED](state, snapshot) {
     state.watched = snapshot;
   }
 };

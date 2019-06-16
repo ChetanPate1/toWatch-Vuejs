@@ -1,5 +1,5 @@
 import { auth, database } from 'firebase';
-import * as types from '../mutation-types';
+import { GET_WATCHLIST } from '../mutation-types';
 import { initWatchlist } from '../../js/generators';
 
 const state = {
@@ -23,11 +23,32 @@ const actions = {
     const show = rootState.myShows.shows[series.seriesRef];
     const initSeries = initWatchlist(show, series);
     const uid = auth().currentUser.uid;
-    const ref = database().ref(`watchlist/${uid}`).push(initSeries);
-    dispatch("showToast", { title: "Added", message: `${show.Title} added to watchlist.` });
+    const ref = database().ref(`watchlist/${uid}`);
+    let exists = [];
 
-    ref.set(initSeries);
-    ref.update(initSeries);
+    ref.on('value', snapshot => {
+      const w = snapshot.val();
+
+      if (w) {
+        exists = Object.keys(w).filter(v => w[v].showId === series.seriesRef);
+      }
+
+      if (exists.length) {
+        dispatch("showToast", {
+          title: "Series already added!",
+          message: `${show.Title} is already added to your watchlist.`
+        });
+      } else {
+        const watchlist = ref.push(initSeries);
+        watchlist.set(initSeries);
+        watchlist.update(initSeries);
+
+        dispatch("showToast", {
+          title: "Added",
+          message: `${show.Title} added to watchlist.`
+        });
+      }
+    });
   },
   updatedWatched({ state, rootState }, watchlistId) {
     const watchlistItem = state.watchlist[watchlistId];
@@ -42,12 +63,16 @@ const actions = {
 
     ref.update(watched);
   },
-  deleteWatchlist({ dispatch, getters }, { id, seriesRef }) {
+  deleteWatchlist({ dispatch, rootState }, { id, seriesRef }) {
     const uid = auth().currentUser.uid;
     const watchlistItem = database().ref(`watchlist/${uid}/${id}`);
-    dispatch("showToast", { title: "Deleted", message: `${getters.myShows[seriesRef].Title} deleted from watchlist.` });
 
     watchlistItem.remove();
+
+    dispatch("showToast", {
+      title: "Deleted",
+      message: `${rootState.myShows.shows[seriesRef].Title} deleted from watchlist.`
+    });
   },
   toggleWatched({ dispatch, rootState }, { watchlistId, seriesRef, episode, season }) {
     const show = rootState.myShows.shows[seriesRef];
@@ -62,7 +87,7 @@ const actions = {
 }
 
 const mutations = {
-  [types.GET_WATCHLIST](state, snapshot) {
+  [GET_WATCHLIST](state, snapshot) {
     state.watchlist = snapshot;
   }
 };

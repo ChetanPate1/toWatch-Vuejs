@@ -40,8 +40,7 @@ export default {
   data() {
     return {
       today: new Date().getTime(),
-      noContentMessage: "Your watch list is empty!",
-      popupOpen: false
+      noContentMessage: "Your watch list is empty!"
     };
   },
   computed: {
