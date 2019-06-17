@@ -1,9 +1,9 @@
-.watchlist-card{
+.watchlist-card {
   position: relative;
   overflow: hidden;
   display: block;
   margin: 0 auto 25px auto;
-  max-width: 320px;
+  max-width: 300px;
   height: 500px;
   background-color: #f8f8f8;
   border-radius: 15px;
@@ -13,16 +13,16 @@
   background-repeat: no-repeat;
   box-shadow: inset 0 200px 150px rgba(0, 0, 0, 0.4), 0 20px 40px -10px rgba(0, 0, 0, 0.7);
 
-  h2{
-    font-size: 35px;
-    margin-bottom: 0;
+  h2 {
+    font-size: 30px;
+    margin-bottom: 7px;
   }
 
-  h5{
+  h5 {
     font-size: 12px;
   }
 
-  h4{
+  h4 {
     font-size: 20px;
     color: #ffffff;
     margin: 0px 0 10px 0;
@@ -30,7 +30,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.26);
   }
 
-  h6{
+  h6 {
     z-index: 20;
     position: absolute;
     bottom: 60px;
@@ -43,39 +43,39 @@
     text-transform: uppercase;
     background-color: rgba(0, 0, 0, 0.2);
 
-    small{
+    small {
       text-transform: none;
       color: inherit;
     }
   }
 
-  h2, h5{
+  h2,
+  h5 {
     z-index: 10;
     font-weight: bold;
     position: relative;
     color: #ffffff;
   }
 
-  @media(max-width: 767px){
-    h2{
+  @media (max-width: 767px) {
+    h2 {
       font-size: 25px;
     }
-    h4{
+    h4 {
       font-size: 15px;
     }
   }
 }
 
-
-.watchlist-card{
-  .more-button{
+.watchlist-card {
+  .more-button {
     z-index: 300;
     position: absolute;
     top: 10px;
     right: 15px;
   }
 
-  .slide-out-panel{
+  .slide-out-panel {
     padding-top: 50px;
     position: absolute;
     z-index: 200;
@@ -83,10 +83,10 @@
     left: 0;
   }
 
-  .tab-panels{
+  .tab-panels {
     height: 340px;
 
-    .button.red{
+    .button.red {
       width: 90%;
       display: block;
       margin: 25px auto 10px auto;
@@ -94,36 +94,35 @@
   }
 }
 
-.watchlist-card{
-   &:hover{
-      cursor: pointer;
-   }
+.watchlist-card {
+  &:hover {
+    cursor: pointer;
+  }
 
-   &:focus{
-      .icon-button{
-         transform: translate(0, 0);
-      }
-   }
+  &:focus {
+    .icon-button {
+      transform: translate(0, 0);
+    }
+  }
 
-   .icon-button{
-      z-index: 100;
-      position: absolute;
+  .icon-button {
+    z-index: 100;
+    position: absolute;
+  }
 
-   }
+  .dripicons-trash {
+    left: 15px;
+    top: 15px;
+    transition: 250ms all ease;
+    transform: translate(-45px, 0);
+  }
 
-   .dripicons-trash{
-      left: 15px;
-      top: 15px;
-      transition: 250ms all ease;
-      transform: translate(-45px, 0);
-   }
+  .icon-button {
+    z-index: 100;
+    position: absolute;
 
-   .icon-button{
-      z-index: 100;
-      position: absolute;
-
-      &:focus{
-         transform: translate(0, 0);
-      }
-   }
+    &:focus {
+      transform: translate(0, 0);
+    }
+  }
 }

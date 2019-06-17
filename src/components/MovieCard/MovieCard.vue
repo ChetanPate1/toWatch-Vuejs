@@ -27,87 +27,89 @@
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
+import Popup from "../Popup/Popup";
 
 export default {
-   name: 'MovieCard',
-   data() {
-      return {
-         deleteOpen: false
-      }
-   },
-   props: {
-      heading: String,
-      imgSrc: String,
-      reference: String,
-      deleteable: Boolean
-   },
-   methods: {
-      goToMovieDetails(reference){
-         this.$router.push({ name: 'movieDetails', params: { reference }})
-      },
-      confirmDelete(){
-         this.$refs.confirmPopup.open().then((result) => {
-            if(result == 'yes'){
-               this.$store.dispatch('deleteMovie', this.reference);
-            }
-         });
-      }
-   },
-   components: {
-      Popup
-   }
-}
+  name: "MovieCard",
+  data() {
+    return {
+      deleteOpen: false
+    };
+  },
+  props: {
+    heading: String,
+    imgSrc: String,
+    reference: String,
+    deleteable: Boolean
+  },
+  methods: {
+    goToMovieDetails(reference) {
+      this.$router.push({ name: "movieDetails", params: { reference } });
+    },
+    confirmDelete() {
+      this.$refs.confirmPopup.open().then(result => {
+        if (result == "yes") {
+          this.$store.dispatch("deleteMovie", this.reference);
+        }
+      });
+    }
+  },
+  components: {
+    Popup
+  }
+};
 </script>
 
 <style lang="scss">
-.movie-card{
-   overflow: hidden;
-   position: relative;
-   display: block;
-   margin: 0 auto 60px auto;
-   max-width: 210px;
-   height: 320px;
-   border-radius: 0;
-   padding: 20px 15px 0 15px;
-   background-color: #000000;
-   background-position: center center;
-   background-size: cover;
-   background-repeat: no-repeat;
-   box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+.movie-card {
+  overflow: hidden;
+  position: relative;
+  display: block;
+  margin: 0 auto 60px auto;
+  max-width: 210px;
+  height: 320px;
+  border-radius: 10px;
+  padding: 20px 15px 0 15px;
+  background-color: #000000;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2),
+    0 20px 40px -10px rgba(0, 0, 0, 0.7);
 
-   &.deleteable{
-      &:hover, &:focus{
-         cursor: pointer;
-         .icon-button{
-            transform: translate(0, 0);
-         }
+  &.deleteable {
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      .icon-button {
+        transform: translate(0, 0);
       }
-   }
+    }
+  }
 
-   h2{
-      font-size: 22px;
-      z-index: 10;
-      font-weight: bold;
-      position: relative;
-      z-index: 10;
-      color: #ffffff;
-   }
+  h2 {
+    font-size: 22px;
+    z-index: 10;
+    font-weight: bold;
+    position: relative;
+    z-index: 10;
+    color: #ffffff;
+  }
 
-   .dripicons-trash{
-      left: 15px;
-      top: 15px;
-      transition: 250ms all ease;
-      transform: translate(-45px, 0);
-   }
+  .dripicons-trash {
+    left: 15px;
+    top: 15px;
+    transition: 250ms all ease;
+    transform: translate(-45px, 0);
+  }
 
-   .icon-button{
-      z-index: 100;
-      position: absolute;
+  .icon-button {
+    z-index: 100;
+    position: absolute;
 
-      &:focus{
-         transform: translate(0, 0);
-      }
-   }
+    &:focus {
+      transform: translate(0, 0);
+    }
+  }
 }
 </style>

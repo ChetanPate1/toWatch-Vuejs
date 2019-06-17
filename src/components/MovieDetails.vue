@@ -120,6 +120,7 @@ export default {
 
       .runtime {
         font-size: 12px;
+        margin-right: 5px;
       }
     }
 

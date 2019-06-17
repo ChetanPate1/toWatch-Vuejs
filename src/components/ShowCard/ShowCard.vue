@@ -88,7 +88,7 @@ export default {
   margin: 0 auto 60px auto;
   max-width: 210px;
   height: 320px;
-  border-radius: 0;
+  border-radius: 10px;
   padding: 20px 15px 0 15px;
   background-color: #000000;
   background-position: center center;
