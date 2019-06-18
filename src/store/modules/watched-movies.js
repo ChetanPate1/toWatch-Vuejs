@@ -75,7 +75,7 @@ const actions = {
   emptyFoundMovies({ commit }) {
     commit('EMPTY_FOUND_MOVIES');
   },
-  deleteMovie({ commit, dispatch }, ref) {
+  deleteMovie({ dispatch }, ref) {
     const uid = auth().currentUser.uid;
     const movie = database().ref(`watchedMovies/${uid}/${ref}`);
 

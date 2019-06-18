@@ -1,6 +1,10 @@
 <template lang="html">
 <form v-on:submit.prevent="findShow">
    <div class="form-element search">
+     <button type="button" class="dripicons-cross"
+         @click="empty"
+         v-if="foundShows.length">
+      </button>
       <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
       <input class="show-search" type="text" name="showName" v-model="form.showName">
 
@@ -58,6 +62,9 @@ export default {
     },
     findShow() {
       this.$store.dispatch("searchForShow", this.form);
+    },
+    empty() {
+      this.$store.dispatch("emptyFoundShows");
     }
   }
 };

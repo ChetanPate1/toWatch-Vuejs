@@ -29,7 +29,6 @@ export function timeNow() {
 
 export function isFutureTime(date) {
     date = parseInt(date, 0);
-    let delta = Math.abs((date - timeNow())) / 1000;
 
     return date - timeNow() < 0;
 }

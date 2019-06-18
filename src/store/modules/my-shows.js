@@ -80,7 +80,7 @@ const actions = {
     }
     show.remove();
   },
-  updateShow({ commit, dispatch, rootState }, showId) {
+  updateShow({ dispatch, rootState }, showId) {
     const { imdbID, Title } = rootState.myShows.shows[showId];
     const uid = auth().currentUser.uid;
     const showRef = database().ref(`shows/${uid}/${showId}`);
@@ -99,6 +99,9 @@ const actions = {
           dispatch("showToast", { title: "Updated", message: `${Title} episode have been updated.` });
         });
       });
+  },
+  emptyFoundShows({ commit }) {
+    commit('EMPTY_FOUND_SHOWS');
   }
 };
 
