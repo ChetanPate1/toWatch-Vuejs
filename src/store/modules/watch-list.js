@@ -19,15 +19,15 @@ const actions = {
       commit('GET_WATCHLIST', snapshot.val());
     });
   },
-  addToWatchlist({ dispatch, rootState }, series) {
+  addToWatchlist({ dispatch, rootState, getters }, series) {
     const show = rootState.myShows.shows[series.seriesRef];
     const initSeries = initWatchlist(show, series);
     const uid = auth().currentUser.uid;
     const ref = database().ref(`watchlist/${uid}`);
     let exists = [];
 
-    ref.on('value', snapshot => {
-      const w = snapshot.val();
+    dispatch('getWatchlist').then(() => {
+      const w = getters.watchlist;
 
       if (w) {
         exists = Object.keys(w).filter(v => w[v].showId === series.seriesRef);
