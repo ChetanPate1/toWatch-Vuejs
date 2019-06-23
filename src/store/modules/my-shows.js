@@ -74,10 +74,29 @@ const actions = {
     const uid = auth().currentUser.uid;
     const show = database().ref(`shows/${uid}/${ref}`);
     const watched = database().ref(`watched/${uid}/${ref}`);
+    const watchlist = database().ref(`watchlist/${uid}`);
+    const rewatchlist = database().ref(`rewatchlist/${uid}`);
 
     if (deleteFromWatched) {
       watched.remove();
     }
+
+    watchlist.on('value', snapshot => {
+      const list = snapshot.val();
+      const exists = Object.keys(list).filter(i => list[i].showId === ref);
+      if (exists.length) {
+        database().ref(`watchlist/${uid}/${exists[0]}`).remove();
+      }
+    });
+
+    rewatchlist.on('value', snapshot => {
+      const list = snapshot.val();
+      const exists = Object.keys(list).filter(i => list[i].showId === ref);
+      if (exists.length) {
+        database().ref(`rewatchlist/${uid}/${exists[0]}`).remove();
+      }
+    });
+
     show.remove();
   },
   updateShow({ dispatch, rootState }, showId) {

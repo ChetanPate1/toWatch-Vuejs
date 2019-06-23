@@ -12,9 +12,9 @@
          </div>
       </div>
 
-      <div class="container-fluid">
+      <div class="container-fluid fade-in">
          <div class="row show-layout">
-            <div class="col-xs-6 col-sm-3 col-md-2 fade-in" v-for="(show, key, index) in myShows">
+            <div class="col-xs-6 col-sm-3 col-md-2" v-for="(show, key, index) in myShows">
                <show-card
                   :heading="show.Title"
                   :img-src="show.Poster"

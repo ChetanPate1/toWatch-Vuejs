@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="container-fluid">
+<div class="container-fluid fade-in">
    <div class="row margin-bottom-20">
       <div class="col-xs-12">
          <search-movies></search-movies>

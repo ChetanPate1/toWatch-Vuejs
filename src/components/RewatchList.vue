@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="container-fluid">
+<div class="container-fluid fade-in">
    <popup :title="'Add To Rewatch List'" :size="'md'" ref="popup">
       <add-to-rewatchlist :shows="myShows"></add-to-rewatchlist>
    </popup>
@@ -9,7 +9,7 @@
          <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Rewatch a show</button>
       </div>
       
-      <div class="col-sm-6 col-md-3 fade-in"
+      <div class="col-sm-6 col-md-3"
          v-for="(item, key, index) in rewatchlist"
          :key="index">
 
