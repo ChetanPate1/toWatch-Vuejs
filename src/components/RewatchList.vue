@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="container" v-bind:class="{'container-lg' : listSize() > 3 }">
+<div class="container-fluid">
    <popup :title="'Add To Rewatch List'" :size="'md'" ref="popup">
       <add-to-rewatchlist :shows="myShows"></add-to-rewatchlist>
    </popup>
@@ -9,9 +9,8 @@
          <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Rewatch a show</button>
       </div>
       
-      <div class="col-xs-12 col-sm-6 fade-in"
+      <div class="col-sm-6 col-md-3 fade-in"
          v-for="(item, key, index) in rewatchlist"
-         v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }"
          :key="index">
 
          <rewatchlist-card
@@ -33,7 +32,6 @@ import NoContent from "./NoContent/NoContent";
 import Popup from "./Popup/Popup";
 import AddToRewatchlist from "./AddToRewatchlist/AddToRewatchlist";
 
-import { objSize, sortSeasons } from "../js/helper-functions";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -54,9 +52,6 @@ export default {
     });
   },
   methods: {
-    listSize() {
-      return objSize(this.rewatchlist);
-    },
     concatSubHeading(on) {
       return `Season ${on.season} Episode ${on.episode}`;
     }
@@ -69,6 +64,3 @@ export default {
   }
 };
 </script>
-
-<style lang="css">
-</style>

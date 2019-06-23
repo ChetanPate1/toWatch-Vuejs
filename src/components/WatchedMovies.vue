@@ -6,8 +6,8 @@
       </div>
    </div>
 
-   <div class="row">
-      <div class="col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies">
+   <div class="row show-layout">
+      <div class="col-xs-6 col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies">
          <movie-card
             :heading="movie.Title"
             :img-src="movie.Poster"
@@ -23,37 +23,33 @@
 </template>
 
 <script>
-import SearchMovies from './SearchMovies/SearchMovies';
-import MovieCard from './MovieCard/MovieCard';
-import ShowTableRow from './ShowTable/ShowTableRow';
-import NoContent from './NoContent/NoContent';
-import { mapGetters, mapActions } from 'vuex';
+import SearchMovies from "./SearchMovies/SearchMovies";
+import MovieCard from "./MovieCard/MovieCard";
+import ShowTableRow from "./ShowTable/ShowTableRow";
+import NoContent from "./NoContent/NoContent";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: 'WatchedMovies',
-   data() {
-      return {
-         noContentMessage: 'Your watched movies list is empty!'
-      }
-   },
-   computed: {
-      ...mapGetters([
-         'watchedMovies',
-      ]),
-      ...mapActions([
-         'getWatchedMovies'
-      ])
-   },
-   mounted() {
-      this.$store.dispatch('getWatchedMovies');
-   },
-   components: {
-      SearchMovies,
-      MovieCard,
-      ShowTableRow,
-      NoContent
-   }
-}
+  name: "WatchedMovies",
+  data() {
+    return {
+      noContentMessage: "Your watched movies list is empty!"
+    };
+  },
+  computed: {
+    ...mapGetters(["watchedMovies"]),
+    ...mapActions(["getWatchedMovies"])
+  },
+  mounted() {
+    this.$store.dispatch("getWatchedMovies");
+  },
+  components: {
+    SearchMovies,
+    MovieCard,
+    ShowTableRow,
+    NoContent
+  }
+};
 </script>
 
 <style lang="scss"></style>

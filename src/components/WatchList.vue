@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="container" v-bind:class="{'container-lg' : listSize() > 3 }">
+<div class="container-fluid">
    <popup :title="'Add To Watch List'" :size="'md'" ref="popup">
       <add-to-watchlist :shows="myShows"></add-to-watchlist>
    </popup>
@@ -9,8 +9,7 @@
          <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Track a show</button>
       </div>
 
-      <div class="col-xs-12 col-sm-6 fade-in" v-for="(item, key, index) in watchlist"
-           v-bind:class="{'col-md-3' : listSize() > 3, 'col-md-4' : listSize() < 3 }" :key="index">
+      <div class="col-xs-12 col-sm-6 col-md-3 fade-in" v-for="(item, key, index) in watchlist" :key="index">
          <watchlist-card
             :heading="myShows[item.showId].Title"
             :sub-heading="concatSubHeading(item)"
@@ -32,7 +31,6 @@ import NoContent from "./NoContent/NoContent";
 import Popup from "./Popup/Popup";
 import AddToWatchlist from "./AddToWatchlist/AddToWatchlist";
 import { initWatchlist } from "../js/generators";
-import { objSize } from "../js/helper-functions";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -53,9 +51,6 @@ export default {
     });
   },
   methods: {
-    listSize() {
-      return objSize(this.watchlist);
-    },
     concatSubHeading(item) {
       return `Season ${item.on.season} Episode ${item.on.episode}`;
     },
