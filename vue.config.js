@@ -12,4 +12,3 @@ module.exports = {
         ? './'
         : '/'
 }
-//./ for electron production
