@@ -14,8 +14,8 @@ export default {
 .show-table-row{
    display: inline-block;
    width: 100%;
-   background-color: $navbar-colour;
-   color: #989898;
+   background-color: $shade-1;
+   color: #d1d1d1;
    border-radius: 6px;
    padding: 8px 20px;
    margin-bottom: 10px;
