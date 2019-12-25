@@ -14,9 +14,11 @@ export default {
 .show-table-head{
    display: inline-block;
    width: 100%;
-   padding: 0 20px;
+   padding: 10px;
    font-size: 12px;
    color: #dcdcdc;
+   border-radius: 6px;
+   background-color: $body-color;
 
    @for $i from 1 through 12 {
       .col-xs-#{$i}{

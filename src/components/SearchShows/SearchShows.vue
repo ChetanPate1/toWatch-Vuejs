@@ -1,6 +1,6 @@
 <template lang="html">
 <form v-on:submit.prevent="findShow">
-   <div class="form-element search">
+   <div class="form-element search dark">
      <button type="button" class="dripicons-cross"
          @click="empty"
          v-if="foundShows.length">

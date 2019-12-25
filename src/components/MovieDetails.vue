@@ -1,6 +1,5 @@
 <template lang="html">
 <div class="container-fluid">
-
    <div class="poster-xl-bg-container">
       <div class="container fade-in">
          <div class="row">
@@ -8,7 +7,7 @@
                <div class="movie-details">
                   <div class="col-sm-12">
                      <h1>{{ movieDetails.Title }} <span class="runtime">{{ movieDetails.Runtime }}</span> <span class="year">{{ movieDetails.Year }}</span></h1>
-                     <h4>{{ movieDetails.Genre }}</h4>
+                     <h4 class="genre">{{ movieDetails.Genre }}</h4>
                   </div>
 
                   <div class="col-sm-6 col-md-5">
@@ -27,8 +26,9 @@
             </div>
          </div>
       </div>
-
+      <div class="poster-gradient"></div>
       <img class="poster-background" v-bind:class="{ 'enter' : showPoster }" v-bind:src="movieDetails.PosterXL" />
+      
    </div>
 </div>
 </template>
@@ -59,29 +59,36 @@ export default {
 </script>
 
 <style lang="scss">
-.poster-xl-bg-container {
-  position: relative;
-  min-height: 1270px;
-  width: 100%;
-
-  &:after {
+.poster-gradient {
     position: absolute;
-    content: "";
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     z-index: 10;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    content: '';
     background: linear-gradient(
       to top,
       $body-color 40%,
       rgba(255, 255, 255, 0) 100%
     );
+}
+
+.poster-xl-bg-container {
+  position: relative;
+  min-height: 1270px;
+  width: 100%;
+  z-index: 100;
+
+  .container{
+    position: relative;
+    z-index: 100;
   }
 
   .poster-background {
     position: absolute;
-    z-index: 5;
+    z-index: 1;
     top: 0;
     left: 0;
     right: 0;
@@ -99,12 +106,11 @@ export default {
   }
 
   .movie-details {
-    position: relative;
-    z-index: 100;
     margin-top: 100px;
 
     h1 {
       color: #ffffff;
+      max-width: 22ch;
 
       .year {
         position: relative;
@@ -137,12 +143,17 @@ export default {
       color: #e0e0e0;
       line-height: 1.8;
     }
+
+
+    .genre{
+      color: $base-color;
+    }
   }
+
 
   .ratings {
     position: relative;
     color: #ffffff;
-    z-index: 100;
 
     .rating {
       h4 {
@@ -151,4 +162,5 @@ export default {
     }
   }
 }
+
 </style>

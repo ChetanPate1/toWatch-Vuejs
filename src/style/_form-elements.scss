@@ -71,8 +71,6 @@
     margin: 0 auto 20px auto;
 
     input {
-      color: #b1b1b1;
-      background-color: #000000;
       padding-left: 40px;
       padding-right: 40px;
 
@@ -92,6 +90,13 @@
       float: none;
       min-width: auto;
       width: 100%;
+    }
+  }
+
+  &.dark {
+    input {
+      color: #b1b1b1;
+      background-color: #000000;
     }
   }
 

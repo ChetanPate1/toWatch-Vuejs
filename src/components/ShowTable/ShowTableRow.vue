@@ -14,12 +14,11 @@ export default {
 .show-table-row{
    display: inline-block;
    width: 100%;
-   background-color: $shade-1;
    color: #d1d1d1;
-   border-radius: 6px;
-   padding: 8px 20px;
-   margin-bottom: 10px;
-   box-shadow: 0 8px 40px -10px rgba(0, 0, 0, 0.6);
+   padding: 8px 10px;
+   margin-top: -1px;
+   border-bottom: 1px solid $body-color; 
+   vertical-align: middle;
 
    @for $i from 1 through 12 {
       .col-xs-#{$i}{
