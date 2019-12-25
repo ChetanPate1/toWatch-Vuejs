@@ -1,9 +1,9 @@
 <template>
-   <button class="tab-button"
-      type="button"
-      name="button"
-      :class="{ 'active' : active }" >{{ name }}
-   </button>
+<button class="tab-button"
+   type="button"
+   name="button"
+   :class="{ 'active' : active }" >{{ name }}
+</button>
 </template>
 
 <script>

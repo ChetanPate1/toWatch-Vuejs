@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <div
-      class="panel-row"
-      v-for="episode in season.episodes"
-      :key="episode.Episode"
-      :class="{ 'disabled' : !episode.watched }"
-    >
-      <div class="col-70">Episode {{ episode.Episode }}</div>
-      <div class="col-30" @click="watched(episode.Episode, season.season)">
-        <span class="dripicons-preview" :class="{ 'active' : episode.watched }"></span>
-      </div>
+<div>
+  <div
+    class="panel-row"
+    v-for="episode in season.episodes"
+    :key="episode.Episode"
+    :class="{ 'disabled' : !episode.watched }"
+  >
+    <div class="col-70">Episode {{ episode.Episode }}</div>
+    <div class="col-30" @click="watched(episode.Episode, season.season)">
+      <span class="dripicons-preview" :class="{ 'active' : episode.watched }"></span>
     </div>
   </div>
+</div>
 </template>
 
 <script>

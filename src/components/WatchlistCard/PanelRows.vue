@@ -1,23 +1,23 @@
 <template>
-  <div>
-    <div
-      class="panel-row"
-      v-for="episode in season.episodes"
-      :key="episode.Episode"
-      :class="{ 'disabled' : !episode.watched }"
-    >
-      <div class="col-35">
-        <span class="aired-by">
-          <i class="dripicons-feed"></i>
-          {{ aired(episode.Released).by }}
-        </span>
-      </div>
-      <div class="col-45">Episode {{ episode.Episode }}</div>
-      <div class="col-20" @click="watched(episode.Episode, season.season)">
-        <span class="dripicons-preview" :class="{ 'active' : episode.watched }"></span>
-      </div>
+<div>
+  <div
+    class="panel-row"
+    v-for="episode in season.episodes"
+    :key="episode.Episode"
+    :class="{ 'disabled' : !episode.watched }"
+  >
+    <div class="col-35">
+      <span class="aired-by">
+        <i class="dripicons-feed"></i>
+        {{ aired(episode.Released).by }}
+      </span>
+    </div>
+    <div class="col-45">Episode {{ episode.Episode }}</div>
+    <div class="col-20" @click="watched(episode.Episode, season.season)">
+      <span class="dripicons-preview" :class="{ 'active' : episode.watched }"></span>
     </div>
   </div>
+</div>
 </template>
 
 <script>

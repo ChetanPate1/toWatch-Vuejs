@@ -1,16 +1,15 @@
 <template lang="html">
-   <div class="popup-background" v-bind:class="{ 'open': popupOpen }" @click="close('dismiss')">
-      <div class="popup-content" @click.stop>
-         <h4 class="popup-title">{{ title }}</h4>
-         <button class="close-button" @click.stop="close('dismiss')" type="button">
-            <span class="dripicons-cross"></span>
-         </button>
-         <div class="popup-container">
-            <slot></slot>
-         </div>
-
+  <div class="popup-background" v-bind:class="{ 'open': popupOpen }" @click="close('dismiss')">
+    <div class="popup-content" @click.stop>
+      <h4 class="popup-title">{{ title }}</h4>
+      <button class="close-button" @click.stop="close('dismiss')" type="button">
+        <span class="dripicons-cross"></span>
+      </button>
+      <div class="popup-container">
+        <slot></slot>
       </div>
-   </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,30 +1,30 @@
 <template lang="html">
 <div>
-   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-      <h4 class="margin-top-0 margin-bottom-10">Are you sure you want to delete this show?</h4>
-      <div class="margin-bottom-30">
-        <checkbox name="checkbox" v-model="deleteFromWatched">
-            Delete for watched as well?
-         </checkbox>
-      </div>
-      
-      <button class="button button-sm red pull-left"
-              type="button"
-              @click="$refs.confirmPopup.close('cancel')">Cancel
-      </button>
+  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+    <h4 class="margin-top-0 margin-bottom-10">Are you sure you want to delete this show?</h4>
+    <div class="margin-bottom-30">
+      <checkbox name="checkbox" v-model="deleteFromWatched">
+          Delete for watched as well?
+        </checkbox>
+    </div>
+    
+    <button class="button button-sm red pull-left"
+            type="button"
+            @click="$refs.confirmPopup.close('cancel')">Cancel
+    </button>
 
-      <button class="button button-sm pull-right"
-              type="button"
-              @click="$refs.confirmPopup.close({ answer: 'yes', deleteFromWatched })">Yes
-      </button>
-   </popup>
+    <button class="button button-sm pull-right"
+            type="button"
+            @click="$refs.confirmPopup.close({ answer: 'yes', deleteFromWatched })">Yes
+    </button>
+  </popup>
 
-   <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-      <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
-      <button class="icon-button dripicons-plus" tabindex="0" @click.stop="openAddToWatchlist()"></button>
-      <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="update()"></button>
-      <h2>{{ heading }}</h2>
-   </div>
+  <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+    <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
+    <button class="icon-button dripicons-plus" tabindex="0" @click.stop="openAddToWatchlist()"></button>
+    <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="update()"></button>
+    <h2>{{ heading }}</h2>
+  </div>
 </div>
 </template>
 

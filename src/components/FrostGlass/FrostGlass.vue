@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="glass">
-     <slot></slot>
-     <div class="frost" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }"></div>
+    <slot></slot>
+    <div class="frost" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }"></div>
   </div>
 </template>
 

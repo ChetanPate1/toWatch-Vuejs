@@ -1,49 +1,49 @@
 <template lang="html">
-   <div class="container fade-in">
-     <card>
-        <show-table>
-          <show-table-head>
-              <div class="col-xs-1">
-                #
-              </div>
-              <div class="col-xs-4 col-sm-3">
-                Series
-              </div>
-              <div class="col-xs-4 hidden-xs">
-                Title
-              </div>
-              <div class="col-xs-4 col-sm-2">
-                On
-              </div>
-              <div class="col-xs-3 col-sm-2">
-                Progress
-              </div>
-          </show-table-head>
-          <show-table-row v-for="(item, key, index) in watched" :key="index">
-              <div class="col-xs-1">
-                {{ index + 1 }}
-              </div>
-              <div class="col-xs-4 col-sm-3">
-                {{ item.show }}
-              </div>
-              <div class="col-xs-4 hidden-xs">
-                {{ item.on.name }}
-              </div>
-              <div class="col-xs-4 col-sm-2">
-                <span v-if="progress(item) !== '100%'">{{ concatSubHeading(item.on) }}</span>
-                <span class="status green" v-if="progress(item) === '100%'">Complete</span>
-              </div>
-              <div class="col-xs-3 col-sm-2">
-              <div class="progress-container">
-                <div class="progress"
-                  v-bind:style="{ 'width': progress(item) }"></div>
-              </div>
-              </div>
-          </show-table-row>
-        </show-table>
-      </card>
-      <no-content :message="noContentMessage" :condition="!watched"></no-content>
-   </div>
+  <div class="container fade-in">
+    <card>
+      <show-table>
+        <show-table-head>
+            <div class="col-xs-1">
+              #
+            </div>
+            <div class="col-xs-4 col-sm-3">
+              Series
+            </div>
+            <div class="col-xs-4 hidden-xs">
+              Title
+            </div>
+            <div class="col-xs-4 col-sm-2">
+              On
+            </div>
+            <div class="col-xs-3 col-sm-2">
+              Progress
+            </div>
+        </show-table-head>
+        <show-table-row v-for="(item, key, index) in watched" :key="index">
+            <div class="col-xs-1">
+              {{ index + 1 }}
+            </div>
+            <div class="col-xs-4 col-sm-3">
+              {{ item.show }}
+            </div>
+            <div class="col-xs-4 hidden-xs">
+              {{ item.on.name }}
+            </div>
+            <div class="col-xs-4 col-sm-2">
+              <span v-if="progress(item) !== '100%'">{{ concatSubHeading(item.on) }}</span>
+              <span class="status green" v-if="progress(item) === '100%'">Complete</span>
+            </div>
+            <div class="col-xs-3 col-sm-2">
+            <div class="progress-container">
+              <div class="progress"
+                v-bind:style="{ 'width': progress(item) }"></div>
+            </div>
+            </div>
+        </show-table-row>
+      </show-table>
+    </card>
+    <no-content :message="noContentMessage" :condition="!watched"></no-content>
+  </div>
 </template>
 
 <script>

@@ -1,12 +1,12 @@
 <template>
 <div>
-   <div class="tabs">
-      <slot name="tab-buttons"></slot>
-   </div>
+  <div class="tabs">
+    <slot name="tab-buttons"></slot>
+  </div>
 
-   <div class="tab-panels">
-      <slot name="tab-panels-container"></slot>
-   </div>
+  <div class="tab-panels">
+    <slot name="tab-panels-container"></slot>
+  </div>
 </div>
 </template>
 

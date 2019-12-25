@@ -1,33 +1,33 @@
 <template lang="html">
 <form v-on:submit.prevent="findShow">
-   <div class="form-element search dark">
-      <button type="button" class="dripicons-cross"
-         @click="empty"
-         v-if="foundMovies.length">
-      </button>
-      <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
-      <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
-      <button type="submit" class="dripicons-search"
-         :disabled="sendStatus.disableButton">
-      </button>
+  <div class="form-element search dark">
+    <button type="button" class="dripicons-cross"
+        @click="empty"
+        v-if="foundMovies.length">
+    </button>
+    <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
+    <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
+    <button type="submit" class="dripicons-search"
+        :disabled="sendStatus.disableButton">
+    </button>
 
-      <div class="search-results" v-bind:class="{'show' : foundMovies }">
-         <div class="search-result" v-for="movie in foundMovies">
-            <img class="underlay-image" v-bind:src="movie.Poster">
-            <div class="col-xs-4">
-               <img class="poster img-responsive" v-bind:src="movie.Poster" >
-            </div>
-            <div class="col-xs-8">
-               <h3>{{ movie.Title }}</h3>
-               <p>{{ movie.Plot }}</p>
-               <button class="button pull-right" type="button"
-                  @click="addMovie(movie)"
-                  :disabled="sendStatus.disableButton">Add to Collection
-               </button>
-            </div>
-         </div>
-      </div>
-   </div>
+    <div class="search-results" v-bind:class="{'show' : foundMovies }">
+        <div class="search-result" v-for="movie in foundMovies">
+          <img class="underlay-image" v-bind:src="movie.Poster">
+          <div class="col-xs-4">
+              <img class="poster img-responsive" v-bind:src="movie.Poster" >
+          </div>
+          <div class="col-xs-8">
+              <h3>{{ movie.Title }}</h3>
+              <p>{{ movie.Plot }}</p>
+              <button class="button pull-right" type="button"
+                @click="addMovie(movie)"
+                :disabled="sendStatus.disableButton">Add to Collection
+              </button>
+          </div>
+        </div>
+    </div>
+  </div>
 </form>
 </template>
 

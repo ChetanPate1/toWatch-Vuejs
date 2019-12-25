@@ -1,7 +1,7 @@
 <template lang="html">
-   <div class="no-content" v-bind:class="{ 'show': condition }">
-      <h1>{{ message }}</h1>
-   </div>
+<div class="no-content" v-bind:class="{ 'show': condition }">
+   <h1>{{ message }}</h1>
+</div>
 </template>
 
 <script>

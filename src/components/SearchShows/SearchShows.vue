@@ -1,22 +1,22 @@
 <template lang="html">
 <form v-on:submit.prevent="findShow">
-   <div class="form-element search dark">
-     <button type="button" class="dripicons-cross"
-         @click="empty"
-         v-if="foundShows.length">
-      </button>
-      <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
-      <input class="show-search" type="text" name="showName" v-model="form.showName">
+  <div class="form-element search dark">
+    <button type="button" class="dripicons-cross"
+        @click="empty"
+        v-if="foundShows.length">
+    </button>
+    <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
+    <input class="show-search" type="text" name="showName" v-model="form.showName">
 
-      <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
+    <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
-      <div class="search-results" v-bind:class="{'show' : foundShows }">
-         <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show)">
-            <div class="number">{{ index + 1 }}.</div>
-            <div class="name">{{ show.Title }}</div>
-         </div>
-      </div>
-   </div>
+    <div class="search-results" v-bind:class="{'show' : foundShows }">
+        <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show)">
+          <div class="number">{{ index + 1 }}.</div>
+          <div class="name">{{ show.Title }}</div>
+        </div>
+    </div>
+  </div>
 </form>
 </template>
 

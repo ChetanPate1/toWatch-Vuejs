@@ -1,35 +1,34 @@
 <template lang="html">
 <div class="container-fluid">
-   <div class="poster-xl-bg-container">
-      <div class="container fade-in">
-         <div class="row">
-            <div class="col-xs-12">
-               <div class="movie-details">
-                  <div class="col-sm-12">
-                     <h1>{{ movieDetails.Title }} <span class="runtime">{{ movieDetails.Runtime }}</span> <span class="year">{{ movieDetails.Year }}</span></h1>
-                     <h4 class="genre">{{ movieDetails.Genre }}</h4>
-                  </div>
+  <div class="poster-xl-bg-container">
+    <div class="container fade-in">
+        <div class="row">
+          <div class="col-xs-12">
+              <div class="movie-details">
+                <div class="col-sm-12">
+                  <h1>{{ movieDetails.Title }} <span class="runtime">{{ movieDetails.Runtime }}</span> <span class="year">{{ movieDetails.Year }}</span></h1>
+                  <h4 class="genre">{{ movieDetails.Genre }}</h4>
+                </div>
 
-                  <div class="col-sm-6 col-md-5">
-                     <p>{{ movieDetails.Plot }}</p>
-                  </div>
-               </div>
-            </div>
-         </div>
+                <div class="col-sm-6 col-md-5">
+                  <p>{{ movieDetails.Plot }}</p>
+                </div>
+              </div>
+          </div>
+        </div>
 
-         <div class="row ratings margin-top-50">
-            <div class="col-xs-4" v-for="item in movieDetails.Ratings">
-               <div class="rating">
-                  <p>{{ item.Source }}</p>
-                  <h4>{{ item.Value }}</h4>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="poster-gradient"></div>
-      <img class="poster-background" v-bind:class="{ 'enter' : showPoster }" v-bind:src="movieDetails.PosterXL" />
-      
-   </div>
+        <div class="row ratings margin-top-50">
+          <div class="col-xs-4" v-for="item in movieDetails.Ratings">
+              <div class="rating">
+                <p>{{ item.Source }}</p>
+                <h4>{{ item.Value }}</h4>
+              </div>
+          </div>
+        </div>
+    </div>
+    <div class="poster-gradient"></div>
+    <img class="poster-background" v-bind:class="{ 'enter' : showPoster }" v-bind:src="movieDetails.PosterXL" />
+  </div>
 </div>
 </template>
 

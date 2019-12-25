@@ -1,24 +1,24 @@
 <template lang="html">
 <div class="container-fluid fade-in">
-   <div class="row margin-bottom-20">
-      <div class="col-xs-12">
-         <search-movies></search-movies>
-      </div>
-   </div>
+  <div class="row margin-bottom-20">
+    <div class="col-xs-12">
+      <search-movies></search-movies>
+    </div>
+  </div>
 
-   <div class="row show-layout">
-      <div class="col-xs-6 col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies">
-         <movie-card
-            :heading="movie.Title"
-            :img-src="movie.Poster"
-            :shows="watchedMovies"
-            :reference="key"
-            :key="index"
-            :deleteable="true">
-         </movie-card>
-      </div>
-      <no-content :message="noContentMessage" :condition="!watchedMovies"></no-content>
-   </div>
+  <div class="row show-layout">
+    <div class="col-xs-6 col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies">
+      <movie-card
+        :heading="movie.Title"
+        :img-src="movie.Poster"
+        :shows="watchedMovies"
+        :reference="key"
+        :key="index"
+        :deleteable="true">
+      </movie-card>
+    </div>
+    <no-content :message="noContentMessage" :condition="!watchedMovies"></no-content>
+  </div>
 </div>
 </template>
 

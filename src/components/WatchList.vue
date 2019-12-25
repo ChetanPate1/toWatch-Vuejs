@@ -1,27 +1,27 @@
 <template lang="html">
 <div class="container-fluid fade-in">
-   <popup :title="'Add To Watch List'" :size="'md'" ref="popup">
-      <add-to-watchlist :shows="myShows"></add-to-watchlist>
-   </popup>
+  <popup :title="'Add To Watch List'" :size="'md'" ref="popup">
+    <add-to-watchlist :shows="myShows"></add-to-watchlist>
+  </popup>
 
-   <div class="row">
-      <div class="col-xs-12">
-         <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Track a show</button>
-      </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Track a show</button>
+    </div>
 
-      <div class="col-xs-12 col-sm-6 col-md-3" v-for="(item, key, index) in watchlist" :key="index">
-         <watchlist-card
-            :heading="myShows[item.showId].Title"
-            :sub-heading="concatSubHeading(item)"
-            :details="item.on.name"
-            :id="key"
-            :watchlist="item"
-            :next-aired="nextAired(item)"
-            :img-src="myShows[item.showId].Poster">
-         </watchlist-card>
-      </div>
-      <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
-   </div>
+    <div class="col-xs-12 col-sm-6 col-md-3" v-for="(item, key, index) in watchlist" :key="index">
+      <watchlist-card
+        :heading="myShows[item.showId].Title"
+        :sub-heading="concatSubHeading(item)"
+        :details="item.on.name"
+        :id="key"
+        :watchlist="item"
+        :next-aired="nextAired(item)"
+        :img-src="myShows[item.showId].Poster">
+      </watchlist-card>
+    </div>
+    <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
+  </div>
 </div>
 </template>
 

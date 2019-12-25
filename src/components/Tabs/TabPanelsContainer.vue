@@ -1,7 +1,7 @@
 <template lang="html">
-   <div class="tab-panels-container" v-bind:style="{ 'width': panelsWidth, 'transform': moveTo() }" ref="panels_container">
-      <slot></slot>
-   </div>
+<div class="tab-panels-container" v-bind:style="{ 'width': panelsWidth, 'transform': moveTo() }" ref="panels_container">
+   <slot></slot>
+</div>
 </template>
 
 <script>
