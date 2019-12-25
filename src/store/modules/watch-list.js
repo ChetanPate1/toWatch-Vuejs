@@ -34,8 +34,8 @@ const actions = {
       }
 
       if (exists.length) {
-        dispatch("showToast", {
-          title: "Series already added!",
+        dispatch('showToast', {
+          title: 'Series already added!',
           message: `${show.Title} is already added to your watchlist.`
         });
       } else {
@@ -43,8 +43,8 @@ const actions = {
         watchlist.set(initSeries);
         watchlist.update(initSeries);
 
-        dispatch("showToast", {
-          title: "Added",
+        dispatch('showToast', {
+          title: 'Added',
           message: `${show.Title} added to watchlist.`
         });
       }
@@ -69,8 +69,8 @@ const actions = {
 
     watchlistItem.remove();
 
-    dispatch("showToast", {
-      title: "Deleted",
+    dispatch('showToast', {
+      title: 'Deleted',
       message: `${rootState.myShows.shows[seriesRef].Title} deleted from watchlist.`
     });
   },

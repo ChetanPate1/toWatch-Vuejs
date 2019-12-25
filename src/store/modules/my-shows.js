@@ -21,7 +21,7 @@ const actions = {
       commit('GET_MY_SHOWS', snapshot.val());
     });
   },
-  searchForShow({ commit }, { type, showName }) {
+  searchForShow({ commit, dispatch }, { type, showName }) {
     axios
       .get('https://www.omdbapi.com', {
         params: {
@@ -31,6 +31,13 @@ const actions = {
         }
       })
       .then(res => {
+        if(res.data.Error) {
+          return dispatch('showToast', {
+            title: 'Not Found',
+            message: 'Show could not be found.'
+          });
+        }
+
         commit('UPDATE_FOUND_SHOWS', res.data.Search);
       });
   },
@@ -43,8 +50,8 @@ const actions = {
 
       commit('EMPTY_FOUND_SHOWS');
 
-      return dispatch("showToast", {
-        title: "Already Added!",
+      return dispatch('showToast', {
+        title: 'Already Added!',
         message: `${rootState.myShows.shows[id].Title} already added to my shows.`
       });
     }
@@ -115,7 +122,7 @@ const actions = {
       .then(res => {
         generateSeasons(res.data).then(show => {
           showRef.update(show);
-          dispatch("showToast", { title: "Updated", message: `${Title} episode have been updated.` });
+          dispatch('showToast', { title: 'Updated', message: `${Title} episode have been updated.` });
         });
       });
   },

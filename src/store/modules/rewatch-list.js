@@ -31,15 +31,15 @@ const actions = {
     }
 
     if (exists.length) {
-      dispatch("showToast", {
-        title: "Series already added!",
+      dispatch('showToast', {
+        title: 'Series already added!',
         message: `${show.Title} is already added to your rewatchlist.`
       });
     } else {
       let rewatch = ref.push(initSeries);
       rewatch.set(initSeries);
       rewatch.update(initSeries);
-      dispatch("showToast", { title: "Added", message: `${show.Title} added to rewatchlist.` });
+      dispatch('showToast', { title: 'Added', message: `${show.Title} added to rewatchlist.` });
     }
 
   },
@@ -48,8 +48,8 @@ const actions = {
     const item = database().ref(`rewatchlist/${uid}/${id}`);
     item.remove();
 
-    dispatch("showToast", {
-      title: "Deleted",
+    dispatch('showToast', {
+      title: 'Deleted',
       message: `${getters.myShows[seriesRef].Title} deleted from rewatchlist.`
     });
   },

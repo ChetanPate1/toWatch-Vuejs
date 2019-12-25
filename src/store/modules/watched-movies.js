@@ -37,8 +37,8 @@ const actions = {
 
       commit('EMPTY_FOUND_MOVIES');
 
-      return dispatch("showToast", {
-        title: "Already Added!",
+      return dispatch('showToast', {
+        title: 'Already Added!',
         message: `${rootState.watchedMovies.watchedMovies[id].Title} already added to watch movies.`
       });
     }
@@ -48,7 +48,7 @@ const actions = {
     ref.update(movie);
     commit('EMPTY_FOUND_MOVIES');
   },
-  findMovies({ commit }, movie) {
+  findMovies({ commit, dispatch }, movie) {
     if (!movie) {
       return;
     }
@@ -63,6 +63,14 @@ const actions = {
         }
       })
       .then(function (response) {
+        if(response.data.Error) {
+          dispatch('showToast', {
+            title: 'Not Found',
+            message: 'Movie could not be found.'
+          });
+          return;
+        }
+
         let array = [];
         let posterUrl = response.data.Poster;
         let poster = posterUrl.substring(0, posterUrl.length - 7);
@@ -81,8 +89,8 @@ const actions = {
 
     movie.remove();
 
-    dispatch("showToast", {
-      title: "Deleted",
+    dispatch('showToast', {
+      title: 'Deleted',
       message: 'Movie Deleted'
     });
   },
