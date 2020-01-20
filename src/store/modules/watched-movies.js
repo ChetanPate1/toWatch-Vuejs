@@ -28,6 +28,13 @@ const actions = {
     let posterUrl = poster.substring(0, poster.length - 7);
     movie.Poster = posterUrl + '210.jpg';
     movie.PosterXL = posterUrl + '720.jpg';
+    
+    if (!rootState.watchedMovies.watchedMovies) {
+      const ref = database().ref(`watchedMovies/${uid}`).push(movie);
+      ref.set(movie);
+      ref.update(movie);
+      return commit('EMPTY_FOUND_MOVIES');
+    }
 
     const alreadyAdded = Object.keys(rootState.watchedMovies.watchedMovies).filter(id =>
       rootState.watchedMovies.watchedMovies[id].imdbID === movie.imdbID);

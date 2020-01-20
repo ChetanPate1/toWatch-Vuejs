@@ -7,7 +7,7 @@
   </div>
 
   <div class="row show-layout">
-    <div class="col-xs-6 col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies">
+    <div class="col-xs-6 col-sm-3 col-md-2" v-for="(movie, key, index) in watchedMovies" :key="index">
       <movie-card
         :heading="movie.Title"
         :img-src="movie.Poster"
@@ -25,7 +25,6 @@
 <script>
 import SearchMovies from "./SearchMovies/SearchMovies";
 import MovieCard from "./MovieCard/MovieCard";
-import ShowTableRow from "./ShowTable/ShowTableRow";
 import NoContent from "./NoContent/NoContent";
 import { mapGetters, mapActions } from "vuex";
 
@@ -46,7 +45,6 @@ export default {
   components: {
     SearchMovies,
     MovieCard,
-    ShowTableRow,
     NoContent
   }
 };

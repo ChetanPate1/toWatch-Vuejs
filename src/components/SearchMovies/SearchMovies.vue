@@ -12,7 +12,7 @@
     </button>
 
     <div class="search-results" v-bind:class="{'show' : foundMovies }">
-        <div class="search-result" v-for="movie in foundMovies">
+        <div class="search-result" v-for="(movie, index) in foundMovies" :key="index">
           <img class="underlay-image" v-bind:src="movie.Poster">
           <div class="col-xs-4">
               <img class="poster img-responsive" v-bind:src="movie.Poster" >

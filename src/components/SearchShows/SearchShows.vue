@@ -11,7 +11,7 @@
     <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
     <div class="search-results" v-bind:class="{'show' : foundShows }">
-        <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show)">
+        <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show)" :key="index">
           <div class="number">{{ index + 1 }}.</div>
           <div class="name">{{ show.Title }}</div>
         </div>
