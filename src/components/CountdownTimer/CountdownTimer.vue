@@ -17,17 +17,17 @@
 
 <script>
 export default {
-  name: "CountdownTimer",
+  name: 'CountdownTimer',
   props: {
     to: Number
   },
   data() {
     return {
       counter: {
-        d: { val: "00", name: "days" },
-        h: { val: "00", name: "hours" },
-        m: { val: "00", name: "mins" },
-        s: { val: "00", name: "secs" }
+        d: { val: '00', name: 'days' },
+        h: { val: '00', name: 'hours' },
+        m: { val: '00', name: 'mins' },
+        s: { val: '00', name: 'secs' }
       },
       inSeconds: {
         now: function() {
@@ -67,19 +67,19 @@ export default {
     },
     prettifyTime(time) {
       let prettifiedTime = {};
-      let names = ["day", "hour", "min", "sec"],
+      let names = ['day', 'hour', 'min', 'sec'],
         i = 0;
       for (i; i < 4; i++) {
         let prop = names[i].charAt(0);
         prettifiedTime[prop] = {
           name: names[i],
-          val: "0" + time[i]
+          val: '0' + time[i]
         };
         if (time[i] > 1 && time[i] < 10) {
-          prettifiedTime[prop] = { name: names[i] + "s", val: "0" + time[i] };
+          prettifiedTime[prop] = { name: names[i] + 's', val: '0' + time[i] };
         }
         if (time[i] > 9) {
-          prettifiedTime[prop] = { name: names[i] + "s", val: "" + time[i] };
+          prettifiedTime[prop] = { name: names[i] + 's', val: '' + time[i] };
         }
       }
       this.counter = prettifiedTime;

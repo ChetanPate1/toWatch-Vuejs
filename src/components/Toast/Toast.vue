@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "Toast",
+  name: 'Toast',
   props: {
     title: String,
     message: String,
@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     dismiss() {
-      this.$store.dispatch("toastDismiss");
+      this.$store.dispatch('toastDismiss');
     }
   }
 };

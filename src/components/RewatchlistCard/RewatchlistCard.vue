@@ -59,20 +59,20 @@
 </template>
 
 <script>
-import Popup from "../Popup/Popup";
-import SlideOutPanel from "../SlideOutPanel/SlideOutPanel";
-import BehindCountButton from "../BehindCountButton/BehindCountButton";
+import Popup from '../Popup/Popup';
+import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
+import BehindCountButton from '../BehindCountButton/BehindCountButton';
 
-import Tabs from "../Tabs/Tabs";
-import TabButton from "../Tabs/TabButton";
-import TabPanel from "../Tabs/TabPanel";
-import TabPanelsContainer from "../Tabs/TabPanelsContainer";
+import Tabs from '../Tabs/Tabs';
+import TabButton from '../Tabs/TabButton';
+import TabPanel from '../Tabs/TabPanel';
+import TabPanelsContainer from '../Tabs/TabPanelsContainer';
 
-import PanelRows from "./PanelRows";
-import FrostGlass from "../FrostGlass/FrostGlass";
+import PanelRows from './PanelRows';
+import FrostGlass from '../FrostGlass/FrostGlass';
 
 export default {
-  name: "RewatchlistCard",
+  name: 'RewatchlistCard',
   props: {
     heading: String,
     details: String,
@@ -96,8 +96,8 @@ export default {
     },
     confirmDelete(id, seriesRef) {
       this.$refs.confirmPopup.open().then(result => {
-        if (result == "yes") {
-          this.$store.dispatch("deleteRewatchlist", { id, seriesRef });
+        if (result == 'yes') {
+          this.$store.dispatch('deleteRewatchlist', { id, seriesRef });
         }
       });
     },

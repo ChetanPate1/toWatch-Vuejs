@@ -47,31 +47,31 @@
 </template>
 
 <script>
-import ShowTable from "./ShowTable/ShowTable";
-import ShowTableHead from "./ShowTable/ShowTableHead";
-import ShowTableRow from "./ShowTable/ShowTableRow";
-import NoContent from "./NoContent/NoContent";
-import Card from "./Card/Card";
+import ShowTable from './ShowTable/ShowTable';
+import ShowTableHead from './ShowTable/ShowTableHead';
+import ShowTableRow from './ShowTable/ShowTableRow';
+import NoContent from './NoContent/NoContent';
+import Card from './Card/Card';
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "Watched",
+  name: 'Watched',
   data() {
     return {
-      noContentMessage: "You haven't watched any shows yet!",
+      noContentMessage: 'You haven\'t watched any shows yet!',
       statusClasses: {
-        Running: "green",
-        Ended: "red"
+        Running: 'green',
+        Ended: 'red'
       }
     };
   },
   computed: {
-    ...mapGetters(["watched"]),
-    ...mapActions(["getWatched"])
+    ...mapGetters(['watched']),
+    ...mapActions(['getWatched'])
   },
   mounted() {
-    this.$store.dispatch("getWatched");
+    this.$store.dispatch('getWatched');
   },
   methods: {
     concatSubHeading(on) {

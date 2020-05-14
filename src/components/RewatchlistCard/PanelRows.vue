@@ -15,22 +15,22 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
-  name: "PanelRows",
+  name: 'PanelRows',
   props: {
     rewatchlistId: String,
     rewatchlistItem: Object,
     season: Object
   },
   methods: {
-    ...mapActions(["toggleRewatched"]),
+    ...mapActions(['toggleRewatched']),
     watched(episode, season) {
       let seriesRef = this.rewatchlistItem.showId;
       let rewatchlistId = this.rewatchlistId;
 
-      this.$store.dispatch("toggleRewatched", {
+      this.$store.dispatch('toggleRewatched', {
         rewatchlistId,
         seriesRef,
         episode,

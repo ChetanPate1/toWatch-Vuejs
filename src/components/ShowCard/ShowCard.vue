@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import Popup from "../Popup/Popup";
-import Checkbox from "../FormElements/Checkbox";
-import { mapActions } from "vuex";
+import Popup from '../Popup/Popup';
+import Checkbox from '../FormElements/Checkbox';
+import { mapActions } from 'vuex';
 
 export default {
-  name: "ShowCard",
+  name: 'ShowCard',
   data() {
     return {
       deleteOpen: false,
@@ -44,30 +44,30 @@ export default {
   props: {
     heading: String,
     imgSrc: String,
-    reference: String,
+    id: String,
+    showId: String,
     deleteable: Boolean
   },
   computed: {
-    ...mapActions(["updateShow"])
+    ...mapActions(['updateShow'])
   },
   methods: {
     update() {
-      this.$store.dispatch("updateShow", this.reference);
+      // this.$store.dispatch("updateShow", this.reference);
     },
     openAddToWatchlist() {
       this.$parent.$refs.popup.open();
       this.$parent.$refs.addToWatchlist.form = {
         seriesRef: this.reference,
-        episode: "",
-        season: ""
+        episode: '',
+        season: ''
       };
     },
     confirmDelete() {
       this.$refs.confirmPopup.open().then(result => {
         if (result.answer) {
-          this.$store.dispatch("deleteShow", {
-            ref: this.reference,
-            deleteFromWatched: result.deleteFromWatched
+          this.$store.dispatch('deleteShow', {
+            id: this.id
           });
         }
       });

@@ -32,30 +32,30 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "SearchMovies",
+  name: 'SearchMovies',
   data() {
     return {
-      name: "",
+      name: '',
       sendStatus: {
         disableButton: false,
         loader: false,
-        validation: ""
+        validation: ''
       }
     };
   },
   computed: {
-    ...mapGetters(["foundMovies"]),
-    ...mapActions(["findMovies", "saveMovie", "emptyFoundMovies"])
+    ...mapGetters(['foundMovies']),
+    ...mapActions(['findMovies', 'saveMovie', 'emptyFoundMovies'])
   },
   methods: {
     addMovie(movie) {
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch("saveMovie", movie).then(() => {
-        this.name = "";
+      this.$store.dispatch('saveMovie', movie).then(() => {
+        this.name = '';
         setTimeout(() => {
           this.sendStatus.disableButton = false;
         }, 1000);
@@ -64,12 +64,12 @@ export default {
     findShow() {
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch("findMovies", this.name).then(() => {
+      this.$store.dispatch('findMovies', this.name).then(() => {
         this.sendStatus.disableButton = false;
       });
     },
     empty() {
-      this.$store.dispatch("emptyFoundMovies");
+      this.$store.dispatch('emptyFoundMovies');
     }
   }
 };

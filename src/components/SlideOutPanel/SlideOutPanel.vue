@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import Tabs from '../Tabs/Tabs';
-
 export default {
    name: 'SlideOutPanel',
    props: {

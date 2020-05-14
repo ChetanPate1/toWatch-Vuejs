@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "Popup",
+  name: 'Popup',
   data() {
     return {
       popupOpen: false

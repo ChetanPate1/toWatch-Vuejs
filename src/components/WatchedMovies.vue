@@ -23,24 +23,24 @@
 </template>
 
 <script>
-import SearchMovies from "./SearchMovies/SearchMovies";
-import MovieCard from "./MovieCard/MovieCard";
-import NoContent from "./NoContent/NoContent";
-import { mapGetters, mapActions } from "vuex";
+import SearchMovies from './SearchMovies/SearchMovies';
+import MovieCard from './MovieCard/MovieCard';
+import NoContent from './NoContent/NoContent';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "WatchedMovies",
+  name: 'WatchedMovies',
   data() {
     return {
-      noContentMessage: "Your watched movies list is empty!"
+      noContentMessage: 'Your watched movies list is empty!'
     };
   },
   computed: {
-    ...mapGetters(["watchedMovies"]),
-    ...mapActions(["getWatchedMovies"])
+    ...mapGetters(['watchedMovies']),
+    ...mapActions(['getWatchedMovies'])
   },
   mounted() {
-    this.$store.dispatch("getWatchedMovies");
+    this.$store.dispatch('getWatchedMovies');
   },
   components: {
     SearchMovies,

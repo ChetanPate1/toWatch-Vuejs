@@ -14,17 +14,17 @@
 </template>
 
 <script>
-import ShowCard from "./ShowCard/ShowCard";
-import { mapGetters, mapActions } from "vuex";
+import ShowCard from './ShowCard/ShowCard';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "MostPopular",
+  name: 'MostPopular',
   computed: {
-    ...mapActions(["getMostPopularShows"]),
-    ...mapGetters(["mostPopularShows"])
+    ...mapActions(['getMostPopularShows']),
+    ...mapGetters(['mostPopularShows'])
   },
   mounted() {
-    this.$store.dispatch("getMostPopularShows");
+    this.$store.dispatch('getMostPopularShows');
   },
   methods: {
     limit(array, limit) {

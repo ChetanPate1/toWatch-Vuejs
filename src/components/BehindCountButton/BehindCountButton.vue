@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "BehindCountButton",
+  name: 'BehindCountButton',
   data() {
     return {
       now: new Date().getTime()
@@ -34,7 +34,7 @@ export default {
         });
       }
 
-      return count > 0 ? "-" + count : count;
+      return count > 0 ? '-' + count : count;
     }
   }
 };

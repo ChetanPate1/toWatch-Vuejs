@@ -14,8 +14,8 @@
 
 <script>
 export default {
-  name: "Checkbox",
-  props: ["value", "name", "type"],
+  name: 'Checkbox',
+  props: ['value', 'name', 'type'],
   data() {
     return {
       model: this.value

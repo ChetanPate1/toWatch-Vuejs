@@ -1,66 +1,76 @@
-import { SIGN_IN_USER, SIGN_OUT_USER } from '../mutation-types';
-import { auth } from 'firebase';
+import axios from '../../http';
+import { UPDATE_USER, SIGN_OUT_USER } from '../mutation-types';
+
 import router from '@/router';
 
 const state = {
   user: {
-    uid: '',
-    email: '',
-    isLoggedIn: false
+    email: ''
   }
 };
 
 const getters = {
-  user: state => state.user
+  user: state => state.user,
+  token: () => {
+    const token = localStorage.getItem('token');
+  
+    if (!token || token == 'null') {
+      return null;
+    }
+    
+    return token;
+  }
 };
 
 const actions = {
-  signUserIn({ commit }, cred) {
-    auth()
-      .signInWithEmailAndPassword(cred.email, cred.password)
-      .then(user => {
-        commit('SIGN_IN_USER', user);
-        router.push('my-shows');
+  async signUserIn({ commit }, data) {
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: '/login',
+        data
       });
+
+      localStorage.setItem('token', res.data.token);
+      commit('UPDATE_USER', data);
+      
+      router.push({ name: 'myShows' });
+    } catch (error) {
+      console.log(error);
+    }
   },
   signUserOut({ commit }) {
-    auth()
-      .signOut()
-      .then(() => {
-        commit('SIGN_OUT_USER');
-      });
+    localStorage.setItem('token', null);
+    router.push({ name: 'login' });
+    commit('SIGN_OUT_USER');
   },
-  getCurrentUser({ commit }) {
-    auth()
-      .onAuthStateChanged(user => {
-        if (user) {
-          commit('SIGN_IN_USER', user);
-        } else {
-          commit('SIGN_OUT_USER', user);
-          router.push('login');
-        }
+  async getCurrentUser({ commit }) {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: '/user'
       });
+
+      commit('UPDATE_USER', res.data);
+    } catch (error) {
+      commit('UPDATE_USER', {});
+    } 
   }
 };
 
 const mutations = {
-  [SIGN_IN_USER](state, user) {
-    state.user = {
-      uid: user.uid,
-      email: user.email,
-      isLoggedIn: true
-    };
+  [UPDATE_USER](state, user) {
+    state.user.email = user.email;
   },
   [SIGN_OUT_USER](state) {
     state.user = {
-      uid: '',
-      email: '',
-      isLoggedIn: false
+      email: ''
     };
   }
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,

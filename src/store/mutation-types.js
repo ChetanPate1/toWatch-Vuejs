@@ -1,4 +1,4 @@
-export const SIGN_IN_USER = 'SIGN_IN_USER';
+export const UPDATE_USER = 'UPDATE_USER';
 export const SIGN_OUT_USER = 'SIGN_OUT_USER';
 
 export const SET_MOST_POPULAR_SHOWS = 'SET_MOST_POPULAR_SHOWS';

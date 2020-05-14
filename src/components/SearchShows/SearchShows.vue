@@ -21,50 +21,50 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "SearchShows",
+  name: 'SearchShows',
   data() {
     return {
       form: {
-        showName: ""
+        showName: ''
       },
       sendStatus: {
         disableButton: false,
         loader: false,
-        validation: ""
+        validation: ''
       },
       toast: {
-        content: "",
-        action: "",
+        content: '',
+        action: '',
         show: false
       }
     };
   },
   computed: {
-    ...mapGetters(["foundShows"]),
-    ...mapActions(["searchForShow"])
+    ...mapGetters(['foundShows']),
+    ...mapActions(['searchForShow'])
   },
   methods: {
     addSeries(show) {
       this.sendStatus.loader = true;
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch("saveShow", show).then(() => {
+      this.$store.dispatch('saveShow', show).then(() => {
         this.sendStatus.loader = false;
         this.sendStatus.disableButton = false;
-        this.form.showName = "";
+        this.form.showName = '';
       });
     },
     setType(type) {
       this.type = type;
     },
     findShow() {
-      this.$store.dispatch("searchForShow", this.form);
+      this.$store.dispatch('searchForShow', this.form);
     },
     empty() {
-      this.$store.dispatch("emptyFoundShows");
+      this.$store.dispatch('emptyFoundShows');
     }
   }
 };

@@ -29,54 +29,34 @@
 
 <script>
 import Card from './Card/Card';
-import { mapGetters, mapActions } from 'vuex';
 
 export default {
    name: 'Login',
    data() {
       return {
          email: '',
-         password: '',
-         validation: {
-            show: false,
-            message: 'Something went wrong'
-         }
+         password: ''
       }
    },
-   computed: {
-      ...mapActions([
-         'signUserIn'
-      ]),
-      ...mapGetters([
-         'user'
-      ])
-   },
-   mounted(){
-      if(this.user.isLoggedIn){
+   mounted() {
+      if (this.getToken()) {
          this.$router.push('my-shows');
       }
    },
    methods: {
       onLogin() {
-         this.$store.dispatch('signUserIn', {
+         this.$store.dispatch('auth/signUserIn', {
             email: this.email, password: this.password
          });
       },
-      validationMessage(error) {
-         this.validation.show = true;
-         if (error.code === 'auth/wrong-password') {
-            this.validation.message = 'Incorrect password';
-         }
-         if(error.code === 'auth/user-not-found'){
-            this.validation.message = 'User does not exist';
-         }
-         if(error.code === 'auth/email-already-in-use'){
-            this.validation.message = 'User already exists';
-         }
+      getToken() {
+         const token = localStorage.getItem('token');
 
-         setTimeout(function() {
-            this.validation.show = false;
-         }, 3000);
+         if (!token || token == 'null') {
+            return null;
+         }
+         
+         return token;
       }
    },
    components: {

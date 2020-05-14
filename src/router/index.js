@@ -9,7 +9,7 @@ import Watched from '@/components/Watched';
 import WatchedMovies from '@/components/WatchedMovies';
 import MovieDetails from '@/components/MovieDetails';
 
-import { auth } from 'firebase';
+import Store from '../store';
 
 Vue.use(Router);
 
@@ -83,18 +83,24 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    auth()
-      .onAuthStateChanged(user => {
-        if (user) {
-          next();
-        } else {
-          commit('SIGN_OUT_USER', user);
-          next({ path: 'login' });
-        }
-      });
+    if (!getToken()) {
+      Store.dispatch('auth/signUserOut');
+    }
+    
+    next();
   } else {
     next();
   }
-})
+});
+
+const getToken = () => {
+  const token = localStorage.getItem('token');
+
+  if (!token || token == 'null') {
+    return null;
+  }
+  
+  return token;
+};
 
 export default router;

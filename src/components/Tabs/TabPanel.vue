@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "TabPanel",
+  name: 'TabPanel',
   data() {
     return {
       width: 320

@@ -33,21 +33,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "MoviesDetails",
+  name: 'MoviesDetails',
   data() {
     return {
       showPoster: false
     };
   },
   computed: {
-    ...mapGetters(["movieDetails"]),
-    ...mapActions(["getMovieDetails"])
+    ...mapGetters(['movieDetails']),
+    ...mapActions(['getMovieDetails'])
   },
   mounted() {
-    this.$store.dispatch("getMovieDetails", this.$route.params.reference);
+    this.$store.dispatch('getMovieDetails', this.$route.params.reference);
 
     setTimeout(() => {
       this.showPoster = true;

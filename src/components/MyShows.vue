@@ -11,15 +11,15 @@
       </div>
     </div>
   </div>
-
+  
   <div class="container-fluid fade-in">
     <div class="row show-layout">
-      <div class="col-xs-6 col-sm-3 col-md-2" v-for="(show, key, index) in myShows">
+      <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in myShows" :key="item._id">
           <show-card
-            :heading="show.Title"
-            :img-src="show.Poster"
-            :reference="key"
-            :key="index"
+            :heading="item.show.title"
+            :img-src="item.show.poster"
+            :show-id="item.showId"
+            :id="item._id"
             :deleteable="true">
           </show-card>
       </div>
@@ -30,50 +30,49 @@
 </template>
 
 <script>
-import ShowCard from "./ShowCard/ShowCard";
-import SearchShows from "./SearchShows/SearchShows";
-import NoContent from "./NoContent/NoContent";
-import Checkbox from "./FormElements/Checkbox";
-import Popup from "./Popup/Popup";
-import AddToWatchlist from "./AddToWatchlist/AddToWatchlist";
-import { mapGetters, mapActions } from "vuex";
+import ShowCard from './ShowCard/ShowCard';
+import SearchShows from './SearchShows/SearchShows';
+import NoContent from './NoContent/NoContent';
+import Popup from './Popup/Popup';
+import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
+
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "MyShows",
+  name: 'MyShows',
   data() {
     return {
       form: {
-        seriesRef: "",
-        season: "",
-        episode: ""
+        seriesRef: '',
+        season: '',
+        episode: ''
       },
-      noContentMessage: "Your show collection is empty!"
+      noContentMessage: 'Your show collection is empty!'
     };
   },
   computed: {
-    ...mapGetters(["myShows"]),
-    ...mapActions(["getMyShows", "addToWatchlist"])
+    ...mapGetters(['myShows'])
   },
   methods: {
+    ...mapActions(['getMyShows', 'addToWatchlist']),
     add(form) {
-      this.$store.dispatch("addToWatchlist", form).then(() => {
+      this.$store.dispatch('addToWatchlist', form).then(() => {
         this.form = {
-          seriesRef: "",
-          season: "",
-          episode: ""
+          seriesRef: '',
+          season: '',
+          episode: ''
         };
         this.$parent.close();
       });
     }
   },
   mounted() {
-    this.$store.dispatch("getMyShows");
+    this.$store.dispatch('getMyShows');
   },
   components: {
     ShowCard,
     SearchShows,
     NoContent,
-    Checkbox,
     Popup,
     AddToWatchlist
   }

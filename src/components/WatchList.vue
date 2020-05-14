@@ -26,28 +26,28 @@
 </template>
 
 <script>
-import WatchlistCard from "./WatchlistCard/WatchlistCard";
-import NoContent from "./NoContent/NoContent";
-import Popup from "./Popup/Popup";
-import AddToWatchlist from "./AddToWatchlist/AddToWatchlist";
-import { initWatchlist } from "../js/generators";
-import { mapGetters, mapActions } from "vuex";
+import WatchlistCard from './WatchlistCard/WatchlistCard';
+import NoContent from './NoContent/NoContent';
+import Popup from './Popup/Popup';
+import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
+import { initWatchlist } from '../js/generators';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "WatchList",
+  name: 'WatchList',
   data() {
     return {
       today: new Date().getTime(),
-      noContentMessage: "Your watch list is empty!"
+      noContentMessage: 'Your watch list is empty!'
     };
   },
   computed: {
-    ...mapGetters(["watchlist", "myShows"]),
-    ...mapActions(["getWatchlist", "getMyShows"])
+    ...mapGetters(['watchlist', 'myShows']),
+    ...mapActions(['getWatchlist', 'getMyShows'])
   },
   mounted() {
-    this.$store.dispatch("getMyShows").then(() => {
-      this.$store.dispatch("getWatchlist");
+    this.$store.dispatch('getMyShows').then(() => {
+      this.$store.dispatch('getWatchlist');
     });
   },
   methods: {

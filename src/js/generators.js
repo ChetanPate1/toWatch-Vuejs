@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apikey = '7174c422';
+const apikey = process.env.VUE_APP_OMDB_API_KEY;
 
 export async function generateSeasons(show) {
   const total = parseInt(show.totalSeasons)

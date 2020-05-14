@@ -27,28 +27,28 @@
 </div>
 </template>
 <script>
-import RewatchlistCard from "./RewatchlistCard/RewatchlistCard";
-import NoContent from "./NoContent/NoContent";
-import Popup from "./Popup/Popup";
-import AddToRewatchlist from "./AddToRewatchlist/AddToRewatchlist";
+import RewatchlistCard from './RewatchlistCard/RewatchlistCard';
+import NoContent from './NoContent/NoContent';
+import Popup from './Popup/Popup';
+import AddToRewatchlist from './AddToRewatchlist/AddToRewatchlist';
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "RewatchList",
+  name: 'RewatchList',
   data() {
     return {
-      noContentMessage: "Your rewatch list is empty!",
+      noContentMessage: 'Your rewatch list is empty!',
       isEditMode: false
     };
   },
   computed: {
-    ...mapGetters(["rewatchlist", "myShows"]),
-    ...mapActions(["getRewatchlist", "getMyShows"])
+    ...mapGetters(['rewatchlist', 'myShows']),
+    ...mapActions(['getRewatchlist', 'getMyShows'])
   },
   mounted() {
-    this.$store.dispatch("getMyShows").then(() => {
-      this.$store.dispatch("getRewatchlist");
+    this.$store.dispatch('getMyShows').then(() => {
+      this.$store.dispatch('getRewatchlist');
     });
   },
   methods: {

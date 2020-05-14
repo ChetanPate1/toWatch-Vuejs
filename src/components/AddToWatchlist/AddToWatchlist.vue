@@ -55,37 +55,37 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "AddToWatchlist",
+  name: 'AddToWatchlist',
   data() {
     return {
       form: {
-        seriesRef: "",
-        season: "",
-        episode: ""
+        seriesRef: '',
+        season: '',
+        episode: ''
       },
       today: new Date().getTime()
     };
   },
   props: {
-    shows: Object,
+    shows: Array,
     hideSeriesSelect: Boolean
   },
   computed: {
-    ...mapActions(["addToWatchlist"])
+    ...mapActions(['addToWatchlist'])
   },
   methods: {
     add(form) {
-      this.$store.dispatch("addToWatchlist", form).then(() => {
+      this.$store.dispatch('addToWatchlist', form).then(() => {
         this.form = {
-          seriesRef: "",
-          season: "",
-          episode: ""
+          seriesRef: '',
+          season: '',
+          episode: ''
         };
         this.$parent.close();
       });
     },
     checkAired(episode) {
-      if (typeof episode === "object") {
+      if (typeof episode === 'object') {
         let date = new Date(episode.Released).getTime();
         return date - this.today < 0 || episode.number == 1;
       } else {

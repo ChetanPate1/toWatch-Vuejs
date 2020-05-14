@@ -48,13 +48,13 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-   name: "AddToRewatchlist",
+   name: 'AddToRewatchlist',
    data() {
       return {
          form: {
-            seriesRef: "",
-            season: "",
-            episode: ""
+            seriesRef: '',
+            season: '',
+            episode: ''
          },
          today: new Date().getTime()
       };
@@ -63,15 +63,15 @@ export default {
       shows: Object
    },
    computed: {
-      ...mapActions(["addToRewatchlist"])
+      ...mapActions(['addToRewatchlist'])
    },
    methods: {
       add(form) {
-         this.$store.dispatch("addToRewatchlist", form).then(() => {
+         this.$store.dispatch('addToRewatchlist', form).then(() => {
             this.form = {
-               seriesRef: "",
-               season: "",
-               episode: ""
+               seriesRef: '',
+               season: '',
+               episode: ''
             };
             this.$parent.close();
          });

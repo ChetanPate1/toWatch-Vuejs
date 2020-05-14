@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import Popup from "../Popup/Popup";
+import Popup from '../Popup/Popup';
 
 export default {
-  name: "MovieCard",
+  name: 'MovieCard',
   data() {
     return {
       deleteOpen: false
@@ -44,12 +44,12 @@ export default {
   },
   methods: {
     goToMovieDetails(reference) {
-      this.$router.push({ name: "movieDetails", params: { reference } });
+      this.$router.push({ name: 'movieDetails', params: { reference } });
     },
     confirmDelete() {
       this.$refs.confirmPopup.open().then(result => {
-        if (result == "yes") {
-          this.$store.dispatch("deleteMovie", this.reference);
+        if (result == 'yes') {
+          this.$store.dispatch('deleteMovie', this.reference);
         }
       });
     }

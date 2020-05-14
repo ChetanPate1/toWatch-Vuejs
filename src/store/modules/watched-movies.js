@@ -63,7 +63,7 @@ const actions = {
     axios
       .get('https://www.omdbapi.com', {
         params: {
-          apikey: '7174c422',
+          apikey: process.env.VUE_APP_OMDB_API_KEY,
           plot: 'full',
           t: movie.split(',')[0],
           y: movie.split(',')[1]

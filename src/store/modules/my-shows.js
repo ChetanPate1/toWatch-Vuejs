@@ -1,10 +1,11 @@
+import http from '../../http';
 import { auth, database } from 'firebase';
 import { GET_MY_SHOWS, UPDATE_FOUND_SHOWS, EMPTY_FOUND_SHOWS } from '../mutation-types';
 import axios from 'axios';
 import { generateSeasons } from '../../js/generators';
 
 const state = {
-  shows: {},
+  shows: [],
   foundShows: []
 };
 
@@ -14,97 +15,76 @@ const getters = {
 };
 
 const actions = {
-  getMyShows({ commit }) {
-    const uid = auth().currentUser.uid;
-    const myShows = database().ref(`shows/${uid}`);
-    myShows.on('value', snapshot => {
-      commit('GET_MY_SHOWS', snapshot.val());
-    });
-  },
-  searchForShow({ commit, dispatch }, { type, showName }) {
-    axios
-      .get('https://www.omdbapi.com', {
-        params: {
-          apikey: '7174c422',
-          s: showName,
-          type
-        }
-      })
-      .then(res => {
-        if(res.data.Error) {
-          return dispatch('showToast', {
-            title: 'Not Found',
-            message: 'Show could not be found.'
-          });
-        }
-
-        commit('UPDATE_FOUND_SHOWS', res.data.Search);
+  async getMyShows({ commit }) {
+    try {
+      const res = await http({
+        method: 'GET',
+        url: '/show-collection'
       });
+
+      commit('GET_MY_SHOWS', res.data);
+    } catch (error) {
+      commit('GET_MY_SHOWS', []);
+    }
   },
-  saveShow({ commit, dispatch, rootState }, movie) {
-    const alreadyAdded = Object.keys(rootState.myShows.shows).filter(id =>
-      rootState.myShows.shows[id].imdbID === movie.imdbID);
-
-    if (alreadyAdded.length) {
-      const id = alreadyAdded[0];
-
-      commit('EMPTY_FOUND_SHOWS');
-
+  async searchForShow({ commit, dispatch }, { type, showName }) {
+    const res = await axios({
+      method: 'GET',
+      url: 'https://www.omdbapi.com',
+      params: {
+        apikey: process.env.VUE_APP_OMDB_API_KEY,
+        s: showName,
+        type
+      }
+    });
+    
+    if(res.data.Error) {
       return dispatch('showToast', {
-        title: 'Already Added!',
-        message: `${rootState.myShows.shows[id].Title} already added to my shows.`
+        title: 'Not Found',
+        message: 'Show could not be found.'
       });
     }
 
-    axios
-      .get('https://www.omdbapi.com', {
-        params: {
-          apikey: '7174c422',
-          i: movie.imdbID,
-          type: 'series'
-        }
-      })
-      .then(res => {
-        generateSeasons(res.data).then(show => {
-          if (show.episodes.length > 0) {
-            const uid = auth().currentUser.uid;
-            const ref = database().ref(`shows/${uid}`).push(show);
-            ref.set(show);
-            ref.update(show);
-
-            commit('EMPTY_FOUND_SHOWS');
-          }
-        });
-      });
+    commit('UPDATE_FOUND_SHOWS', res.data.Search);
   },
-  deleteShow({ commit }, { ref, deleteFromWatched }) {
-    const uid = auth().currentUser.uid;
-    const show = database().ref(`shows/${uid}/${ref}`);
-    const watched = database().ref(`watched/${uid}/${ref}`);
-    const watchlist = database().ref(`watchlist/${uid}`);
-    const rewatchlist = database().ref(`rewatchlist/${uid}`);
+  async saveShow({ commit, dispatch, rootState }, movie) {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: 'https://www.omdbapi.com',
+        params: {
+            apikey: process.env.VUE_APP_OMDB_API_KEY,
+            i: movie.imdbID,
+            type: 'series'
+          }
+      });
 
-    if (deleteFromWatched) {
-      watched.remove();
+      const show = await http({
+        method: 'POST',
+        url: '/show-collection',
+        data
+      });
+      
+    } catch (error) {
+       dispatch('showToast', {
+        title: 'Error',
+        message: error
+      });
     }
 
-    watchlist.on('value', snapshot => {
-      const list = snapshot.val();
-      const exists = Object.keys(list).filter(i => list[i].showId === ref);
-      if (exists.length) {
-        database().ref(`watchlist/${uid}/${exists[0]}`).remove();
-      }
-    });
+    commit('EMPTY_FOUND_SHOWS');
+  },
+  async deleteShow({ dispatch }, { id }) {
+    try {
+      const { data } = await axios({
+        method: 'DELETE',
+        url: `/show-collection/${id}`
+      });
 
-    rewatchlist.on('value', snapshot => {
-      const list = snapshot.val();
-      const exists = Object.keys(list).filter(i => list[i].showId === ref);
-      if (exists.length) {
-        database().ref(`rewatchlist/${uid}/${exists[0]}`).remove();
-      }
-    });
-
-    show.remove();
+      dispatch('showToast', { title: 'Show Deleted', message: data });
+    } catch (error) {
+      dispatch('showToast', { title: 'Error', message: error });
+    }
   },
   updateShow({ dispatch, rootState }, showId) {
     const { imdbID, Title } = rootState.myShows.shows[showId];
@@ -114,7 +94,7 @@ const actions = {
     axios
       .get('https://www.omdbapi.com', {
         params: {
-          apikey: '7174c422',
+          apikey: process.env.VUE_APP_OMDB_API_KEY,
           i: imdbID,
           type: 'series'
         }
