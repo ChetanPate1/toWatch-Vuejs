@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
 
-    if (token) {
+    if (token && config.url !== process.env.VUE_APP_OMDB_API_URL) {
         config.headers['Authorization'] = `token ${token}`;
     }
 
@@ -22,8 +22,8 @@ instance.interceptors.response.use((response) => response, (error) => {
     if (response.status === 401) {
         Store.dispatch('auth/signUserOut');
     }
-    
-    return Promise.reject(error);
+
+    return Promise.reject(error.response);
 });
 
 export default instance;

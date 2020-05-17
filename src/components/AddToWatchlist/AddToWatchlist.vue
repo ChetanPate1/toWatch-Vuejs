@@ -1,17 +1,17 @@
 <template lang="html">
 <form name="form" v-on:submit.prevent="add(form)">
   
-  <div class="form-element" v-if="hideSeriesSelect && form.seriesRef">
+  <div class="form-element" v-if="hideSeriesSelect && form.showId">
     <label for="series">Series Name</label>
-    {{ shows[form.seriesRef].Title }}
+    {{ findShow(form.showId).show.title }}
   </div>
 
   <div class="form-element" v-if="!hideSeriesSelect">
     <label for="series">Series Name</label>
     <span class="dripicons-chevron-down"></span>
     <select name="series" v-model="form.seriesRef" @change="form.season = ''; form.episode = ''">
-        <option v-for="(show, key, index) in shows" v-bind:value="key">
-          {{ show.Title }}
+        <option v-for="item in shows" :value="key" :key="item._id">
+          {{ item.show.title }}
         </option>
     </select>
   </div>
@@ -19,7 +19,7 @@
   <div class="form-element" v-if="form.seriesRef">
     <label for="seasons">Seasons</label>
     <div class="select-series">
-        <div class="col-xs-3" v-for="(item, key, index) in shows[form.seriesRef].episodes">
+        <div class="col-xs-3" v-for="item in shows[form.seriesRef].episodes" :key="item._id">
           <label class="radio" v-bind:class="{'selected' : form.season >= item.season }" >
               <input type="radio" v-model="form.season" v-bind:value="item.season">{{ item.season }}
           </label>
@@ -32,7 +32,8 @@
     <label for="seasons">Episodes</label>
     <div class="select-series">
         <div class="col-xs-3" v-for="(episode, key, index) in shows[form.seriesRef].episodes[form.season - 1].episodes"
-          v-if="checkAired(episode)">
+          v-if="checkAired(episode)"
+          :key="item._id">
           <label class="radio" v-bind:class="{'selected' : form.episode >= episode.Episode }" >
               <input type="radio" v-model="form.episode" v-bind:value="episode.Episode" >
               {{ episode.Episode }}
@@ -52,7 +53,7 @@
 
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'AddToWatchlist',
@@ -91,10 +92,15 @@ export default {
       } else {
         return false;
       }
+    },
+    findShow(id) {
+      console.log(this.shows.find(item => item.show._id === id));
+      
+      return this.shows.find(item => item.show._id === id);
     }
   }
 };
 </script>
 
-<style lang="css">
+<style lang="scss">
 </style>

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './modules/auth';
 import mostPopular from './modules/most-popular';
-import myShows from './modules/my-shows';
+import showCollection from './modules/show-collection';
 import watchlist from './modules/watch-list';
 import rewatchlist from './modules/rewatch-list';
 import watched from './modules/watched';
@@ -15,7 +15,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     mostPopular,
-    myShows,
+    showCollection,
     watchlist,
     rewatchlist,
     watched,

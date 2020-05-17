@@ -21,7 +21,7 @@
 
   <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
     <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
-    <button class="icon-button dripicons-plus" tabindex="0" @click.stop="openAddToWatchlist()"></button>
+    <button class="icon-button dripicons-plus" tabindex="0" @click.stop="onAddToWatchlist()"></button>
     <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="update()"></button>
     <h2>{{ heading }}</h2>
   </div>
@@ -55,18 +55,18 @@ export default {
     update() {
       // this.$store.dispatch("updateShow", this.reference);
     },
-    openAddToWatchlist() {
-      this.$parent.$refs.popup.open();
+    onAddToWatchlist() {
       this.$parent.$refs.addToWatchlist.form = {
-        seriesRef: this.reference,
+        showId: this.showId,
         episode: '',
         season: ''
       };
+      this.$parent.$refs.popup.open();
     },
     confirmDelete() {
       this.$refs.confirmPopup.open().then(result => {
         if (result.answer) {
-          this.$store.dispatch('deleteShow', {
+          this.$store.dispatch('deleteFromShowCollection', {
             id: this.id
           });
         }

@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import NavigationBar from "./components/NavigationBar/NavigationBar";
-import Toast from "./components/Toast/Toast";
+import NavigationBar from './components/NavigationBar/NavigationBar';
+import Toast from './components/Toast/Toast';
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "app",
+  name: 'app',
   computed: {
-    ...mapGetters(["toasts"])
+    ...mapGetters(['toasts'])
   },
   components: {
     NavigationBar,

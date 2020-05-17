@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import MostPopular from '@/components/MostPopular';
 import Login from '@/components/Login';
-import MyShows from '@/components/MyShows';
+import ShowCollection from '@/components/ShowCollection';
 import WatchList from '@/components/WatchList';
 import RewatchList from '@/components/RewatchList';
 import Watched from '@/components/Watched';
@@ -27,9 +27,9 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/my-shows',
-      name: 'myShows',
-      component: MyShows,
+      path: '/show-collection',
+      name: 'showCollection',
+      component: ShowCollection,
       meta: {
         requiresAuth: true
       }

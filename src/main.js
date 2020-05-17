@@ -7,12 +7,12 @@ import store from './store';
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
 initializeApp({
-  apiKey: "AIzaSyAMCU6AWLekinzJm7Vv_dlC_AOkkKc90-c",
-  authDomain: "to-watch-dev.firebaseapp.com",
-  databaseURL: "https://to-watch-dev.firebaseio.com",
-  projectId: "to-watch-dev",
-  storageBucket: "to-watch-dev.appspot.com",
-  messagingSenderId: "208820479575"
+  apiKey: 'AIzaSyAMCU6AWLekinzJm7Vv_dlC_AOkkKc90-c',
+  authDomain: 'to-watch-dev.firebaseapp.com',
+  databaseURL: 'https://to-watch-dev.firebaseio.com',
+  projectId: 'to-watch-dev',
+  storageBucket: 'to-watch-dev.appspot.com',
+  messagingSenderId: '208820479575'
 });
 
 new Vue({

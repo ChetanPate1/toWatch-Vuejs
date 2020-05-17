@@ -23,7 +23,7 @@
             :deleteable="true">
           </show-card>
       </div>
-      <no-content :message="noContentMessage" :condition="!myShows"></no-content>
+      <no-content :message="noContentMessage" :condition="!myShows.length"></no-content>
     </div>
   </div>
 </div>
@@ -36,10 +36,8 @@ import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
 
-import { mapGetters, mapActions } from 'vuex';
-
 export default {
-  name: 'MyShows',
+  name: 'ShowCollection',
   data() {
     return {
       form: {
@@ -50,24 +48,21 @@ export default {
       noContentMessage: 'Your show collection is empty!'
     };
   },
-  computed: {
-    ...mapGetters(['myShows'])
-  },
   methods: {
-    ...mapActions(['getMyShows', 'addToWatchlist']),
-    add(form) {
-      this.$store.dispatch('addToWatchlist', form).then(() => {
-        this.form = {
-          seriesRef: '',
-          season: '',
-          episode: ''
-        };
-        this.$parent.close();
-      });
+    async add(form) {
+      await this.$store.dispatch('addToWatchlist', form);
+
+      this.form = {
+        seriesRef: '',
+        season: '',
+        episode: ''
+      };
+
+      this.$parent.close();
     }
   },
   mounted() {
-    this.$store.dispatch('getMyShows');
+    this.$store.dispatch('getShowCollection');
   },
   components: {
     ShowCard,

@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-
 export default {
   name: 'SearchShows',
   data() {
@@ -42,16 +40,12 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapGetters(['foundShows']),
-    ...mapActions(['searchForShow'])
-  },
   methods: {
     addSeries(show) {
       this.sendStatus.loader = true;
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch('saveShow', show).then(() => {
+      this.$store.dispatch('saveToShowCollection', show).then(() => {
         this.sendStatus.loader = false;
         this.sendStatus.disableButton = false;
         this.form.showName = '';

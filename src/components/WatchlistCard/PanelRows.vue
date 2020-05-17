@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
-  name: "PanelRows",
+  name: 'PanelRows',
   data() {
     return {
       timeNow: new Date().getTime()
@@ -36,12 +36,12 @@ export default {
     season: Object
   },
   methods: {
-    ...mapActions(["toggleWatched"]),
+    ...mapActions(['toggleWatched']),
     watched(episode, season) {
       let seriesRef = this.watchlistItem.showId;
       let watchlistId = this.watchlistId;
 
-      this.$store.dispatch("toggleWatched", {
+      this.$store.dispatch('toggleWatched', {
         watchlistId,
         seriesRef,
         episode,
@@ -57,10 +57,10 @@ export default {
       if (isAired) {
         aired.by = `- ${Math.ceil(delta / 86400)} days`;
         if (Math.ceil(delta / 86400) > 30) {
-          aired.by = "aired";
+          aired.by = 'aired';
         }
       } else {
-        aired.by = "not aired";
+        aired.by = 'not aired';
       }
 
       return aired;
