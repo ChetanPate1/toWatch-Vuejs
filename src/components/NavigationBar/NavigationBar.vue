@@ -26,12 +26,12 @@
               <span class="dripicons-clockwise"></span> REWATCH LIST
             </a>
           </router-link>
-          <router-link :to="{ path: '/watch-list'}" tag="li" v-if="token">
+          <router-link :to="{ path: '/watching'}" tag="li" v-if="token">
             <a>
               <span class="dripicons-preview"></span> WATCH LIST
             </a>
           </router-link>
-          <router-link :to="{ path: '/my-shows'}" tag="li" v-if="token">
+          <router-link :to="{ path: '/show-collection'}" tag="li" v-if="token">
             <a>
               <span class="dripicons-monitor"></span>MY SHOWS
             </a>

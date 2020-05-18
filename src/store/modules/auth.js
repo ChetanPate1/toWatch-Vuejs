@@ -32,9 +32,9 @@ const actions = {
       });
 
       localStorage.setItem('token', res.data.token);
-      commit('UPDATE_USER', data);
+      commit(UPDATE_USER, data);
       
-      router.push({ name: 'myShows' });
+      router.push({ name: 'showCollection' });
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +42,7 @@ const actions = {
   signUserOut({ commit }) {
     localStorage.setItem('token', null);
     router.push({ name: 'login' });
-    commit('SIGN_OUT_USER');
+    commit(SIGN_OUT_USER);
   },
   async getCurrentUser({ commit }) {
     try {
@@ -51,9 +51,9 @@ const actions = {
         url: '/user'
       });
 
-      commit('UPDATE_USER', res.data);
+      commit(UPDATE_USER, res.data);
     } catch (error) {
-      commit('UPDATE_USER', {});
+      commit(UPDATE_USER, {});
     } 
   }
 };

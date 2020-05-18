@@ -1,26 +1,27 @@
 <template lang="html">
 <div class="container-fluid fade-in">
-  <popup :title="'Add To Watch List'" :size="'md'" ref="popup">
-    <add-to-watchlist :shows="myShows"></add-to-watchlist>
+  <popup title="Add To Watch List" size="md" ref="popup">
+    <add-to-watchlist :shows="showCollection"></add-to-watchlist>
   </popup>
 
   <div class="row">
     <div class="col-xs-12">
-      <button class="button pull-right margin-bottom-30" @click.prevent="$refs.popup.open()">Track a show</button>
+      <button class="button pull-right margin-bottom-30"
+        @click.prevent="$refs.popup.open()">Track a show</button>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-3" v-for="(item, key, index) in watchlist" :key="index">
+    <div class="col-xs-12 col-sm-6 col-md-3" v-for="item in watching" :key="item._id">
       <watchlist-card
-        :heading="myShows[item.showId].Title"
-        :sub-heading="concatSubHeading(item)"
-        :details="item.on.name"
-        :id="key"
-        :watchlist="item"
-        :next-aired="nextAired(item)"
-        :img-src="myShows[item.showId].Poster">
+        :heading="item.show.title"
+        :sub-heading="'concatSubHeading(item)'"
+        :details="''"
+        :id="item._id"
+        :data="item"
+        :next-aired="null"
+        :img-src="item.show.poster">
       </watchlist-card>
     </div>
-    <no-content :message="noContentMessage" :condition="!watchlist"></no-content>
+    <no-content :message="noContentMessage" :condition="!watching.length"></no-content>
   </div>
 </div>
 </template>
@@ -30,11 +31,11 @@ import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
-import { initWatchlist } from '../js/generators';
-import { mapGetters, mapActions } from 'vuex';
+
+import { mapGetters } from 'vuex';
 
 export default {
-  name: 'WatchList',
+  name: 'Watching',
   data() {
     return {
       today: new Date().getTime(),
@@ -42,13 +43,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['watchlist', 'myShows']),
-    ...mapActions(['getWatchlist', 'getMyShows'])
+    ...mapGetters(['watching', 'showCollection'])
   },
-  mounted() {
-    this.$store.dispatch('getMyShows').then(() => {
-      this.$store.dispatch('getWatchlist');
-    });
+  async mounted() {
+    await this.$store.dispatch('getWatching');
+    await this.$store.dispatch('getShowCollection');
   },
   methods: {
     concatSubHeading(item) {

@@ -7,12 +7,12 @@ import {
   EMPTY_FOUND_SHOWS } from '../mutation-types';
 
 const state = {
-  shows: [],
+  showCollection: [],
   foundShows: []
 };
 
 const getters = {
-  myShows: state => state.shows,
+  showCollection: state => state.showCollection,
   foundShows: state => state.foundShows
 };
 
@@ -72,15 +72,9 @@ const actions = {
 
       commit('SHOW_COLLECTION_ADD', data.show);
       
-      dispatch('showToast', {
-        title: 'Show added.',
-        message: data.message
-      });
+      dispatch('showToast', { title: 'Show added.', message: data.message });
     } catch ({ data }) {
-       dispatch('showToast', {
-        title: 'Error',
-        message: data.message
-      });
+      dispatch('showToast', { title: 'Error', message: data.message });
     }
 
     commit('EMPTY_FOUND_SHOWS');
@@ -93,7 +87,7 @@ const actions = {
       });
 
       commit('SHOW_COLLECTION_DELETE', id);
-      
+
       dispatch('showToast', { title: 'Show Deleted', message: data.message });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message });
@@ -109,13 +103,13 @@ const actions = {
 
 const mutations = {
   [SHOW_COLLECTION_GET](state, shows) {
-    state.shows = shows;
+    state.showCollection = shows;
   },
   [SHOW_COLLECTION_ADD](state, show) {
-    state.shows = [...state.shows, show];
+    state.showCollection = [...state.showCollection, show];
   },
   [SHOW_COLLECTION_DELETE](state, id) {
-    state.shows = state.shows.filter(item => item._id !== id);
+    state.showCollection = state.showCollection.filter(item => item._id !== id);
   },
   [UPDATE_FOUND_SHOWS](state, foundShows) {
     state.foundShows = foundShows;

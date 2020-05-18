@@ -1,5 +1,5 @@
 import { auth, database } from 'firebase';
-import { GET_WATCHLIST } from '../mutation-types';
+import { GET_WATCHING } from '../mutation-types';
 import { initWatchlist } from '../../js/generators';
 
 const state = {
@@ -7,17 +7,14 @@ const state = {
 };
 
 const getters = {
-  watchlist: state => state.watchlist
+  watching: state => state.watchlist
 };
 
 const actions = {
-  getWatchlist({ commit }) {
-    const uid = auth().currentUser.uid;
-    const watchlist = database().ref(`watchlist/${uid}`);
+  getWatching({ commit }) {
 
-    watchlist.on('value', snapshot => {
-      commit('GET_WATCHLIST', snapshot.val());
-    });
+      commit('GET_WATCHING', []);
+    
   },
   addToWatchlist({ dispatch, rootState, getters }, series) {
     const show = rootState.myShows.shows[series.seriesRef];
@@ -87,7 +84,13 @@ const actions = {
 }
 
 const mutations = {
-  [GET_WATCHLIST](state, snapshot) {
+  [WATCHING_GET](state, watching) {
+    state.watching = watching;
+  },
+  [WATCHING_ADD](state, snapshot) {
+    state.watchlist = snapshot;
+  },
+  [WATCHING_DELETE](state, snapshot) {
     state.watchlist = snapshot;
   }
 };

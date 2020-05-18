@@ -15,7 +15,7 @@
   </popup>
 
   <div class="watchlist-card" tabindex="0" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-    <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id, watchlist.showId)"></button>
+    <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id, data.showId)"></button>
 
     <h2>{{ heading }}</h2>
     <h4>{{ details }}</h4>
@@ -24,31 +24,31 @@
 
     <behind-count-button
         @click.native="toggleOpen()"
-        :seasons="watchlist.unwatched"
+        :seasons="data.unwatched"
         :open="open">
     </behind-count-button>
 
     <slide-out-panel :open="open">
         <tabs>
           <tab-button slot="tab-buttons"
-              v-for="(season, key, index) in watchlist.unwatched"
-              :key="season.season"
-              :name="tabButtonName(season.season)"
-              :active="isTabSelected(season.season)"
-              @click.native="tabSelect(season.season)">
+              v-for="season in data.seasons"
+              :key="season._id"
+              :name="tabButtonName(season.number)"
+              :active="isTabSelected(season.number)"
+              @click.native="tabSelect(season.number)">
           </tab-button>
 
           <tab-panels-container :active="tabActive" slot="tab-panels-container">
               <tab-panel
-                v-for="(season, key, index) in watchlist.unwatched"
-                :active="isTabSelected(season.season)"
-                :number="season.season"
-                :key="key">
-                <panel-rows
+                v-for="season in data.seasons"
+                :active="isTabSelected(1)"
+                :number="season.number"
+                :key="season._id">
+                <!-- <panel-rows
                     :watchlist-id="id"
                     :watchlist-item="watchlist"
                     :season="season">
-                </panel-rows>
+                </panel-rows> -->
               </tab-panel>
           </tab-panels-container>
         </tabs>
@@ -82,7 +82,7 @@ export default {
     heading: String,
     details: String,
     id: String,
-    watchlist: Object,
+    data: Object,
     subHeading: String,
     nextAired: Number,
     imgSrc: String
@@ -94,16 +94,17 @@ export default {
     };
   },
   mounted() {
-    this.tabSelect(this.watchlist.on.season);
+    this.tabSelect(this.data.on.season);
+    //get watched episodes
   },
   methods: {
     toggleOpen() {
       this.open = !this.open;
     },
-    confirmDelete(id, seriesRef) {
+    confirmDelete(id) {
       this.$refs.confirmPopup.open().then(result => {
         if (result == 'yes') {
-          this.$store.dispatch('deleteWatchlist', { id, seriesRef });
+          this.$store.dispatch('deleteWatching', id);
         }
       });
     },

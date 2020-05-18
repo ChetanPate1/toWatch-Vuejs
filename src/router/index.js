@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import MostPopular from '@/components/MostPopular';
 import Login from '@/components/Login';
 import ShowCollection from '@/components/ShowCollection';
-import WatchList from '@/components/WatchList';
+import Watching from '@/components/Watching';
 import RewatchList from '@/components/RewatchList';
 import Watched from '@/components/Watched';
 import WatchedMovies from '@/components/WatchedMovies';
@@ -35,9 +35,9 @@ const router = new Router({
       }
     },
     {
-      path: '/watch-list',
-      name: 'watchList',
-      component: WatchList,
+      path: '/watching',
+      name: 'watching',
+      component: Watching,
       meta: {
         requiresAuth: true
       }

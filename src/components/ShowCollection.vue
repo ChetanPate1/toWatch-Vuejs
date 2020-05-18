@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
-  <popup :title="'Add To Watch List'" :size="'md'" ref="popup">
-      <add-to-watchlist :shows="myShows" :hide-series-select="true" ref="addToWatchlist"></add-to-watchlist>
+  <popup title="Add To Watch List" size="md" ref="popup">
+      <add-to-watchlist :shows="showCollection" :hide-series-select="true" ref="addToWatchlist"></add-to-watchlist>
   </popup>
 
   <div class="container">
@@ -14,7 +14,7 @@
   
   <div class="container-fluid fade-in">
     <div class="row show-layout">
-      <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in myShows" :key="item._id">
+      <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in showCollection" :key="item._id">
           <show-card
             :heading="item.show.title"
             :img-src="item.show.poster"
@@ -23,7 +23,7 @@
             :deleteable="true">
           </show-card>
       </div>
-      <no-content :message="noContentMessage" :condition="!myShows.length"></no-content>
+      <no-content :message="noContentMessage" :condition="!showCollection.length"></no-content>
     </div>
   </div>
 </div>
@@ -36,6 +36,8 @@ import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ShowCollection',
   data() {
@@ -47,6 +49,9 @@ export default {
       },
       noContentMessage: 'Your show collection is empty!'
     };
+  },
+  computed: {
+    ...mapGetters(['showCollection'])
   },
   methods: {
     async add(form) {
