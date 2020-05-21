@@ -34,12 +34,12 @@ const actions = {
       dispatch('showToast', {
         title: 'Series already added!',
         message: `${show.Title} is already added to your rewatchlist.`
-      });
+      }, { root: true });
     } else {
       let rewatch = ref.push(initSeries);
       rewatch.set(initSeries);
       rewatch.update(initSeries);
-      dispatch('showToast', { title: 'Added', message: `${show.Title} added to rewatchlist.` });
+      dispatch('showToast', { title: 'Added', message: `${show.Title} added to rewatchlist.` }, { root: true });
     }
 
   },

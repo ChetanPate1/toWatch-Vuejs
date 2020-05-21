@@ -2,6 +2,7 @@
 <button class="tab-button"
    type="button"
    name="button"
+   @click="$emit('click')"
    :class="{ 'active' : active }" >{{ name }}
 </button>
 </template>
@@ -17,9 +18,8 @@ export default {
 </script>
 
 <style lang="scss">
-.tab-button{
+.tab-button {
    text-align: center;
-   float: left;
    width: 100%;
    padding: 4px 0;
    color: #ffffff;
@@ -31,13 +31,13 @@ export default {
    opacity: 1;
    transition: opacity 200ms ease;
 
-   &.active{
+   &.active {
       font-weight: bold;
       background-color: rgba(0, 0, 0, 0.6);
       border: 1px solid #ffffff;
    }
 
-   &:hover{
+   &:hover {
       cursor: pointer;
       border: 1px solid #ffffff;
    }

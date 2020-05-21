@@ -7,12 +7,12 @@ import {
   EMPTY_FOUND_SHOWS } from '../mutation-types';
 
 const state = {
-  showCollection: [],
+  collection: [],
   foundShows: []
 };
 
 const getters = {
-  showCollection: state => state.showCollection,
+  collection: state => state.collection,
   foundShows: state => state.foundShows
 };
 
@@ -103,13 +103,13 @@ const actions = {
 
 const mutations = {
   [SHOW_COLLECTION_GET](state, shows) {
-    state.showCollection = shows;
+    state.collection = shows;
   },
   [SHOW_COLLECTION_ADD](state, show) {
-    state.showCollection = [...state.showCollection, show];
+    state.collection = [...state.collection, show];
   },
   [SHOW_COLLECTION_DELETE](state, id) {
-    state.showCollection = state.showCollection.filter(item => item._id !== id);
+    state.collection = state.collection.filter(item => item._id !== id);
   },
   [UPDATE_FOUND_SHOWS](state, foundShows) {
     state.foundShows = foundShows;
@@ -120,6 +120,7 @@ const mutations = {
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,

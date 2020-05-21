@@ -4,7 +4,8 @@ import {
   WATCHING_ADD,
   WATCHING_DELETE,
   WATCHING_EPISODES_GET,
-  WATCHING_TOGGLE_EPISODE_WATCHED } from '../mutation-types';
+  WATCHING_TOGGLE_EPISODE_WATCHED,
+  WATCHING_ON_UPDATE } from '../mutation-types';
 
 const state = {
   watching: []
@@ -24,7 +25,7 @@ const actions = {
 
       commit(WATCHING_GET, res.data);
     } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data.message });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
   async addToWatching({ dispatch, commit }, id) {
@@ -35,13 +36,13 @@ const actions = {
       });
 
       commit(WATCHING_ADD, data.watching);
-      dispatch('showToast', { title: 'Watching Already', message: data.message });
+      dispatch('showToast', { title: 'Watching Already', message: data.message }, { root: true });
     } catch ({ status, data }) {
       if(status === 409){
-        return dispatch('showToast', { title: 'Watching Already', message: data.message });
+        return dispatch('showToast', { title: 'Watching Already', message: data.message }, { root: true });
       }
 
-      dispatch('showToast', { title: 'Error', message: data.message });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
   async deleteWatching({ dispatch, commit }, id) {
@@ -53,37 +54,52 @@ const actions = {
 
       commit(WATCHING_DELETE, id);
 
-      dispatch('showToast', { title: 'Show Deleted', message: data.message });
+      dispatch('showToast', { title: 'Show Deleted', message: data.message }, { root: true });
     } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data.message });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async toggleWatched({ commit, dispatch }, { id, seasonId, episodeId }) {
+  async getWatchedEpisodes({ commit, dispatch }, { watchingId, seasonId }) {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: `/watched-episodes/${watchingId}/${seasonId}`
+      });
+      
+      commit(WATCHING_EPISODES_GET, { id: watchingId, seasonId, episodes: data });
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+    }
+  },
+  async toggleWatched({ commit, dispatch }, { watchingId, seasonId, episodeId }) {
     try {
       const { data }  = await axios({
         method: 'POST',
-        url: `/watched-episode/${episodeId}`
+        url: `/watched-episode/${watchingId}/${episodeId}`
+      });
+      
+      commit(WATCHING_TOGGLE_EPISODE_WATCHED, { 
+        watchingId, seasonId, episodeId, episodes: data.watched 
+      });
+      commit(WATCHING_ON_UPDATE, { watchingId, on: data.on });
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+    }
+  },
+  async getWatchingOn({ commit, dispatch }, watchingId) {
+    try {
+      const  { data } = await axios({
+        method: 'GET',
+        url: `/watching/on/${watchingId}`
       });
 
-      commit(WATCHING_TOGGLE_EPISODE_WATCHED, { 
-        id, seasonId, episodeId, episode: data 
-      });
+      commit(WATCHING_ON_UPDATE, { watchingId, on: data });
     } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data.message });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
   updatedWatched({ state, rootState }, watchlistId) {
-    // const watchlistItem = state.watchlist[watchlistId];
-    // const showId = watchlistItem.showId;
-    // const uid = auth().currentUser.uid;
-    // const ref = database().ref(`watched/${uid}/${showId}`);
-    // const watched = {
-    //   show: rootState.myShows.shows[showId].Title,
-    //   watched: watchlistItem.unwatched,
-    //   on: watchlistItem.on
-    // };
-
-    // ref.update(watched);
+    
   }
 }
 
@@ -98,9 +114,9 @@ const mutations = {
     state.watching = state.watching.filter(item => item._id === id);
   },
   [WATCHING_EPISODES_GET](state, { id, seasonId, episodes }) {
-    state.watching = state.watching.map(item => {
+    state.watching.map(item => {
       if (item._id === id) {
-        item.show.seasons.map(season => {
+        item.seasons.map(season => {
           if (season._id === seasonId) {
             season.episodes = episodes;
           }
@@ -112,29 +128,39 @@ const mutations = {
       return item;
     });
   },
-  [WATCHING_TOGGLE_EPISODE_WATCHED](state, { id, seasonId, episodeId, episode }) {
-    state.watching = state.watching.map(item => {
-      if (item._id === id) {
-        item.show.seasons.map(s => {
-          if (s._id === seasonId) {
-            s.episodes = s.episodes.map(e => {
-              if(e._id === episodeId) {
-                return episode;
-              }
-              return e;
+  [WATCHING_TOGGLE_EPISODE_WATCHED](state, { watchingId, seasonId, episodes }) {
+    state.watching = state.watching.map(watch => {
+      if (watch._id === watchingId) {
+        watch.seasons.map(season => {
+          if (season._id === seasonId) {
+            season.episodes.map(item => {
+              const found = episodes.find(e => e.episodeId == item._id);
+
+              item.watched = found ? true : false;
+              return item;
             });
           }
 
-          return s;
+          return season;
         });
       }
 
-      return item;
+      return watch;
+    });
+  },
+  [WATCHING_ON_UPDATE](state, { watchingId, on }) {
+    state.watching = state.watching.map(watch => {
+      if (watch._id === watchingId) {
+        watch.on = on;
+      }
+
+      return watch;
     });
   }
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,

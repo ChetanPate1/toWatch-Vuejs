@@ -43,14 +43,16 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['foundShows'])
+    ...mapGetters({
+      foundShows: 'showCollection/foundShows'
+    })
   },
   methods: {
     addSeries(show) {
       this.sendStatus.loader = true;
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch('saveToShowCollection', show).then(() => {
+      this.$store.dispatch('showCollection/saveToShowCollection', show).then(() => {
         this.sendStatus.loader = false;
         this.sendStatus.disableButton = false;
         this.form.showName = '';
@@ -60,10 +62,10 @@ export default {
       this.type = type;
     },
     findShow() {
-      this.$store.dispatch('searchForShow', this.form);
+      this.$store.dispatch('showCollection/searchForShow', this.form);
     },
     empty() {
-      this.$store.dispatch('emptyFoundShows');
+      this.$store.dispatch('showCollection/emptyFoundShows');
     }
   }
 };

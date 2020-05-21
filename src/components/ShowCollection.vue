@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
   <popup title="Add To Watch List" size="md" ref="popup">
-      <add-to-watchlist :shows="showCollection" :hide-series-select="true" ref="addToWatchlist"></add-to-watchlist>
+      <add-to-watchlist :shows="collection" :hide-series-select="true" ref="addToWatchlist"></add-to-watchlist>
   </popup>
 
   <div class="container">
@@ -14,7 +14,7 @@
   
   <div class="container-fluid fade-in">
     <div class="row show-layout">
-      <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in showCollection" :key="item._id">
+      <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in collection" :key="item._id">
           <show-card
             :heading="item.show.title"
             :img-src="item.show.poster"
@@ -23,7 +23,7 @@
             :deleteable="true">
           </show-card>
       </div>
-      <no-content :message="noContentMessage" :condition="!showCollection.length"></no-content>
+      <no-content message="Your show collection is empty!" :condition="!collection.length"></no-content>
     </div>
   </div>
 </div>
@@ -47,11 +47,16 @@ export default {
         season: '',
         episode: ''
       },
-      noContentMessage: 'Your show collection is empty!'
+      noContentMessage: ''
     };
   },
+  created() {
+    this.$store.dispatch('showCollection/getShowCollection');
+  },
   computed: {
-    ...mapGetters(['showCollection'])
+    ...mapGetters({
+      collection: 'showCollection/collection'
+    })
   },
   methods: {
     async add(form) {
@@ -65,9 +70,6 @@ export default {
 
       this.$parent.close();
     }
-  },
-  mounted() {
-    this.$store.dispatch('getShowCollection');
   },
   components: {
     ShowCard,

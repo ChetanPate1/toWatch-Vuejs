@@ -15,16 +15,16 @@
   </popup>
 
   <div class="watchlist-card" tabindex="0" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-    <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id, data.showId)"></button>
+    <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id)"></button>
 
     <h2>{{ heading }}</h2>
-    <h4>{{ details }}</h4>
-    <h5>On {{ subHeading }}</h5>
+    <h4>{{ data.on ? data.on.title : '' }}</h4>
+    <h5>On {{ data.on ? `Season ${data.on.season} Episode ${data.on.episode}` : '' }}</h5>
     <h6 v-if="nextAired">Next <small>Aired Episode</small></h6>
 
     <behind-count-button
-        @click.native="toggleOpen()"
-        :seasons="data.unwatched"
+        @click="toggleOpen()"
+        :count="behindCount"
         :open="open">
     </behind-count-button>
 
@@ -34,32 +34,35 @@
               v-for="season in data.seasons"
               :key="season._id"
               :name="tabButtonName(season.number)"
-              :active="isTabSelected(season.number)"
-              @click.native="tabSelect(season.number)">
+              :active="isTabSelected(season)"
+              @click="tabSelect(season)">
           </tab-button>
 
           <tab-panels-container :active="tabActive" slot="tab-panels-container">
               <tab-panel
                 v-for="season in data.seasons"
-                :active="isTabSelected(1)"
+                :active="isTabSelected(season)"
                 :number="season.number"
                 :key="season._id">
-                <!-- <panel-rows
-                    :watchlist-id="id"
-                    :watchlist-item="watchlist"
-                    :season="season">
-                </panel-rows> -->
+                <panel-row
+                    v-for="episode in season.episodes"
+                    :key="episode._id"
+                    :watching-id="id"
+                    :number="episode.number"
+                    :watched="episode.watched"
+                    :released="episode.released"
+                    @click="watched(episode)">
+                </panel-row>
               </tab-panel>
           </tab-panels-container>
         </tabs>
     </slide-out-panel>
 
     <frost-glass :img-src="imgSrc" v-if="nextAired">
-        <countdown-timer :to="nextAired"></countdown-timer>
+      <countdown-timer :to="nextAired"></countdown-timer>
     </frost-glass>
   </div>
 </div>
-
 </template>
 
 <script>
@@ -71,7 +74,7 @@ import TabButton from '../Tabs/TabButton';
 import TabPanel from '../Tabs/TabPanel';
 import TabPanelsContainer from '../Tabs/TabPanelsContainer';
 
-import PanelRows from './PanelRows';
+import PanelRow from './PanelRow';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
 import FrostGlass from '../FrostGlass/FrostGlass';
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
@@ -85,6 +88,7 @@ export default {
     data: Object,
     subHeading: String,
     nextAired: Number,
+    behindCount: Number,
     imgSrc: String
   },
   data() {
@@ -93,9 +97,10 @@ export default {
       tabActive: 1
     };
   },
-  mounted() {
-    this.tabSelect(this.data.on.season);
-    //get watched episodes
+  async created() {
+    await this.$store.dispatch('watching/getWatchingOn', this.id);
+    const { on } = this.data;
+    await this.tabSelect(this.data.seasons[on.season - 1]);
   },
   methods: {
     toggleOpen() {
@@ -104,18 +109,33 @@ export default {
     confirmDelete(id) {
       this.$refs.confirmPopup.open().then(result => {
         if (result == 'yes') {
-          this.$store.dispatch('deleteWatching', id);
+          this.$store.dispatch('watching/deleteWatching', id);
         }
       });
     },
     tabButtonName(number) {
       return number < 10 ? `S0${number}` : `S${number}`;
     },
-    tabSelect(selectedTab) {
-      this.tabActive = selectedTab;
+    async tabSelect(season) {
+      await this.$store.dispatch('watching/getWatchedEpisodes', { 
+        watchingId: this.id,
+        seasonId: season._id
+      });
+      this.tabActive = season.number;
+
+      this.$forceUpdate();
     },
-    isTabSelected(number) {
+    isTabSelected({ number }) {
       return this.tabActive == number;
+    },
+    async watched(episode) {
+      await this.$store.dispatch('watching/toggleWatched', {
+        watchingId: this.id,
+        seasonId: episode.seasonId,
+        episodeId: episode._id
+      });
+
+      this.$forceUpdate();
     }
   },
   components: {
@@ -125,7 +145,7 @@ export default {
     TabButton,
     TabPanel,
     TabPanelsContainer,
-    PanelRows,
+    PanelRow,
     BehindCountButton,
     FrostGlass,
     CountdownTimer

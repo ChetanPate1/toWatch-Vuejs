@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     async add(form) {
-      await this.$store.dispatch('addToWatching', form);
+      await this.$store.dispatch('watching/addToWatching', form);
       this.form = {
         showId: '',
         seasonId: '',
