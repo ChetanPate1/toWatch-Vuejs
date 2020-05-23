@@ -18,10 +18,9 @@
     <button type="button" class="icon-button dripicons-trash" @click="confirmDelete(id)"></button>
 
     <h2>{{ heading }}</h2>
-    <h4>{{ data.on ? data.on.title : '' }}</h4>
-    <h5>On {{ data.on ? `Season ${data.on.season} Episode ${data.on.episode}` : '' }}</h5>
-    <h6 v-if="nextAired">Next <small>Aired Episode</small></h6>
-
+    <h4>{{ data.onEpisode ? data.onEpisode.title : '' }}</h4>
+    <h5>On {{ data.onEpisode ? `Season ${data.onEpisode.season} Episode ${data.onEpisode.episode}` : '' }}</h5>
+    
     <behind-count-button
         @click="toggleOpen()"
         :count="behindCount"
@@ -31,7 +30,7 @@
     <slide-out-panel :open="open">
         <tabs>
           <tab-button slot="tab-buttons"
-              v-for="season in data.seasons"
+              v-for="season in data.show.seasons"
               :key="season._id"
               :name="tabButtonName(season.number)"
               :active="isTabSelected(season)"
@@ -40,7 +39,7 @@
 
           <tab-panels-container :active="tabActive" slot="tab-panels-container">
               <tab-panel
-                v-for="season in data.seasons"
+                v-for="season in data.show.seasons"
                 :active="isTabSelected(season)"
                 :number="season.number"
                 :key="season._id">
@@ -57,10 +56,6 @@
           </tab-panels-container>
         </tabs>
     </slide-out-panel>
-
-    <frost-glass :img-src="imgSrc" v-if="nextAired">
-      <countdown-timer :to="nextAired"></countdown-timer>
-    </frost-glass>
   </div>
 </div>
 </template>
@@ -99,8 +94,8 @@ export default {
   },
   async created() {
     await this.$store.dispatch('watching/getWatchingOn', this.id);
-    const { on } = this.data;
-    await this.tabSelect(this.data.seasons[on.season - 1]);
+    const { onEpisode } = this.data;
+    await this.tabSelect(this.data.show.seasons[onEpisode.season - 1]);
   },
   methods: {
     toggleOpen() {

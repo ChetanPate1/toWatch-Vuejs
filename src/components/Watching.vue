@@ -17,7 +17,7 @@
         :id="item._id"
         :data="item"
         :next-aired="null"
-        :behind-count="behindCount(item.seasons)"
+        :behind-count="behindCount(item.show.seasons)"
         :img-src="item.show.poster">
       </watchlist-card>
     </div>

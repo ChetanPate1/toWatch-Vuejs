@@ -21,7 +21,7 @@ const actions = {
     try {
       const res = await axios({
         method: 'GET',
-        url: '/show-collection'
+        url: '/show-collections'
       });
 
       commit('SHOW_COLLECTION_GET', res.data);
@@ -66,7 +66,7 @@ const actions = {
 
       const { data } = await axios({
         method: 'POST',
-        url: '/show-collection',
+        url: '/show-collections',
         data: res.data
       });
 
@@ -83,7 +83,7 @@ const actions = {
     try {
       const { data }  = await axios({
         method: 'DELETE',
-        url: `/show-collection/${id}`
+        url: `/show-collections/${id}`
       });
 
       commit('SHOW_COLLECTION_DELETE', id);

@@ -1,4 +1,3 @@
-import { auth, database } from 'firebase';
 import { GET_WATCHED } from '../mutation-types';
 
 const state = {
@@ -11,12 +10,12 @@ const getters = {
 
 const actions = {
   getWatched({ commit }) {
-    const uid = auth().currentUser.uid;
-    const watched = database().ref(`watched/${uid}`);
+    // const uid = auth().currentUser.uid;
+    // const watched = database().ref(`watched/${uid}`);
 
-    watched.on('value', snapshot => {
-      commit('GET_WATCHED', snapshot.val());
-    });
+    // watched.on('value', snapshot => {
+    //   commit('GET_WATCHED', snapshot.val());
+    // });
   }
 };
 
