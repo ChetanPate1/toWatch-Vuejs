@@ -4,8 +4,7 @@ import MostPopular from '@/components/MostPopular';
 import Login from '@/components/Login';
 import ShowCollection from '@/components/ShowCollection';
 import Watching from '@/components/Watching';
-import RewatchList from '@/components/RewatchList';
-import Watched from '@/components/Watched';
+import WatchedShows from '@/components/WatchedShows';
 import WatchedMovies from '@/components/WatchedMovies';
 import MovieDetails from '@/components/MovieDetails';
 
@@ -43,17 +42,9 @@ const router = new Router({
       }
     },
     {
-      path: '/rewatch-list',
-      name: 'rewatchList',
-      component: RewatchList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/watched',
-      name: 'watched',
-      component: Watched,
+      path: '/watched-shows',
+      name: 'watchedShows',
+      component: WatchedShows,
       meta: {
         requiresAuth: true
       }

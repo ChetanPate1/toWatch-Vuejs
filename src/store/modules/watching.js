@@ -28,11 +28,12 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async addToWatching({ dispatch, commit }, id) {
+  async addToWatching({ dispatch, commit }, { showId, seasonId, episodeId }) {
     try {
       const { data } = await axios({
         method: 'POST',
-        url: `/watchings/${id}`
+        url: '/watchings',
+        data: { showId, seasonId, episodeId }
       });
 
       commit(WATCHING_ADD, data.watching);
@@ -45,11 +46,12 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async deleteWatching({ dispatch, commit }, id) {
+  async deleteWatching({ dispatch, commit }, { id, deleteReason }) {
     try {
       const { data }  = await axios({
         method: 'DELETE',
-        url: `/watchings/${id}`
+        url: `/watchings/${id}`,
+        data: { deleteReason }
       });
 
       commit(WATCHING_DELETE, id);
@@ -59,14 +61,14 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async getWatchedEpisodes({ commit, dispatch }, { watchingId, seasonId, onEpisode }) {
+  async getWatchedEpisodes({ commit, dispatch }, { watchingId, seasonId }) {
     try {
       const { data } = await axios({
         method: 'GET',
         url: `/watched-episodes/${watchingId}/${seasonId}`
       });
       
-      commit(WATCHING_EPISODES_GET, { id: watchingId, seasonId, episodes: data, onEpisode  });
+      commit(WATCHING_EPISODES_GET, { id: watchingId, seasonId, episodes: data  });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
@@ -81,7 +83,7 @@ const actions = {
       commit(WATCHING_TOGGLE_EPISODE_WATCHED, { 
         watchingId, seasonId, episodeId, episode: data.watched 
       });
-      commit(WATCHING_ON_UPDATE, { watchingId, on: data.on });
+      commit(WATCHING_ON_UPDATE, { watchingId, data });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
@@ -93,13 +95,10 @@ const actions = {
         url: `/watchings/${watchingId}/on`
       });
 
-      commit(WATCHING_ON_UPDATE, { watchingId, on: data });
+      commit(WATCHING_ON_UPDATE, { watchingId, data });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
-  },
-  updatedWatched({ state, rootState }, watchlistId) {
-    
   }
 }
 
@@ -111,21 +110,26 @@ const mutations = {
     state.watching = [...state.watching, watching];
   },
   [WATCHING_DELETE](state, id) {
-    state.watching = state.watching.filter(item => item._id === id);
+    state.watching = state.watching.filter(item => item._id != id);
   },
   [WATCHING_EPISODES_GET](state, { id, seasonId, episodes }) {
-    const { onEpisode } = state.watching.find(item => item._id == id);
+    const { onEpisode, show } = state.watching.find(item => item._id == id);
+    const currentSeason = show.seasons.find(item => item._id == seasonId);
+    const seasonNumber = show.seasons.indexOf(currentSeason) + 1;
+    const episodesBefore = seasonNumber < onEpisode.season;
+    const currentSeasonEpisodesBefore = (item) => seasonNumber == onEpisode.season && item.number <= onEpisode.episode
+    const watchingEpisodes = episodes.map(item => ({
+      ...item,
+      watched: episodesBefore || currentSeasonEpisodesBefore(item)
+    }))
     
     state.watching.map(item => {
       if (item._id === id) {
         item.show.seasons.map(season => {
-          if (season._id === seasonId) {
-            season.episodes = episodes.map(e => ({ 
-              ...e,
-              watched: season.number <= onEpisode.season && e.number <= onEpisode.episode 
-            }));
+          if (season._id == seasonId) {
+            season.episodes = watchingEpisodes;
           }
-          
+
           return season;
         });
       }
@@ -159,10 +163,11 @@ const mutations = {
       return watch;
     });
   },
-  [WATCHING_ON_UPDATE](state, { watchingId, on }) {
+  [WATCHING_ON_UPDATE](state, { watchingId, data }) {
     state.watching = state.watching.map(watch => {
       if (watch._id === watchingId) {
-        watch.onEpisode = on;
+        watch.onEpisode = data.on;
+        watch.behindCount = data.behindCount;
       }
 
       return watch;

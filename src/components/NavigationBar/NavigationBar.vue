@@ -16,19 +16,14 @@
               <span class="dripicons-camcorder"></span> WATCHED MOVIES
             </a>
           </router-link>
-          <router-link :to="{ path: '/watched'}" tag="li" v-if="token">
+          <router-link :to="{ path: '/watched-shows'}" tag="li" v-if="token">
             <a>
-              <span class="dripicons-preview"></span> WATCHED
-            </a>
-          </router-link>
-          <router-link :to="{ path: '/rewatch-list'}" tag="li" v-if="token">
-            <a>
-              <span class="dripicons-clockwise"></span> REWATCH LIST
+              <span class="dripicons-preview"></span> WATCHED SHOWS
             </a>
           </router-link>
           <router-link :to="{ path: '/watching'}" tag="li" v-if="token">
             <a>
-              <span class="dripicons-preview"></span> WATCH LIST
+              <span class="dripicons-preview"></span> WATCHING
             </a>
           </router-link>
           <router-link :to="{ path: '/show-collection'}" tag="li" v-if="token">

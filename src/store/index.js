@@ -4,9 +4,9 @@ import auth from './modules/auth';
 import mostPopular from './modules/most-popular';
 import showCollection from './modules/show-collection';
 import watching from './modules/watching';
-import rewatchlist from './modules/rewatch-list';
-import watched from './modules/watched';
+import watchedShows from './modules/watched-shows';
 import watchedMovies from './modules/watched-movies';
+import lookups from './modules/lookups';
 import toast from './modules/toast';
 
 Vue.use(Vuex);
@@ -17,9 +17,9 @@ export default new Vuex.Store({
     mostPopular,
     showCollection,
     watching,
-    rewatchlist,
-    watched,
+    watchedShows,
     watchedMovies,
+    lookups,
     toast
   }
 });

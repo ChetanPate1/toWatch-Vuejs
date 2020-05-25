@@ -19,30 +19,31 @@
               Progress
             </div>
         </show-table-head>
-        <show-table-row v-for="(item, key, index) in watched" :key="index">
-            <div class="col-xs-1">
-              {{ index + 1 }}
-            </div>
-            <div class="col-xs-4 col-sm-3">
-              {{ item.show }}
-            </div>
-            <div class="col-xs-4 hidden-xs">
-              {{ item.on.name }}
-            </div>
-            <div class="col-xs-4 col-sm-2">
-              <span v-if="progress(item) !== '100%'">{{ concatSubHeading(item.on) }}</span>
-              <span class="status green" v-if="progress(item) === '100%'">Complete</span>
-            </div>
-            <div class="col-xs-3 col-sm-2">
+        <show-table-row v-for="item in watchedShows" :key="item._id">
+          <div class="col-xs-1">
+            {{ item.episodeId }}
+          </div>
+         <!--  <div class="col-xs-4 col-sm-3">
+            {{ item.show }}
+          </div>
+          <div class="col-xs-4 hidden-xs">
+            {{ item.on.name }}
+          </div>
+          <div class="col-xs-4 col-sm-2">
+            <span v-if="progress(item) !== '100%'">{{ concatSubHeading(item.on) }}</span>
+            <span class="status green" v-if="progress(item) === '100%'">Complete</span>
+          </div>
+          <div class="col-xs-3 col-sm-2">
             <div class="progress-container">
               <div class="progress"
                 v-bind:style="{ 'width': progress(item) }"></div>
             </div>
-            </div>
+          </div> -->
         </show-table-row>
       </show-table>
     </card>
-    <no-content :message="noContentMessage" :condition="!watched"></no-content>
+    
+    <no-content :message="noContentMessage" :condition="!watchedShows.length"></no-content>
   </div>
 </template>
 
@@ -53,7 +54,7 @@ import ShowTableRow from './ShowTable/ShowTableRow';
 import NoContent from './NoContent/NoContent';
 import Card from './Card/Card';
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Watched',
@@ -67,11 +68,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['watched']),
-    ...mapActions(['getWatched'])
+    ...mapState({
+      watchedShows: state => state.watchedShows.watchedShows
+    })
   },
   mounted() {
-    this.$store.dispatch('getWatched');
+    this.$store.dispatch('watchedShows/getWatchedShows');
   },
   methods: {
     concatSubHeading(on) {

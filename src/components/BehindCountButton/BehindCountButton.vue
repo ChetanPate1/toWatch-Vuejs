@@ -4,7 +4,7 @@
     type="button"
     name="more"
     @click="$emit('click')"
-    :class="{ 'open' : open, 'up-to-date': count == 0  }"
+    :class="{ 'open' : open, 'up-to-date': !count }"
   >
     <span class="dripicons-plus"></span>
     <span class="behind">{{ count }}</span>

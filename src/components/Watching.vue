@@ -13,14 +13,12 @@
     <div class="col-xs-12 col-sm-6 col-md-3" v-for="item in watching" :key="item._id">
       <watchlist-card
         :heading="item.show.title"
-        :details="''"
         :id="item._id"
         :data="item"
-        :next-aired="null"
-        :behind-count="behindCount(item.show.seasons)"
         :img-src="item.show.poster">
       </watchlist-card>
     </div>
+    
     <no-content message="Your watch list is empty!" :condition="!watching.length"></no-content>
   </div>
 </div>
@@ -60,19 +58,6 @@ export default {
     await this.$store.dispatch('watching/getWatching');
     await this.$store.dispatch('showCollection/getShowCollection');
   },
-  // methods: {
-  //   nextAired(watchlist) {
-  //     let show = watchlist.show;
-  //     let numberOfSeasons = show.episodes.length;
-  //     let latestSeason = show.episodes[numberOfSeasons - 1];
-
-  //     let nextAired = latestSeason.episodes.filter(
-  //       episode => new Date(episode.Released).getTime() - this.today > 0
-  //     );
-
-  //     return nextAired.length ? new Date(nextAired[0].Released).getTime() : 0;
-  //   }
-  // },
   components: {
     WatchlistCard,
     NoContent,

@@ -9,43 +9,46 @@
   <div class="form-element" v-if="!hideSeriesSelect">
     <label for="series">Series Name</label>
     <span class="dripicons-chevron-down"></span>
-    <select name="series" v-model="form.seriesRef" @change="form.season = ''; form.episode = ''">
+    <select name="series" v-model="form.showId" @change="onChooseShow">
         <option v-for="item in shows" :value="item.show._id" :key="item._id">
           {{ item.show.title }}
         </option>
     </select>
   </div>
 
-  <!-- <div class="form-element" v-if="form.seriesRef">
+  <div class="form-element" v-if="form.showId">
     <label for="seasons">Seasons</label>
     <div class="select-series">
-        <div class="col-xs-3" v-for="item in shows[form.seriesRef].episodes" :key="item._id">
-          <label class="radio" v-bind:class="{'selected' : form.season >= item.season }" >
-              <input type="radio" v-model="form.season" v-bind:value="item.season">{{ item.season }}
+        <div class="col-xs-3" v-for="item in seasons" :key="item._id">
+          <label class="radio" :class="{'selected' : form.seasonId == item._id }" >
+              <input type="radio" 
+                v-model="form.seasonId"
+                :value="item._id" 
+                @change="onChooseSeason">{{ item.number }}
           </label>
         </div>
-        <span class="selected-none" v-bind:class="{'selected': !form.seriesRef }">Select a season</span>
+        <span class="selected-none" v-bind:class="{'selected': !form.showId }">Select a season</span>
     </div>
-  </div> -->
+  </div>
 
-  <!-- <div class="form-element" v-if="form.seriesRef && form.season">
+  <div class="form-element" v-if="form.showId && form.seasonId">
     <label for="seasons">Episodes</label>
     <div class="select-series">
-        <div class="col-xs-3" v-for="episode in shows[form.seriesRef].episodes[form.season - 1].episodes"
-          v-if="checkAired(episode)"
-          :key="episode._id">
-          <label class="radio" v-bind:class="{'selected' : form.episode >= episode.Episode }" >
-              <input type="radio" v-model="form.episode" v-bind:value="episode.Episode" >
-              {{ episode.Episode }}
+        <div class="col-xs-3" v-for="episode in episodes" :key="episode._id">
+          <label class="radio"
+            :class="{'selected' : form.episodeId == episode._id }">
+              <input type="radio" 
+                v-model="form.episodeId"
+                :value="episode._id">{{ episode.number }}
           </label>
         </div>
-        <span class="selected-none" v-bind:class="{'selected': !form.season }">Select a episode</span>
+        <span class="selected-none" v-bind:class="{'selected': !form.seasonId }">Select a episode</span>
     </div>
-  </div> -->
+  </div>
 
   <button class="button button-sm pull-right"
     type="submit"
-    :disabled="!form.seriesRef || !form.season || !form.episode">
+    :disabled="!form.showId || !form.seasonId || !form.episodeId">
     add
   </button>
 </form>
@@ -53,7 +56,7 @@
 
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AddToWatchlist',
@@ -71,9 +74,15 @@ export default {
     shows: Array,
     hideSeriesSelect: Boolean
   },
+  computed: {
+    ...mapGetters({
+      episodes: 'lookups/episodes',
+      seasons: 'lookups/seasons'
+    })
+  },
   methods: {
-    async add(form) {
-      await this.$store.dispatch('watching/addToWatching', form);
+    async add() {
+      await this.$store.dispatch('watching/addToWatching', this.form);
       this.form = {
         showId: '',
         seasonId: '',
@@ -91,6 +100,15 @@ export default {
     },
     findShow(id) {
       return this.shows.find(item => item.show._id === id);
+    },
+    async onChooseShow() {
+      this.form.seasonId = '';
+      this.form.episodeId = '';
+
+      await this.$store.dispatch('lookups/getSeasons', this.form.showId);
+    },
+    async onChooseSeason() {
+      await this.$store.dispatch('lookups/getEpisodes', this.form.seasonId);
     }
   }
 };

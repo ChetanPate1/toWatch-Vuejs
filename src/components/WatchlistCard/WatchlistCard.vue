@@ -1,8 +1,17 @@
 <template lang="html">
 <div>
   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this show?</h4>
+    <h4 class="margin-top-0 margin-bottom-20">
+      Are you sure you want to delete this show?
+    </h4>
 
+    <div class="margin-bottom-30">
+      <switch-group
+        v-model="deleteReason"
+        :options="options">
+      </switch-group>
+    </div>
+    
     <button class="button button-sm red pull-left"
             type="button"
             @click="$refs.confirmPopup.close('cancel')">Cancel
@@ -23,7 +32,7 @@
     
     <behind-count-button
         @click="toggleOpen()"
-        :count="behindCount"
+        :count="data.behindCount"
         :open="open">
     </behind-count-button>
 
@@ -71,6 +80,7 @@ import TabPanelsContainer from '../Tabs/TabPanelsContainer';
 
 import PanelRow from './PanelRow';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
+import SwitchGroup from '../FormElements/SwitchGroup/SwitchGroup';
 import FrostGlass from '../FrostGlass/FrostGlass';
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
 
@@ -81,7 +91,6 @@ export default {
     details: String,
     id: String,
     data: Object,
-    subHeading: String,
     nextAired: Number,
     behindCount: Number,
     imgSrc: String
@@ -89,7 +98,9 @@ export default {
   data() {
     return {
       open: false,
-      tabActive: 1
+      tabActive: 1,
+      options: [{ id: 1, label: 'Woke Shit' }, { id: 2, label: 'Boring' }, { id: 3, label: 'Done' }],
+      deleteReason: ''
     };
   },
   async created() {
@@ -104,7 +115,9 @@ export default {
     confirmDelete(id) {
       this.$refs.confirmPopup.open().then(result => {
         if (result == 'yes') {
-          this.$store.dispatch('watching/deleteWatching', id);
+          this.$store.dispatch('watching/deleteWatching', {
+            id, deleteReason: this.deleteReason
+          });
         }
       });
     },
@@ -142,6 +155,7 @@ export default {
     TabPanelsContainer,
     PanelRow,
     BehindCountButton,
+    SwitchGroup,
     FrostGlass,
     CountdownTimer
   }
