@@ -1,5 +1,5 @@
 import axios from '../../http';
-import { SEASONS_GET, EPISODES_GET, LOOKUPS_RESET } from '../mutation-types';
+import { SEASONS_GET, EPISODES_GET } from '../mutation-types';
 
 const state = {
   seasons: [],

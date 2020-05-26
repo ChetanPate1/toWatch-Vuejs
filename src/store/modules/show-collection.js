@@ -24,7 +24,7 @@ const actions = {
         url: '/show-collections'
       });
 
-      commit('SHOW_COLLECTION_GET', res.data);
+      commit(SHOW_COLLECTION_GET, res.data);
     } catch ({ data }) {
       dispatch('showToast', {
         title: 'Error',
@@ -50,7 +50,7 @@ const actions = {
       });
     }
 
-    commit('UPDATE_FOUND_SHOWS', res.data.Search);
+    commit(UPDATE_FOUND_SHOWS, res.data.Search);
   },
   async saveToShowCollection({ commit, dispatch }, movie) {
     try {
@@ -70,7 +70,7 @@ const actions = {
         data: res.data
       });
 
-      commit('SHOW_COLLECTION_ADD', data.show);
+      commit(SHOW_COLLECTION_ADD, data.show);
       
       dispatch('showToast', { title: 'Show added.', message: data.message });
     } catch ({ data }) {
@@ -86,7 +86,7 @@ const actions = {
         url: `/show-collections/${id}`
       });
 
-      commit('SHOW_COLLECTION_DELETE', id);
+      commit(SHOW_COLLECTION_DELETE, id);
 
       dispatch('showToast', { title: 'Show Deleted', message: data.message });
     } catch ({ data }) {
@@ -97,7 +97,7 @@ const actions = {
     
   },
   emptyFoundShows({ commit }) {
-    commit('EMPTY_FOUND_SHOWS');
+    commit(EMPTY_FOUND_SHOWS);
   }
 };
 

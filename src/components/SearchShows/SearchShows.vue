@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'SearchShows',
@@ -43,29 +43,28 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      foundShows: 'showCollection/foundShows'
+    ...mapState({
+      foundShows: ({ shows }) => shows.foundShows
     })
   },
   methods: {
-    addSeries(show) {
+    async addSeries(show) {
       this.sendStatus.loader = true;
       this.sendStatus.disableButton = true;
 
-      this.$store.dispatch('showCollection/saveToShowCollection', show).then(() => {
-        this.sendStatus.loader = false;
-        this.sendStatus.disableButton = false;
-        this.form.showName = '';
-      });
+      await this.$store.dispatch('showCollection/saveToShowCollection', show);
+      this.sendStatus.loader = false;
+      this.sendStatus.disableButton = false;
+      this.form.showName = '';
     },
     setType(type) {
       this.type = type;
     },
     findShow() {
-      this.$store.dispatch('showCollection/searchForShow', this.form);
+      this.$store.dispatch('shows/searchForShow', this.form);
     },
     empty() {
-      this.$store.dispatch('showCollection/emptyFoundShows');
+      this.$store.dispatch('shows/emptyFoundShows');
     }
   }
 };

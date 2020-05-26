@@ -5,7 +5,7 @@ import Login from '@/components/Login';
 import ShowCollection from '@/components/ShowCollection';
 import Watching from '@/components/Watching';
 import WatchedShows from '@/components/WatchedShows';
-import WatchedMovies from '@/components/WatchedMovies';
+import MovieCollection from '@/components/MovieCollection';
 import MovieDetails from '@/components/MovieDetails';
 
 import Store from '../store';
@@ -50,15 +50,15 @@ const router = new Router({
       }
     },
     {
-      path: '/watched-movies',
-      name: 'watchedMovies',
-      component: WatchedMovies,
+      path: '/movie-collection',
+      name: 'movieCollection',
+      component: MovieCollection,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/movie-details/:reference',
+      path: '/movie-details/:movieId',
       name: 'movieDetails',
       component: MovieDetails,
       meta: {

@@ -11,9 +11,9 @@
               <span class="dripicons-star"></span> MOST POPULAR
             </a>
           </router-link>
-          <router-link :to="{ path: '/watched-movies'}" tag="li" v-if="token">
+          <router-link :to="{ path: '/movie-collection'}" tag="li" v-if="token">
             <a>
-              <span class="dripicons-camcorder"></span> WATCHED MOVIES
+              <span class="dripicons-camcorder"></span> MOVIE COLLECTION
             </a>
           </router-link>
           <router-link :to="{ path: '/watched-shows'}" tag="li" v-if="token">
@@ -28,7 +28,7 @@
           </router-link>
           <router-link :to="{ path: '/show-collection'}" tag="li" v-if="token">
             <a>
-              <span class="dripicons-monitor"></span>MY SHOWS
+              <span class="dripicons-monitor"></span>SHOWS COLLECTION
             </a>
           </router-link>
         </ul>

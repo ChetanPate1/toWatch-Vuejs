@@ -15,7 +15,7 @@
         <div class="search-result" v-for="(movie, index) in foundMovies" :key="index">
           <img class="underlay-image" v-bind:src="movie.Poster">
           <div class="col-xs-4">
-              <img class="poster img-responsive" v-bind:src="movie.Poster" >
+              <img class="poster img-responsive" v-bind:src="movie.Poster">
           </div>
           <div class="col-xs-8">
               <h3>{{ movie.Title }}</h3>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'SearchMovies',
@@ -47,29 +47,25 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['foundMovies']),
-    ...mapActions(['findMovies', 'saveMovie', 'emptyFoundMovies'])
+    ...mapState({
+      foundMovies: ({ movies }) => movies.foundMovies
+    })
   },
   methods: {
-    addMovie(movie) {
+    async addMovie(movie) {
       this.sendStatus.disableButton = true;
-
-      this.$store.dispatch('saveMovie', movie).then(() => {
-        this.name = '';
-        setTimeout(() => {
-          this.sendStatus.disableButton = false;
-        }, 1000);
-      });
+      await this.$store.dispatch('movieCollection/saveToMovieCollectionMovie', movie);
+      this.name = '';
+      this.sendStatus.disableButton = false;
+      this.$store.dispatch('movies/emptyFoundMovies');
     },
-    findShow() {
+    async findShow() {
       this.sendStatus.disableButton = true;
-
-      this.$store.dispatch('findMovies', this.name).then(() => {
-        this.sendStatus.disableButton = false;
-      });
+      await this.$store.dispatch('movies/findMovies', this.name);
+      this.sendStatus.disableButton = false;
     },
     empty() {
-      this.$store.dispatch('emptyFoundMovies');
+      this.$store.dispatch('movies/emptyFoundMovies');
     }
   }
 };

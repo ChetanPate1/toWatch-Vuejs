@@ -17,10 +17,6 @@
             <div class="form-element">
                <button type="submit" class="button pull-right">Sign in</button>
             </div>
-
-            <div class="form-element validation">
-               <div class="message" v-bind:class="{ 'show': validation.show }">{{ validation.message }}</div>
-            </div>
          </form>
       </card>
    </div>

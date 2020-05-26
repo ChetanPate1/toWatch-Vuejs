@@ -23,7 +23,7 @@ const getters = {
 };
 
 const actions = {
-  async signUserIn({ commit }, data) {
+  async signUserIn({ commit, dispatch }, data) {
     try {
       const res = await axios({
         method: 'POST',
@@ -35,8 +35,8 @@ const actions = {
       commit(UPDATE_USER, data);
       
       router.push({ name: 'showCollection' });
-    } catch (error) {
-      console.log(error);
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
   signUserOut({ commit }) {

@@ -11,14 +11,14 @@ const getters = {
 const actions = {
   showToast({ commit }, toast) {
     const timestamp = new Date().getTime();
-    commit('TOAST_MESSAGE', { ...toast, timestamp });
+    commit(TOAST_MESSAGE, { ...toast, timestamp });
 
     setTimeout(() => {
-      commit('TOAST_DISMISS', timestamp);
+      commit(TOAST_DISMISS, timestamp);
     }, 4000);
   },
   dismissToast({ commit }, timestamp) {
-    commit('TOAST_DISMISS', timestamp);
+    commit(TOAST_DISMISS, timestamp);
   }
 };
 

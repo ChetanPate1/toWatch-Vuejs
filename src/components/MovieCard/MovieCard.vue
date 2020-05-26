@@ -1,7 +1,9 @@
 <template lang="html">
 <div>
   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this movie?</h4>
+    <h4 class="margin-top-0 margin-bottom-30">
+      Are you sure you want to delete this movie?
+    </h4>
 
     <button class="button button-sm red pull-left"
             type="button"
@@ -15,10 +17,10 @@
   </popup>
 
   <div class="movie-card"
-    @click.stop="goToMovieDetails(reference)"
+    @click.stop="goToMovieDetails(movieId)"
     tabindex="0"
-    v-bind:class="{ 'deleteable': deleteable }"
-    v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+    :class="{ 'deleteable': deleteable }"
+    :style="{ 'background-image': 'url('+ imgSrc +')' }">
 
     <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
     <h2>{{ heading }}</h2>
@@ -39,17 +41,18 @@ export default {
   props: {
     heading: String,
     imgSrc: String,
-    reference: String,
+    movieId: String,
+    id: String,
     deleteable: Boolean
   },
   methods: {
-    goToMovieDetails(reference) {
-      this.$router.push({ name: 'movieDetails', params: { reference } });
+    goToMovieDetails(movieId) {
+      this.$router.push({ name: 'movieDetails', params: { movieId } });
     },
     confirmDelete() {
       this.$refs.confirmPopup.open().then(result => {
         if (result == 'yes') {
-          this.$store.dispatch('deleteMovie', this.reference);
+          this.$store.dispatch('movieCollection/deleteFromMovieCollection', this.id);
         }
       });
     }

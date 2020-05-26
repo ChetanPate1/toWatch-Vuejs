@@ -3,9 +3,11 @@ import Vuex from 'vuex';
 import auth from './modules/auth';
 import mostPopular from './modules/most-popular';
 import showCollection from './modules/show-collection';
+import shows from './modules/shows';
 import watching from './modules/watching';
 import watchedShows from './modules/watched-shows';
-import watchedMovies from './modules/watched-movies';
+import movieCollection from './modules/movie-collection';
+import movies from './modules/movies';
 import lookups from './modules/lookups';
 import toast from './modules/toast';
 
@@ -16,9 +18,11 @@ export default new Vuex.Store({
     auth,
     mostPopular,
     showCollection,
+    shows,
     watching,
     watchedShows,
-    watchedMovies,
+    movieCollection,
+    movies,
     lookups,
     toast
   }
