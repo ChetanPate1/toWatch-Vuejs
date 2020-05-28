@@ -30,14 +30,14 @@ import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
 
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Watching',
   computed: {
-    ...mapGetters({
-      watching: 'watching/watching',
-      collection: 'showCollection/collection'
+    ...mapState({
+      watching: ({ watching }) => watching.watching,
+      collection: ({ showCollection }) => showCollection.collection
     })
   },
   methods: {

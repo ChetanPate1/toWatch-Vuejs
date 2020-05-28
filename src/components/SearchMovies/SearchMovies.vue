@@ -57,7 +57,7 @@ export default {
       await this.$store.dispatch('movieCollection/saveToMovieCollectionMovie', movie);
       this.name = '';
       this.sendStatus.disableButton = false;
-      this.$store.dispatch('movies/emptyFoundMovies');
+      this.empty();
     },
     async findShow() {
       this.sendStatus.disableButton = true;

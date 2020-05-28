@@ -1,30 +1,30 @@
 <template lang="html">
   <div class="container-fluid fade-in">
     <div class="row show-layout">
-        <div class="col-xs-6 col-sm-3 col-md-2" v-for="(show, key) in limit(mostPopularShows, 18)">
+        <div class="col-xs-6 col-sm-3 col-md-2" v-for="show in limit(shows, 18)" :key="show.id">
           <show-card
-          :heading="show.name"
-          :img-src="show.image_thumbnail_path"
-          :deleteable="false"
-          :key="key">
-        </show-card>
+            :heading="show.name"
+            :img-src="show.image_thumbnail_path"
+            :deleteable="false">
+          </show-card>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 import ShowCard from './ShowCard/ShowCard';
-import { mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'MostPopular',
   computed: {
-    ...mapActions(['getMostPopularShows']),
-    ...mapGetters(['mostPopularShows'])
+    ...mapState({
+      shows: ({ mostPopular }) => mostPopular.shows
+    })
   },
   mounted() {
-    this.$store.dispatch('getMostPopularShows');
+    this.$store.dispatch('mostPopular/getMostPopularShows');
   },
   methods: {
     limit(array, limit) {

@@ -1,7 +1,10 @@
 <template lang="html">
 <div>
   <popup title="Add To Watch List" size="md" ref="popup">
-      <add-to-watchlist :shows="collection" :hide-series-select="true" ref="addToWatchlist"></add-to-watchlist>
+      <add-to-watchlist
+        :shows="collection" 
+        :hide-series-select="true" 
+        ref="addToWatchlist"></add-to-watchlist>
   </popup>
 
   <div class="container">
@@ -18,8 +21,8 @@
           <show-card
             :heading="item.show.title"
             :img-src="item.show.poster"
-            :show-id="item.showId"
             :id="item._id"
+            :show-id="item.show._id"
             :deleteable="true">
           </show-card>
       </div>
@@ -36,40 +39,17 @@ import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
 
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'ShowCollection',
-  data() {
-    return {
-      form: {
-        seriesRef: '',
-        season: '',
-        episode: ''
-      },
-      noContentMessage: ''
-    };
-  },
   created() {
     this.$store.dispatch('showCollection/getShowCollection');
   },
   computed: {
-    ...mapGetters({
-      collection: 'showCollection/collection'
+    ...mapState({
+      collection: ({ showCollection }) => showCollection.collection
     })
-  },
-  methods: {
-    async add(form) {
-      await this.$store.dispatch('addToWatchlist', form);
-
-      this.form = {
-        seriesRef: '',
-        season: '',
-        episode: ''
-      };
-
-      this.$parent.close();
-    }
   },
   components: {
     ShowCard,

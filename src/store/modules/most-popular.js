@@ -5,9 +5,7 @@ const state = {
   shows: []
 };
 
-const getters = {
-  mostPopularShows: state => state.shows
-};
+const getters = {};
 
 const actions = {
   getMostPopularShows({ commit }) {
@@ -25,6 +23,7 @@ const mutations = {
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,

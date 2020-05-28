@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container fade-in">
-    <card>
+    <card v-if="watchedShows.length">
       <show-table>
         <show-table-head>
             <div class="col-xs-1">
@@ -19,31 +19,31 @@
               Progress
             </div>
         </show-table-head>
-        <show-table-row v-for="item in watchedShows" :key="item._id">
+        
+        <show-table-row v-for="(item, index) in watchedShows" :key="item._id">
           <div class="col-xs-1">
-            {{ item.episodeId }}
+            {{ index + 1 }}
           </div>
-         <!--  <div class="col-xs-4 col-sm-3">
-            {{ item.show }}
+          <div class="col-xs-4 col-sm-3">
+            {{ item.show.title }}
           </div>
           <div class="col-xs-4 hidden-xs">
-            {{ item.on.name }}
+            <!-- {{ item.onEpisode.title }} -->
           </div>
           <div class="col-xs-4 col-sm-2">
-            <span v-if="progress(item) !== '100%'">{{ concatSubHeading(item.on) }}</span>
+            <!-- <span v-if="progress(item) !== '100%'">Episode {{ item.onEpisode.number }}</span> -->
             <span class="status green" v-if="progress(item) === '100%'">Complete</span>
           </div>
           <div class="col-xs-3 col-sm-2">
             <div class="progress-container">
-              <div class="progress"
-                v-bind:style="{ 'width': progress(item) }"></div>
+              <div class="progress" :style="{ 'width': progress(item) }"></div>
             </div>
-          </div> -->
+          </div>
         </show-table-row>
       </show-table>
     </card>
     
-    <no-content :message="noContentMessage" :condition="!watchedShows.length"></no-content>
+    <no-content message="You haven't watched any shows yet!" :condition="!watchedShows.length"></no-content>
   </div>
 </template>
 
@@ -60,7 +60,6 @@ export default {
   name: 'Watched',
   data() {
     return {
-      noContentMessage: 'You haven\'t watched any shows yet!',
       statusClasses: {
         Running: 'green',
         Ended: 'red'
@@ -83,19 +82,7 @@ export default {
       return this.statusClasses[statusName];
     },
     progress({ watched }) {
-      const totalWatched = watched
-        .map(item => {
-          return item.episodes.filter(episode => episode.watched).length;
-        })
-        .reduce((acc, item) => acc + item);
-
-      const totalEpisodes = watched
-        .map(item => {
-          return item.episodes.length;
-        })
-        .reduce((acc, item) => acc + item);
-
-      return `${Math.floor((totalWatched / totalEpisodes) * 100)}%`;
+      return `${Math.floor((50 / 100) * 100)}%`;
     }
   },
   components: {

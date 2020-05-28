@@ -1,8 +1,8 @@
+import axios from '../../http';
 import { 
   MOVIE_COLLECTION_GET,
   MOVIE_COLLECTION_ADD,
   MOVIE_COLLECTION_DELETE } from '../mutation-types';
-import axios from '../../http';
 
 const state = {
   collection: []

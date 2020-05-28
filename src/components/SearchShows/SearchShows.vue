@@ -56,6 +56,7 @@ export default {
       this.sendStatus.loader = false;
       this.sendStatus.disableButton = false;
       this.form.showName = '';
+      this.$store.dispatch('shows/emptyFoundShows');
     },
     setType(type) {
       this.type = type;

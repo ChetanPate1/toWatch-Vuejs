@@ -3,7 +3,7 @@ import {
   WATCHING_GET,
   WATCHING_ADD,
   WATCHING_DELETE,
-  WATCHING_EPISODES_GET,
+  EPISODES_GET,
   WATCHING_TOGGLE_EPISODE_WATCHED,
   WATCHING_ON_UPDATE } from '../mutation-types';
 
@@ -61,14 +61,14 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async getWatchedEpisodes({ commit, dispatch }, { watchingId, seasonId }) {
+  async getEpisodes({ commit, dispatch }, { watchingId, seasonId }) {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: `/watched-episodes/${watchingId}/${seasonId}`
+        url: `/episodes/${seasonId}`
       });
       
-      commit(WATCHING_EPISODES_GET, { id: watchingId, seasonId, episodes: data  });
+      commit(EPISODES_GET, { id: watchingId, seasonId, episodes: data  });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
@@ -112,7 +112,7 @@ const mutations = {
   [WATCHING_DELETE](state, id) {
     state.watching = state.watching.filter(item => item._id != id);
   },
-  [WATCHING_EPISODES_GET](state, { id, seasonId, episodes }) {
+  [EPISODES_GET](state, { id, seasonId, episodes }) {
     const { onEpisode, show } = state.watching.find(item => item._id == id);
     const currentSeason = show.seasons.find(item => item._id == seasonId);
     const seasonNumber = show.seasons.indexOf(currentSeason) + 1;

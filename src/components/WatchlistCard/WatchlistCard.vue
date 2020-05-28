@@ -125,7 +125,7 @@ export default {
       return number < 10 ? `S0${number}` : `S${number}`;
     },
     async tabSelect(season) {
-      await this.$store.dispatch('watching/getWatchedEpisodes', { 
+      await this.$store.dispatch('watching/getEpisodes', { 
         watchingId: this.id,
         seasonId: season._id
       });

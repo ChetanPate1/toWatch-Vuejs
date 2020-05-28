@@ -55,18 +55,19 @@ export default {
     update() {
       // this.$store.dispatch("updateShow", this.reference);
     },
-    onAddToWatchlist() {
+    async onAddToWatchlist() {
       this.$parent.$refs.addToWatchlist.form = {
         showId: this.showId,
         episode: '',
         season: ''
       };
+      await this.$store.dispatch('lookups/getSeasons', this.showId);
       this.$parent.$refs.popup.open();
     },
     confirmDelete() {
       this.$refs.confirmPopup.open().then(result => {
         if (result.answer) {
-          this.$store.dispatch('deleteFromShowCollection', {
+          this.$store.dispatch('showCollection/deleteFromShowCollection', {
             id: this.id
           });
         }

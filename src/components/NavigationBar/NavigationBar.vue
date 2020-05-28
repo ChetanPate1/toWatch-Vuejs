@@ -28,7 +28,7 @@
           </router-link>
           <router-link :to="{ path: '/show-collection'}" tag="li" v-if="token">
             <a>
-              <span class="dripicons-monitor"></span>SHOWS COLLECTION
+              <span class="dripicons-monitor"></span>SHOW COLLECTION
             </a>
           </router-link>
         </ul>

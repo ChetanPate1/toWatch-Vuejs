@@ -6,10 +6,7 @@ const state = {
   episodes: []
 };
 
-const getters = {
-  seasons: state => state.seasons,
-  episodes: state => state.episodes
-};
+const getters = {};
 
 const actions = {
   async getSeasons({ commit, dispatch }, showId) {

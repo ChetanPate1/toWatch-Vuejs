@@ -1,6 +1,5 @@
 <template lang="html">
 <form name="form" v-on:submit.prevent="add(form)">
-  
   <div class="form-element" v-if="hideSeriesSelect && form.showId">
     <label for="series">Series Name</label>
     {{ findShow(form.showId).show.title }}
@@ -56,7 +55,7 @@
 
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'AddToWatchlist',
@@ -75,9 +74,9 @@ export default {
     hideSeriesSelect: Boolean
   },
   computed: {
-    ...mapGetters({
-      episodes: 'lookups/episodes',
-      seasons: 'lookups/seasons'
+    ...mapState({
+      episodes: ({ lookups }) => lookups.episodes,
+      seasons: ({ lookups }) => lookups.seasons,
     })
   },
   methods: {
