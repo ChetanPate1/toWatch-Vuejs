@@ -23,6 +23,7 @@
             :img-src="item.show.poster"
             :id="item._id"
             :show-id="item.show._id"
+            :data="item.show"
             :deleteable="true">
           </show-card>
       </div>

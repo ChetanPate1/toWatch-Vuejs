@@ -1,17 +1,21 @@
 <template>
 <div>
-  <div
-    class="panel-row"
-    :class="{ 'disabled' : !watched }"
-  >
-    <div class="col-35">
+  <div class="panel-row" :class="{ 'disabled' : !watched }">
+    <div class="col-25">
       <span class="aired-by">
         <i class="dripicons-feed"></i>
         {{ aired(released).by }}
       </span>
     </div>
-    <div class="col-45">Episode {{ number }}</div>
-    <div class="col-20" @click="$emit('click')">
+
+    <div class="col-60">
+      <div class="title">
+        <small>Episode {{ number }}<br /></small>
+        {{ title ? title : '-' }}
+      </div>
+    </div>
+
+    <div class="col-15" @click="$emit('click')">
       <span class="dripicons-preview" :class="{ 'active' : watched }"></span>
     </div>
   </div>
@@ -29,6 +33,7 @@ export default {
   props: {
     watchingId: String,
     number: Number,
+    title: String,
     watched: Boolean,
     released: String
   },

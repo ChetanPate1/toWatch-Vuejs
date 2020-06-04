@@ -20,7 +20,7 @@
   </popup>
 
   <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
-    <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
+    <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
     <button class="icon-button dripicons-plus" tabindex="0" @click.stop="onAddToWatchlist()"></button>
     <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="update()"></button>
     <h2>{{ heading }}</h2>
@@ -31,7 +31,6 @@
 <script>
 import Popup from '../Popup/Popup';
 import Checkbox from '../FormElements/Checkbox';
-import { mapActions } from 'vuex';
 
 export default {
   name: 'ShowCard',
@@ -46,14 +45,15 @@ export default {
     imgSrc: String,
     id: String,
     showId: String,
+    data: Object,
     deleteable: Boolean
-  },
-  computed: {
-    ...mapActions(['updateShow'])
   },
   methods: {
     update() {
-      // this.$store.dispatch("updateShow", this.reference);
+      this.$store.dispatch('shows/updateShow', {
+        showId: this.showId,
+        imdbId: this.data.imdbId
+      });
     },
     async onAddToWatchlist() {
       this.$parent.$refs.addToWatchlist.form = {

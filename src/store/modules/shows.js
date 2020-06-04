@@ -30,6 +30,31 @@ const actions = {
 
     commit(UPDATE_FOUND_SHOWS, res.data.Search);
   },
+  async updateShow({ dispatch }, { imdbId , showId }) {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: process.env.VUE_APP_OMDB_API_URL,
+        params: {
+            apikey: process.env.VUE_APP_OMDB_API_KEY,
+            i: imdbId,
+            type: 'series'
+          }
+      });
+  
+      const { data } = await axios({
+        method: 'POST',
+        url: `/shows/${showId}/update`,
+        data: res.data
+      });
+      
+      dispatch('showToast', { title: 'Show Updated.', message: data.message }, { root: true });
+      return res.data.show;
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error.', message: data }, { root: true });
+      return data;
+    }
+  },
   emptyFoundShows({ commit }) {
     commit(EMPTY_FOUND_SHOWS);
   }

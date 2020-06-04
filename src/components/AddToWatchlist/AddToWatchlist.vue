@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <button class="button button-sm pull-right"
+  <button class="button pull-right"
     type="submit"
     :disabled="!form.showId || !form.seasonId || !form.episodeId">
     add

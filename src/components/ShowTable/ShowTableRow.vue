@@ -11,19 +11,24 @@ export default {
 </script>
 
 <style lang="scss">
-.show-table-row{
-   display: inline-block;
-   width: 100%;
+.show-table-row {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
    color: #d1d1d1;
    padding: 8px 10px;
    margin-top: -1px;
    border-bottom: 1px solid $body-color; 
    vertical-align: middle;
+   > * {
+      flex: 1 100%;
+   }
 
    @for $i from 1 through 12 {
-      .col-xs-#{$i}{
+      .item {
         padding: 10px;
-     }
+      }
    }
 }
 

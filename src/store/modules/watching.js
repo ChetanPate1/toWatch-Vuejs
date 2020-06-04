@@ -37,13 +37,9 @@ const actions = {
       });
 
       commit(WATCHING_ADD, data.watching);
-      dispatch('showToast', { title: 'Watching Already', message: data.message }, { root: true });
-    } catch ({ status, data }) {
-      if(status === 409){
-        return dispatch('showToast', { title: 'Watching Already', message: data.message }, { root: true });
-      }
-
-      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+      dispatch('showToast', { title: 'Added To Watching', message: data.message }, { root: true });
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data }, { root: true });
     }
   },
   async deleteWatching({ dispatch, commit }, { id, deleteReason }) {
@@ -81,7 +77,7 @@ const actions = {
       });
       
       commit(WATCHING_TOGGLE_EPISODE_WATCHED, { 
-        watchingId, seasonId, episodeId, episode: data.watched 
+        watchingId, seasonId, episodeId
       });
       commit(WATCHING_ON_UPDATE, { watchingId, data });
     } catch ({ data }) {
@@ -113,11 +109,11 @@ const mutations = {
     state.watching = state.watching.filter(item => item._id != id);
   },
   [EPISODES_GET](state, { id, seasonId, episodes }) {
-    const { onEpisode, show } = state.watching.find(item => item._id == id);
+    const { on, show } = state.watching.find(item => item._id == id);
     const currentSeason = show.seasons.find(item => item._id == seasonId);
     const seasonNumber = show.seasons.indexOf(currentSeason) + 1;
-    const episodesBefore = seasonNumber < onEpisode.season;
-    const currentSeasonEpisodesBefore = (item) => seasonNumber == onEpisode.season && item.number <= onEpisode.episode
+    const episodesBefore = seasonNumber < on.season;
+    const currentSeasonEpisodesBefore = (item) => seasonNumber == on.season && item.number <= on.episode
     const watchingEpisodes = episodes.map(item => ({
       ...item,
       watched: episodesBefore || currentSeasonEpisodesBefore(item)
@@ -137,13 +133,13 @@ const mutations = {
       return item;
     });
   },
-  [WATCHING_TOGGLE_EPISODE_WATCHED](state, { watchingId, seasonId, episode }) {
+  [WATCHING_TOGGLE_EPISODE_WATCHED](state, { watchingId, seasonId, episodeId }) {
     state.watching = state.watching.map(watch => {
       if (watch._id === watchingId) {
         watch.show.seasons.map(season => {
           if (season._id === seasonId) {
             const episodeIndex = season.episodes.reduce((acc, item, i) => {
-              if(item._id == episode._id) {
+              if(item._id == episodeId) {
                 return i + 1;
               }
 
@@ -166,7 +162,7 @@ const mutations = {
   [WATCHING_ON_UPDATE](state, { watchingId, data }) {
     state.watching = state.watching.map(watch => {
       if (watch._id === watchingId) {
-        watch.onEpisode = data.on;
+        watch.on = data.on;
         watch.behindCount = data.behindCount;
       }
 

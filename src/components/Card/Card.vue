@@ -16,7 +16,6 @@ export default {
   border-radius: 10px;
   padding: 20px;
   background-color: $shade-1;
-  border-radius: 6px;
   box-shadow: 0 8px 40px -10px rgba(0, 0, 0, 0.6);
 }
 </style>
