@@ -11,16 +11,21 @@
     <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
     <div class="search-results" v-bind:class="{'show' : foundShows }">
-        <div class="result" v-for="(show, index) in foundShows" @click="addSeries(show)" :key="index">
-          <div class="number">{{ index + 1 }}.</div>
-          <div class="name">{{ show.Title }}</div>
-        </div>
+      <search-result-item 
+        v-for="(show, index) in foundShows" :key="index"
+        :poster="show.Poster"
+        :title="show.Title"
+        :year="show.Year"
+        :disabled="sendStatus.disableButton"
+        @click="addSeries(show)"
+      ></search-result-item>
     </div>
   </div>
 </form>
 </template>
 
 <script>
+import SearchResultItem from './SearchResultItem';
 import { mapState } from 'vuex';
 
 export default {
@@ -67,6 +72,9 @@ export default {
     empty() {
       this.$store.dispatch('shows/emptyFoundShows');
     }
+  },
+  components: {
+    SearchResultItem
   }
 };
 </script>
@@ -91,16 +99,18 @@ export default {
   max-height: 500px;
   overflow-y: auto;
   opacity: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-
+  
   .result {
     margin: 0 0 5px 0;
-    background-color: #ffffff;
+    background-color: $shade-1;
     display: block;
     float: left;
     width: 100%;
     padding: 10px 15px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 
     &:hover {
       cursor: pointer;
@@ -111,34 +121,33 @@ export default {
       }
     }
 
-    .number,
-    .name,
-    .network {
-      float: left;
+    .item {
+      flex: 1 100%;
     }
 
-    .number {
-      font-size: 12px;
-      line-height: 30px;
-      width: 7%;
-      color: $base-color;
+    .img {
+      flex: 1 140px
+    }
+
+    .image {
+      background: #efefef;
+      background-size: cover;
+      background-repeat: no-repeat;
+      border-radius: 5px;
+      width: 74px;
+      height: 105px;
     }
 
     .name {
-      padding: 0 5px 0 0;
       font-size: 14px;
       font-weight: bold;
-      width: 68%;
+      width: 85%;
       line-height: 2;
-    }
+      color: #ffffff;
 
-    .network {
-      font-size: 10px;
-      width: 25%;
-      padding: 8px;
-      text-align: center;
-      background-color: #f2f2f2;
-      border-radius: 5px;
+      small {
+        color: #afafaf;
+      }
     }
 
     @media (max-width: 500px) {

@@ -35,7 +35,7 @@
 
 <script>
 import ShowCard from './ShowCard/ShowCard';
-import SearchShows from './SearchShows/SearchShows';
+import SearchShows from './Search/SearchShows';
 import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';

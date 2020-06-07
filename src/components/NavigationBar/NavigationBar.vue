@@ -40,7 +40,9 @@
         <a v-if="token" @click.prevent="logout" href>SIGNOUT</a>
       </ul>
     </nav>
-    <button class="navigation-button" type="button" name="button" @click="toggleOpen">MENU</button>
+    <button class="navigation-button" type="button" name="button" @click="toggleOpen">
+      <span class="dripicons-menu"></span>
+    </button>
     <div class="navigation-underlay" v-bind:class="{'open' : open }" @click="toggleOpen"></div>
   </div>
 </template>

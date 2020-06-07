@@ -12,26 +12,22 @@
     </button>
 
     <div class="search-results" v-bind:class="{'show' : foundMovies }">
-        <div class="search-result" v-for="(movie, index) in foundMovies" :key="index">
-          <img class="underlay-image" v-bind:src="movie.Poster">
-          <div class="col-xs-4">
-              <img class="poster img-responsive" v-bind:src="movie.Poster">
-          </div>
-          <div class="col-xs-8">
-              <h3>{{ movie.Title }}</h3>
-              <p>{{ movie.Plot }}</p>
-              <button class="button pull-right" type="button"
-                @click="addMovie(movie)"
-                :disabled="sendStatus.disableButton">Add to Collection
-              </button>
-          </div>
-        </div>
+      <search-result-item 
+        v-for="(movie, index) in foundMovies" :key="index"
+        :poster="movie.Poster"
+        :title="movie.Title"
+        :plot="movie.Plot"
+        :year="movie.Year"
+        @click="addMovie(movie)"
+        :disabled="sendStatus.disableButton"
+      ></search-result-item>
     </div>
   </div>
 </form>
 </template>
 
 <script>
+import SearchResultItem from './SearchResultItem';
 import { mapState } from 'vuex';
 
 export default {
@@ -67,6 +63,9 @@ export default {
     empty() {
       this.$store.dispatch('movies/emptyFoundMovies');
     }
+  },
+  components: {
+    SearchResultItem
   }
 };
 </script>
@@ -81,47 +80,11 @@ export default {
   height: auto;
   overflow-y: auto;
   opacity: 0;
-  background-color: #ffffff;
 
   .poster {
+    border-radius: 5px;
     margin-top: 20px;
     box-shadow: 0 20px 65px 6px rgba(0, 0, 0, 0.4);
-  }
-
-  .search-result {
-    position: relative;
-    margin: 0 0 5px 0;
-    background-color: #ffffff;
-    display: block;
-    float: left;
-    width: 100%;
-    padding: 10px 15px;
-    border-radius: 5px;
-    overflow: hidden;
-
-    .underlay-image {
-      position: absolute;
-      left: -15px;
-      top: 0;
-      width: 106%;
-      filter: blur(4px);
-      opacity: 0.4;
-    }
-
-    @media (max-width: 500px) {
-      padding-top: 20px;
-      min-height: 60px;
-
-      .number,
-      .name {
-        padding: 4px 0 0 0;
-        font-size: 12px;
-        line-height: 1;
-      }
-      .name {
-        padding: 4px 10px 0 0;
-      }
-    }
   }
 
   &.show {

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import SearchMovies from './SearchMovies/SearchMovies';
+import SearchMovies from './Search/SearchMovies';
 import MovieCard from './MovieCard/MovieCard';
 import NoContent from './NoContent/NoContent';
 import { mapState } from 'vuex';
