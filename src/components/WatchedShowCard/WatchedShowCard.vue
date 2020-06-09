@@ -40,7 +40,7 @@
     <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="onDelete()"></button>
     <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="onRewatching()"></button>
     <button class="icon-button dripicons-media-play" tabindex="0" @click.stop="onContinue()"></button>
-    <img class="poster" :src="data.poster" />
+    <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
   </card>
 </div>
 </template>
@@ -108,7 +108,7 @@ export default {
 .watched-show-card {
   position: relative;
   padding-left: 125px;
-  min-height: 159px;
+  min-height: 140px;
   color: #b7b7b7;
   overflow: hidden;
 
@@ -133,7 +133,11 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    width: 106px;
+    width: 95px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
   }
 
   .dripicons-trash {

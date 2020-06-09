@@ -1,13 +1,8 @@
 <template lang="html">
 <div>
   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-10">Are you sure you want to delete this show?</h4>
-    <div class="margin-bottom-30">
-      <checkbox name="checkbox" v-model="deleteFromWatched">
-          Delete for watched as well?
-        </checkbox>
-    </div>
-    
+    <h4 class="margin-top-0 margin-bottom-30">Are you sure you want to delete this show?</h4>
+
     <button class="button button-sm red pull-left"
             type="button"
             @click="$refs.confirmPopup.close('cancel')">Cancel
@@ -15,7 +10,7 @@
 
     <button class="button button-sm pull-right"
             type="button"
-            @click="$refs.confirmPopup.close({ answer: 'yes', deleteFromWatched })">Yes
+            @click="$refs.confirmPopup.close('yes')">Yes
     </button>
   </popup>
 
@@ -30,7 +25,6 @@
 
 <script>
 import Popup from '../Popup/Popup';
-import Checkbox from '../FormElements/Checkbox';
 
 export default {
   name: 'ShowCard',
@@ -64,19 +58,18 @@ export default {
       await this.$store.dispatch('lookups/getSeasons', this.showId);
       this.$parent.$refs.popup.open();
     },
-    confirmDelete() {
-      this.$refs.confirmPopup.open().then(result => {
-        if (result.answer) {
-          this.$store.dispatch('showCollection/deleteFromShowCollection', {
-            id: this.id
-          });
-        }
-      });
+    async confirmDelete() {
+      const result = await this.$refs.confirmPopup.open();
+
+      if (result == 'yes') {
+        await this.$store.dispatch('showCollection/deleteFromShowCollection', {
+          id: this.id
+        });
+      }
     }
   },
   components: {
-    Popup,
-    Checkbox
+    Popup
   }
 };
 </script>

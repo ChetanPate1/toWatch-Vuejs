@@ -113,14 +113,14 @@ export default {
     toggleOpen() {
       this.open = !this.open;
     },
-    confirmDelete(id) {
-      this.$refs.confirmPopup.open().then(result => {
-        if (result == 'yes') {
-          this.$store.dispatch('watching/deleteWatching', {
-            id, deleteReason: this.deleteReason
-          });
-        }
-      });
+    async confirmDelete(id) {
+      const result = await this.$refs.confirmPopup.open();
+      
+      if (result == 'yes') {
+        await this.$store.dispatch('watching/deleteWatching', {
+          id, deleteReason: this.deleteReason
+        });
+      }
     },
     tabButtonName(number) {
       return number < 10 ? `S0${number}` : `S${number}`;

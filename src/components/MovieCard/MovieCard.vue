@@ -49,12 +49,11 @@ export default {
     goToMovieDetails(movieId) {
       this.$router.push({ name: 'movieDetails', params: { movieId } });
     },
-    confirmDelete() {
-      this.$refs.confirmPopup.open().then(result => {
-        if (result == 'yes') {
-          this.$store.dispatch('movieCollection/deleteFromMovieCollection', this.id);
-        }
-      });
+    async confirmDelete() {
+      const result = await this.$refs.confirmPopup.open();
+      if (result == 'yes') {
+        await this.$store.dispatch('movieCollection/deleteFromMovieCollection', this.id);
+      }
     }
   },
   components: {
