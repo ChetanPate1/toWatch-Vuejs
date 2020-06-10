@@ -22,8 +22,11 @@
         <progress-bar :percentage="data.percentage"></progress-bar>
       </div>
       
-      <h3 class="margin-bottom-0">{{ data.show }}</h3>
-      {{ data.on.title }}
+      <div class="text-ellipsis">
+        <h3 class="margin-bottom-0">{{ data.show }}</h3>
+        {{ data.on.title }}
+      </div>
+      
       <div class="margin-top-10">
         <small v-if="data.percentage != 100">
           <span class="visible-xs visible-sm">{{ onEpisode(data.on, true) }}</span>
@@ -118,12 +121,15 @@ export default {
     color: #ffffff;
   }
 
-  .content {
-    position: relative;
+  .text-ellipsis {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
+  }
 
+  .content {
+    position: relative;
+    
     .bar {
       position: absolute;
       top: -30px;
