@@ -120,6 +120,9 @@ export default {
 
   .content {
     position: relative;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     .bar {
       position: absolute;
