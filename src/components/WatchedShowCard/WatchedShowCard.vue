@@ -120,13 +120,7 @@ export default {
     font-weight: bold;
     color: #ffffff;
   }
-
-  .text-ellipsis {
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
+  
   .content {
     position: relative;
     
@@ -135,6 +129,12 @@ export default {
       top: -30px;
       right: 0;
       width: 100%;
+    }
+
+    .text-ellipsis {
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
