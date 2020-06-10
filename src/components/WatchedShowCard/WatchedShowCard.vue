@@ -126,7 +126,7 @@ export default {
     
     .bar {
       position: absolute;
-      top: -30px;
+      top: -15px;
       right: 0;
       width: 100%;
     }
