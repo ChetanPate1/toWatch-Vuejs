@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import MostPopular from '@/components/MostPopular';
 import Login from '@/components/Login';
-import ShowCollection from '@/components/ShowCollection';
 import Watching from '@/components/Watching';
 import WatchedShows from '@/components/WatchedShows';
 import MovieCollection from '@/components/MovieCollection';
@@ -24,14 +23,6 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
-    },
-    {
-      path: '/show-collection',
-      name: 'showCollection',
-      component: ShowCollection,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: '/watching',
@@ -72,26 +63,20 @@ const router = new Router({
   }
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  const { token } = await Store.dispatch('storage/initialiseStore');
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!getToken()) {
+    if (!token && to.name != 'login') {
       Store.dispatch('auth/signUserOut');
     }
-    
-    next();
-  } else {
-    next();
   }
+
+  if (to.name == 'login' && token) {
+    return next({ path: '/watching' });
+  }
+
+  next();
 });
-
-const getToken = () => {
-  const token = localStorage.getItem('token');
-
-  if (!token || token == 'null') {
-    return null;
-  }
-  
-  return token;
-};
 
 export default router;

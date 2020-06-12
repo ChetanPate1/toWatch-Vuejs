@@ -3,7 +3,7 @@
     <nav class="navigation-bar" v-bind:class="{'open' : open }">
       <div class="container">
         <a class="brand">
-          <strong>toWatch</strong>
+          <strong>toWatch {{ token }}</strong>
         </a>
         <ul class="links margin-top-xs-40">
           <router-link :to="{ path: '/most-popular'}" tag="li"  v-if="!token">
@@ -26,11 +26,6 @@
               <span class="dripicons-preview"></span> WATCHING
             </a>
           </router-link>
-          <router-link :to="{ path: '/show-collection'}" tag="li" v-if="token">
-            <a>
-              <span class="dripicons-monitor"></span>SHOW COLLECTION
-            </a>
-          </router-link>
         </ul>
       </div>
       <ul class="links auth">
@@ -43,12 +38,12 @@
     <button class="navigation-button" type="button" name="button" @click="toggleOpen">
       <span class="dripicons-menu"></span>
     </button>
-    <div class="navigation-underlay" v-bind:class="{'open' : open }" @click="toggleOpen"></div>
+    <div class="navigation-underlay" :class="{'open' : open }" @click="toggleOpen"></div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'NavigationBar',
@@ -59,12 +54,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      token: 'auth/token'
+    ...mapState({
+      token: ({ storage }) => storage.token,
+      user: ({ storage }) => storage.user
     })
-  },
-  beforeMount() {
-    this.$store.dispatch('auth/getCurrentUser');
   },
   methods: {
     toggleOpen() {
@@ -72,6 +65,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('auth/signUserOut');
+      this.open = false;
     }
   }
 };

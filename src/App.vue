@@ -10,7 +10,7 @@
     ></toast>
 
     <navigation-bar></navigation-bar>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -22,6 +22,9 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'app',
+  async mounted() {
+    await this.$store.dispatch('storage/initialiseStore');
+  },
   computed: {
     ...mapGetters(['toasts'])
   },
@@ -32,4 +35,4 @@ export default {
 };
 </script>
 
-<style src="./style/main.scss" lang="scss"></style>
+<style src="../scss/main.scss" lang="scss"></style>

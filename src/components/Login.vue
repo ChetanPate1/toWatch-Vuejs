@@ -7,11 +7,11 @@
          <form name="signinForm" novalidate @submit.prevent="onLogin">
             <div class="form-element dark">
                <label for="email">Email</label>
-               <input name="email" type="email" v-model="email" required>
+               <input name="email" type="email" v-model="form.email" required>
             </div>
             <div class="form-element dark">
                <label for="password">Password</label>
-               <input name="password" type="password" v-model="password" required>
+               <input name="password" type="password" v-model="form.password" required>
             </div>
 
             <div class="form-element">
@@ -25,34 +25,26 @@
 
 <script>
 import Card from './Card/Card';
+import { mapState } from 'vuex';
 
 export default {
    name: 'Login',
    data() {
       return {
-         email: '',
-         password: ''
+         form: {
+            email: '',
+            password: ''
+         }
       }
    },
-   mounted() {
-      if (this.getToken()) {
-         this.$router.push('my-shows');
-      }
+   computed: {
+      ...mapState({
+      token: ({ storage }) => storage.token
+    })
    },
    methods: {
       onLogin() {
-         this.$store.dispatch('auth/signUserIn', {
-            email: this.email, password: this.password
-         });
-      },
-      getToken() {
-         const token = localStorage.getItem('token');
-
-         if (!token || token == 'null') {
-            return null;
-         }
-         
-         return token;
+         this.$store.dispatch('auth/signUserIn', this.form);
       }
    },
    components: {

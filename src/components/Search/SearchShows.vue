@@ -6,7 +6,7 @@
         v-if="foundShows.length">
     </button>
     <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
-    <input class="show-search" type="text" name="showName" v-model="form.showName">
+    <input class="show-search" type="text" name="showName" placeholder="Track a show" v-model="form.showName">
 
     <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
@@ -37,8 +37,7 @@ export default {
       },
       sendStatus: {
         disableButton: false,
-        loader: false,
-        validation: ''
+        loader: false
       },
       toast: {
         content: '',
@@ -57,7 +56,8 @@ export default {
       this.sendStatus.loader = true;
       this.sendStatus.disableButton = true;
 
-      await this.$store.dispatch('showCollection/saveToShowCollection', show);
+      const data = await this.$store.dispatch('shows/save', show);
+      this.$emit('onSelect', data);
       this.sendStatus.loader = false;
       this.sendStatus.disableButton = false;
       this.form.showName = '';

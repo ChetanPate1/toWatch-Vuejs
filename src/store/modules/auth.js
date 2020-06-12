@@ -1,29 +1,13 @@
 import axios from '../../http';
-import { UPDATE_USER, SIGN_OUT_USER } from '../mutation-types';
 
 import router from '@/router';
 
-const state = {
-  user: {
-    email: ''
-  }
-};
+const state = {};
 
-const getters = {
-  user: state => state.user,
-  token: () => {
-    const token = localStorage.getItem('token');
-  
-    if (!token || token == 'null') {
-      return null;
-    }
-    
-    return token;
-  }
-};
+const getters = {};
 
 const actions = {
-  async signUserIn({ commit, dispatch }, data) {
+  async signUserIn({ dispatch }, data) {
     try {
       const res = await axios({
         method: 'POST',
@@ -31,43 +15,28 @@ const actions = {
         data
       });
 
-      localStorage.setItem('token', res.data.token);
-      commit(UPDATE_USER, data);
+      await dispatch('storage/save', {
+        prop: 'token',
+        value: res.data.token
+      }, { root: true });
       
-      router.push({ name: 'showCollection' });
+      await dispatch('storage/save', {
+        prop: 'user',
+        value: { email: data.email } 
+      }, { root: true });
+
+      router.push({ name: 'watching' });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  signUserOut({ commit }) {
-    localStorage.setItem('token', null);
+  async signUserOut({ dispatch }) {
+    await dispatch('storage/reset', null, { root: true });
     router.push({ name: 'login' });
-    commit(SIGN_OUT_USER);
-  },
-  async getCurrentUser({ commit }) {
-    try {
-      const res = await axios({
-        method: 'GET',
-        url: '/user'
-      });
-
-      commit(UPDATE_USER, res.data);
-    } catch (error) {
-      commit(UPDATE_USER, {});
-    } 
   }
 };
 
-const mutations = {
-  [UPDATE_USER](state, user) {
-    state.user.email = user.email;
-  },
-  [SIGN_OUT_USER](state) {
-    state.user = {
-      email: ''
-    };
-  }
-};
+const mutations = {};
 
 export default {
   namespaced: true,

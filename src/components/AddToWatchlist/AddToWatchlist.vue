@@ -1,39 +1,27 @@
 <template lang="html">
 <form name="form" v-on:submit.prevent="add(form)">
-  <div class="form-element" v-if="hideSeriesSelect && form.showId">
+  <div class="form-element">
     <label for="series">Series Name</label>
-    {{ findShow(form.showId).show.title }}
+    {{ show.title }}
   </div>
 
-  <div class="form-element" v-if="!hideSeriesSelect">
-    <label for="series">Series Name</label>
-    <span class="dripicons-chevron-down"></span>
-    <select name="series" v-model="form.showId" @change="onChooseShow">
-        <option v-for="item in shows" :value="item.show._id" :key="item._id">
-          {{ item.show.title }}
-        </option>
-    </select>
-  </div>
-
-  <div class="form-element" v-if="form.showId">
+  <div class="form-element" v-if="show._id">
     <label for="seasons">Seasons</label>
     <div class="select-series">
-        <div class="col-xs-3" v-for="item in seasons" :key="item._id">
+        <div class="col-xs-3" v-for="item in show.seasons" :key="item._id">
           <label class="radio" :class="{'selected' : form.seasonId == item._id }" >
               <input type="radio" 
                 v-model="form.seasonId"
-                :value="item._id" 
-                @change="onChooseSeason">{{ item.number }}
+                :value="item._id">{{ item.number }}
           </label>
         </div>
-        <span class="selected-none" v-bind:class="{'selected': !form.showId }">Select a season</span>
     </div>
   </div>
 
-  <div class="form-element" v-if="form.showId && form.seasonId">
+  <div class="form-element" v-if="form.seasonId">
     <label for="seasons">Episodes</label>
     <div class="select-series">
-        <div class="col-xs-3" v-for="episode in episodes" :key="episode._id">
+        <div class="col-xs-3" v-for="episode in findEpisodes(form.seasonId)" :key="episode._id">
           <label class="radio"
             :class="{'selected' : form.episodeId == episode._id }">
               <input type="radio" 
@@ -41,28 +29,24 @@
                 :value="episode._id">{{ episode.number }}
           </label>
         </div>
-        <span class="selected-none" v-bind:class="{'selected': !form.seasonId }">Select a episode</span>
+        <span class="selected-none" :class="{'selected': !form.seasonId }">Select a episode</span>
     </div>
   </div>
 
   <button class="button pull-right"
     type="submit"
-    :disabled="!form.showId || !form.seasonId || !form.episodeId">
+    :disabled="!form.seasonId || !form.episodeId">
     add
   </button>
 </form>
 </template>
 
-
 <script>
-import { mapState } from 'vuex';
-
 export default {
   name: 'AddToWatchlist',
   data() {
     return {
       form: {
-        showId: '',
         seasonId: '',
         episodeId: ''
       },
@@ -70,44 +54,28 @@ export default {
     };
   },
   props: {
-    shows: Array,
-    hideSeriesSelect: Boolean
-  },
-  computed: {
-    ...mapState({
-      episodes: ({ lookups }) => lookups.episodes,
-      seasons: ({ lookups }) => lookups.seasons,
-    })
+    show: Object
   },
   methods: {
     async add() {
-      await this.$store.dispatch('watching/addToWatching', this.form);
+      await this.$store.dispatch('watching/addToWatching', {
+        ...this.form,
+        showId: this.show._id
+      });
+
       this.form = {
-        showId: '',
         seasonId: '',
         episodeId: ''
       };
       this.$parent.close();
     },
-    checkAired(episode) {
-      if (typeof episode === 'object') {
-        let date = new Date(episode.released).getTime();
-        return date - this.today < 0 || episode.number == 1;
-      } else {
-        return false;
+    findEpisodes(seasonId) {
+      const season = this.show.seasons.find(item => item._id === seasonId);
+      if (season) {
+        return season.episodes;
       }
-    },
-    findShow(id) {
-      return this.shows.find(item => item.show._id === id);
-    },
-    async onChooseShow() {
-      this.form.seasonId = '';
-      this.form.episodeId = '';
 
-      await this.$store.dispatch('lookups/getSeasons', this.form.showId);
-    },
-    async onChooseSeason() {
-      await this.$store.dispatch('lookups/getEpisodes', this.form.seasonId);
+      return [];
     }
   }
 };

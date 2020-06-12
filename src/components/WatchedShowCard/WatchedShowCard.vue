@@ -23,7 +23,7 @@
       </div>
       
       <div class="text-ellipsis">
-        <h3 class="margin-bottom-0">{{ data.show }}</h3>
+        <h3 class="margin-bottom-0 text-ellipsis">{{ data.show }}</h3>
         {{ data.on.title }}
       </div>
       

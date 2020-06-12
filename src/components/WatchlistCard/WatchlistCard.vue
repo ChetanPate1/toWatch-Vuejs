@@ -23,16 +23,16 @@
     </button>
   </popup>
 
-  <div class="watchlist-card" tabindex="0" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+  <div class="watchlist-card" tabindex="0" :style="{ 'background-image': 'url('+ imgSrc +')' }">
     <button type="button" class="icon-button red dripicons-trash" @click="confirmDelete(id)"></button>
 
     <h2>{{ heading }}</h2>
-    <h4>{{ data.on ? data.on.title : '' }}</h4>
-    <h5>On {{ data.on ? `Season ${data.on.season} Episode ${data.on.episode}` : '' }}</h5>
+    <h4>{{ data.episode ? data.episode.title : '' }}</h4>
+    <h5>On {{ data.episode ? `Season ${data.episode.season.number} Episode ${data.episode.number}` : '' }}</h5>
     
     <behind-count-button
-        @click="toggleOpen()"
-        :count="data.behindCount"
+        @click="toggleOpen"
+        :count="0"
         :open="open">
     </behind-count-button>
 
@@ -89,11 +89,8 @@ export default {
   name: 'WatchlistCard',
   props: {
     heading: String,
-    details: String,
     id: String,
     data: Object,
-    nextAired: Number,
-    behindCount: Number,
     imgSrc: String
   },
   data() {
@@ -104,14 +101,14 @@ export default {
       deleteReason: ''
     };
   },
-  async created() {
-    await this.$store.dispatch('watching/getWatchingOn', this.id);
-    const { on } = this.data;
-    await this.tabSelect(this.data.show.seasons[on.season - 1]);
-  },
   methods: {
-    toggleOpen() {
+    async toggleOpen() {
       this.open = !this.open;
+      const { episode } = this.data;
+      
+      if (this.open) {
+        await this.tabSelect(this.data.show.seasons[episode.season.number - 1]);
+      }
     },
     async confirmDelete(id) {
       const result = await this.$refs.confirmPopup.open();
@@ -140,8 +137,7 @@ export default {
     async watched(episode) {
       await this.$store.dispatch('watching/toggleWatched', {
         watchingId: this.id,
-        seasonId: episode.season,
-        episodeId: episode._id
+        episode
       });
 
       this.$forceUpdate();

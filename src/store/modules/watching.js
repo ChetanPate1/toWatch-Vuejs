@@ -4,16 +4,13 @@ import {
   WATCHING_ADD,
   WATCHING_DELETE,
   EPISODES_GET,
-  WATCHING_TOGGLE_EPISODE_WATCHED,
-  WATCHING_ON_UPDATE } from '../mutation-types';
+  WATCHING_TOGGLE_EPISODE_WATCHED } from '../mutation-types';
 
 const state = {
   watching: []
 };
 
-const getters = {
-  watching: state => state.watching
-};
+const getters = {};
 
 const actions = {
   async getWatching({ commit, dispatch }) {
@@ -64,34 +61,22 @@ const actions = {
         url: `/episodes/${seasonId}`
       });
       
-      commit(EPISODES_GET, { id: watchingId, seasonId, episodes: data  });
+      commit(EPISODES_GET, { watchingId, seasonId, episodes: data });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async toggleWatched({ commit, dispatch }, { watchingId, seasonId, episodeId }) {
+  async toggleWatched({ commit, dispatch }, { watchingId, episode }) {
     try {
       const { data }  = await axios({
         method: 'POST',
-        url: `/watched-episodes/${watchingId}/${episodeId}`
+        url: `/watching/${watchingId}/watched/${episode._id}`
       });
       
       commit(WATCHING_TOGGLE_EPISODE_WATCHED, { 
-        watchingId, seasonId, episodeId
+        watchingId,
+        data
       });
-      commit(WATCHING_ON_UPDATE, { watchingId, data });
-    } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
-    }
-  },
-  async getWatchingOn({ commit, dispatch }, watchingId) {
-    try {
-      const  { data } = await axios({
-        method: 'GET',
-        url: `/watchings/${watchingId}/on`
-      });
-
-      commit(WATCHING_ON_UPDATE, { watchingId, data });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
@@ -108,19 +93,19 @@ const mutations = {
   [WATCHING_DELETE](state, id) {
     state.watching = state.watching.filter(item => item._id != id);
   },
-  [EPISODES_GET](state, { id, seasonId, episodes }) {
-    const { on, show } = state.watching.find(item => item._id == id);
+  [EPISODES_GET](state, { watchingId, seasonId, episodes }) {
+    const { episode, show } = state.watching.find(item => item._id == watchingId);
     const currentSeason = show.seasons.find(item => item._id == seasonId);
     const seasonNumber = show.seasons.indexOf(currentSeason) + 1;
-    const episodesBefore = seasonNumber < on.season;
-    const currentSeasonEpisodesBefore = (item) => seasonNumber == on.season && item.number <= on.episode
+    const episodesBefore = seasonNumber < episode.season.number;
+    const currentSeasonEpisodesBefore = (item) => seasonNumber == episode.season.number && item.number <= episode.number;
     const watchingEpisodes = episodes.map(item => ({
       ...item,
       watched: episodesBefore || currentSeasonEpisodesBefore(item)
     }))
     
     state.watching.map(item => {
-      if (item._id === id) {
+      if (item._id === watchingId) {
         item.show.seasons.map(season => {
           if (season._id == seasonId) {
             season.episodes = watchingEpisodes;
@@ -133,37 +118,28 @@ const mutations = {
       return item;
     });
   },
-  [WATCHING_TOGGLE_EPISODE_WATCHED](state, { watchingId, seasonId, episodeId }) {
+  [WATCHING_TOGGLE_EPISODE_WATCHED](state, { watchingId, data }) {
+    const { episode, behindCount } = data;
+    const currentSeasonEpisodesBefore = (item) => item.number <= episode.number;
+
     state.watching = state.watching.map(watch => {
       if (watch._id === watchingId) {
+        watch.behindCount = behindCount;
+        watch.episode = episode;
         watch.show.seasons.map(season => {
-          if (season._id === seasonId) {
-            const episodeIndex = season.episodes.reduce((acc, item, i) => {
-              if(item._id == episodeId) {
-                return i + 1;
-              }
+          if (season._id === episode.season._id) {
+          
 
-              return acc;
-            }, 0); 
-
-            season.episodes.map((item, index) => {
-              item.watched = index < episodeIndex;
+            return season.episodes.map((item, index) => {
+              console.log(item.number <= episode.number, item.number, episode.number);
+              
+              item.watched = currentSeasonEpisodesBefore(item);
               return item;
             });
           }
 
           return season;
         });
-      }
-
-      return watch;
-    });
-  },
-  [WATCHING_ON_UPDATE](state, { watchingId, data }) {
-    state.watching = state.watching.map(watch => {
-      if (watch._id === watchingId) {
-        watch.on = data.on;
-        watch.behindCount = data.behindCount;
       }
 
       return watch;

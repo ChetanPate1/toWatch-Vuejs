@@ -55,6 +55,29 @@ const actions = {
       return data;
     }
   },
+  async save({ dispatch }, movie) {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: process.env.VUE_APP_OMDB_API_URL,
+        params: {
+            apikey: process.env.VUE_APP_OMDB_API_KEY,
+            i: movie.imdbID,
+            type: 'series'
+          }
+      });
+
+      const { data } = await axios({
+        method: 'POST',
+        url: '/shows',
+        data: res.data
+      });
+
+      return data;
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+    }
+  },
   emptyFoundShows({ commit }) {
     commit(EMPTY_FOUND_SHOWS);
   }

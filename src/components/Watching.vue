@@ -1,13 +1,12 @@
 <template lang="html">
 <div class="container-fluid fade-in">
   <popup title="Add To Watch List" size="md" ref="popup">
-    <add-to-watchlist :shows="collection"></add-to-watchlist>
+    <add-to-watchlist ref="addToWatchlist" :show="selectedShow"></add-to-watchlist>
   </popup>
   
   <div class="row">
-    <div class="col-xs-12">
-      <button class="button pull-right margin-bottom-30"
-        @click.prevent="$refs.popup.open()">Track a show</button>
+    <div class="col-xs-12 margin-bottom-30">
+      <search-shows @onSelect="onSelect"></search-shows>
     </div>
     
     <div class="col-xs-12 col-sm-6 col-md-3" v-for="item in watching" :key="item._id">
@@ -28,40 +27,39 @@
 import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
+import SearchShows from './Search/SearchShows';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
 
 import { mapState } from 'vuex';
 
 export default {
   name: 'Watching',
+  data() {
+    return {
+      selectedShow: {
+        title: ''
+      }
+    }
+  },
   computed: {
     ...mapState({
-      watching: ({ watching }) => watching.watching,
-      collection: ({ showCollection }) => showCollection.collection
+      watching: ({ watching }) => watching.watching
     })
   },
   methods: {
-    behindCount(seasons) {
-      const watchingEpisodes = seasons.reduce((acc, item) => {
-        if (item.episodes) {
-          const watched = item.episodes.filter(e => !e.watched);
-          acc = acc + watched.length;
-        }
-
-        return acc;
-      }, 0);
-
-      return watchingEpisodes > 0 ? (-1 * watchingEpisodes) : watchingEpisodes;
+    onSelect(show) {
+      this.selectedShow = show;
+      this.$refs.popup.open();
     }
   },
   async mounted() {
     await this.$store.dispatch('watching/getWatching');
-    await this.$store.dispatch('showCollection/getShowCollection');
   },
   components: {
     WatchlistCard,
     NoContent,
     Popup,
+    SearchShows,
     AddToWatchlist
   }
 };

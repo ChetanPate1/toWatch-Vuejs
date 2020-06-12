@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container fade-in">
-    <div class="col-sm-4" v-for="item in watchedShows" :key="item._id">
+    <div class="col-sm-6 col-md-4" v-for="item in watchedShows" :key="item._id">
       <watched-show-card :data="item"></watched-show-card>
     </div>
     
