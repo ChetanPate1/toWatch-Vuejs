@@ -24,4 +24,15 @@
       background-color: $danger-color;
     }
   }
+
+  &[disabled] {
+    background-color: transparentize($base-color, 0.8);
+    box-shadow: 0 6px 15px transparentize($base-color, 0.8);
+    cursor: not-allowed;
+    
+    &:hover,
+    &:focus {
+      background-color: transparentize($base-color, 0.8);
+    }
+  }
 }

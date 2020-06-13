@@ -14,8 +14,10 @@
                <input name="password" type="password" v-model="form.password" required>
             </div>
 
-            <div class="form-element">
-               <button type="submit" class="button pull-right">Sign in</button>
+            <div class="row">
+               <div class="col-xs-12 text-right">
+                  <button type="submit" class="button">Sign in</button>
+               </div>
             </div>
          </form>
       </card>

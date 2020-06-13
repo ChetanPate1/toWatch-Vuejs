@@ -3,7 +3,7 @@
     <nav class="navigation-bar" v-bind:class="{'open' : open }">
       <div class="container">
         <a class="brand">
-          <strong>toWatch {{ token }}</strong>
+          <strong>toWatch</strong>
         </a>
         <ul class="links margin-top-xs-40">
           <router-link :to="{ path: '/most-popular'}" tag="li"  v-if="!token">

@@ -42,7 +42,7 @@
     
     <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="onDelete()"></button>
     <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="onRewatching()"></button>
-    <button class="icon-button dripicons-media-play" tabindex="0" @click.stop="onContinue()"></button>
+    <button class="icon-button dripicons-media-play" tabindex="0" @click.stop="onContinue()" :disabled="data.percentage == 100"></button>
     <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
   </card>
 </div>
@@ -160,14 +160,13 @@ export default {
     bottom: 15px;
     right: 15px;
     transition: 250ms all ease;
-    transform: translate(45px, 0);
+    box-shadow: none;
   }
 
   .dripicons-clockwise {
     bottom: 15px;
     right: 55px;
-    transition: 250ms all ease;
-    transform: translate(88px, 0);
+    box-shadow: none;
   }
 
   .icon-button {

@@ -32,7 +32,7 @@
     
     <behind-count-button
         @click="toggleOpen"
-        :count="0"
+        :count="data.behindCount"
         :open="open">
     </behind-count-button>
 
