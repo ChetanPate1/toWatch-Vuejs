@@ -59,4 +59,4 @@ export default {
 };
 </script>
 
-<style src="./PanelRow.scss" lang="scss"></style>
+<style src="./panel-row.scss" lang="scss"></style>

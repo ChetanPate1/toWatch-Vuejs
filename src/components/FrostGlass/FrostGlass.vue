@@ -14,4 +14,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./FrostGlass.scss"></style>
+<style lang="scss" src="./frost-glass.scss"></style>

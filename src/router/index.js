@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import MostPopular from '@/components/MostPopular';
-import Login from '@/components/Login';
-import Watching from '@/components/Watching';
-import WatchedShows from '@/components/WatchedShows';
-import MovieCollection from '@/components/MovieCollection';
-import MovieDetails from '@/components/MovieDetails';
+import MostPopular from '@/views/MostPopular';
+import Login from '@/views/Login';
+import Watching from '@/views/Watching';
+import WatchedShows from '@/views/WatchedShows';
+import MovieCollection from '@/views/MovieCollection';
+import MovieDetails from '@/views/MovieDetails';
 
 import Store from '../store';
 

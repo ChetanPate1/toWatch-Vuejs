@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ShowCard from './ShowCard/ShowCard';
+import ShowCard from '@/components/ShowCard/ShowCard';
 import { mapState } from 'vuex';
 
 export default {

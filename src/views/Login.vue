@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Card from './Card/Card';
+import Card from '@/components/Card/Card';
 import { mapState } from 'vuex';
 
 export default {

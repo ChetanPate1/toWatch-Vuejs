@@ -23,9 +23,22 @@
     </div>
   </div>
   
-  <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="onDelete()"></button>
-  <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="onRewatching()"></button>
-  <button class="icon-button dripicons-media-play" tabindex="0" @click.stop="onContinue()" :disabled="data.percentage == 100"></button>
+  <button class="icon-button red dripicons-trash"
+    tabindex="0"
+    @click.stop="onDelete()"></button>
+
+  <button class="icon-button dripicons-clockwise" 
+    :class="{ count: data.watchedCount > 0 }"
+    tabindex="0"
+    @click.stop="onRewatching()">
+    <div class="watched-count">{{ data.watchedCount }}</div>
+  </button>
+  
+  <button class="icon-button dripicons-media-play"
+    tabindex="0"
+    @click.stop="onContinue()"
+    :disabled="data.percentage == 100"></button>
+
   <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
 </card>
 </template>
@@ -91,6 +104,7 @@ export default {
 .watched-show-card {
   position: relative;
   padding-left: 125px;
+  padding-right: 25px;
   min-height: 140px;
   color: #b7b7b7;
   overflow: hidden;
@@ -107,7 +121,7 @@ export default {
     .bar {
       position: absolute;
       top: -15px;
-      right: 0;
+      left: 0;
       width: 100%;
     }
 
@@ -129,6 +143,15 @@ export default {
     background-position: 50% 50%;
   }
 
+  .icon-button {
+    z-index: 100;
+    position: absolute;
+
+    &:focus {
+      transform: translate(0, 0);
+    }
+  }
+
   .dripicons-trash {
     left: 10px;
     top: 10px;
@@ -138,23 +161,24 @@ export default {
 
   .dripicons-media-play {
     bottom: 15px;
-    right: 15px;
+    right: 25px;
     transition: 250ms all ease;
     box-shadow: none;
   }
 
   .dripicons-clockwise {
     bottom: 15px;
-    right: 55px;
+    right: 65px;
     box-shadow: none;
-  }
 
-  .icon-button {
-    z-index: 100;
-    position: absolute;
-
-    &:focus {
-      transform: translate(0, 0);
+    .watched-count {
+      position: absolute;
+      right: 30px;
+      top: 0;
+      height: 25px;
+      text-align: left;
+      color: $base-color;
+      line-height: 25px;
     }
   }
 

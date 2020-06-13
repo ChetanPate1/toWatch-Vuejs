@@ -87,4 +87,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" src="./CountdownTimer.scss"></style>
+<style lang="scss" src="./countdown-timer.scss"></style>

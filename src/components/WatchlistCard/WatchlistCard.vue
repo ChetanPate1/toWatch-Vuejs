@@ -86,10 +86,13 @@ export default {
     },
     async confirmDelete(id) {
       const result = await this.$parent.$refs.confirmPopup.open();
+      console.log(result);
+
+      if (result == 'dismiss') return;
       
-      if (result == 'yes') {
+      if(result.answer == 'yes') {
         await this.$store.dispatch('watching/deleteWatching', {
-          id, deleteReason: this.deleteReason
+          id, deleteReason: result.deleteReason
         });
       }
     },
@@ -131,4 +134,4 @@ export default {
 };
 </script>
 
-<style src="./WatchlistCard.scss" lang="scss"></style>
+<style src="./watchlist-card.scss" lang="scss"></style>

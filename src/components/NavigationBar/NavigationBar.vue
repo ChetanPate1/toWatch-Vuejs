@@ -71,4 +71,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./NavigationBar.scss"></style>
+<style lang="scss" src="./navigation-bar.scss"></style>

@@ -40,10 +40,10 @@
 </template>
 
 <script>
-import Popup from './Popup/Popup';
-import SearchMovies from './Search/SearchMovies';
-import MovieCard from './MovieCard/MovieCard';
-import NoContent from './NoContent/NoContent';
+import Popup from '@/components/Popup/Popup';
+import SearchMovies from '@/components/Search/SearchMovies';
+import MovieCard from '@/components/MovieCard/MovieCard';
+import NoContent from '@/components/NoContent/NoContent';
 
 import { mapState } from 'vuex';
 

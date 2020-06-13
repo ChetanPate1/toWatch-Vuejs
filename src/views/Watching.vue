@@ -18,12 +18,12 @@
     
     <button class="button button-sm red pull-left"
             type="button"
-            @click="$refs.confirmPopup.close('cancel')">Cancel
+            @click="$refs.confirmPopup.close({ answer: 'cancel' })">Cancel
     </button>
 
     <button class="button button-sm pull-right"
             type="button"
-            @click="$refs.confirmPopup.close('yes')">Yes
+            @click="$refs.confirmPopup.close({ answer: 'yes', deleteReason })">Yes
     </button>
   </popup>
 
@@ -47,12 +47,12 @@
 </template>
 
 <script>
-import WatchlistCard from './WatchlistCard/WatchlistCard';
-import NoContent from './NoContent/NoContent';
-import Popup from './Popup/Popup';
-import SwitchGroup from './FormElements/SwitchGroup/SwitchGroup';
-import SearchShows from './Search/SearchShows';
-import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
+import WatchlistCard from '@/components/WatchlistCard/WatchlistCard';
+import NoContent from '@/components/NoContent/NoContent';
+import Popup from '@/components/Popup/Popup';
+import SwitchGroup from '@/components/FormElements/SwitchGroup/SwitchGroup';
+import SearchShows from '@/components/Search/SearchShows';
+import AddToWatchlist from '@/components/AddToWatchlist/AddToWatchlist';
 
 import { mapState } from 'vuex';
 
@@ -65,8 +65,7 @@ export default {
       },
       options: [
         { id: 1, label: 'Woke Shit' },
-        { id: 2, label: 'Boring' },
-        { id: 3, label: 'Done' }
+        { id: 2, label: 'Boring' }
       ],
       deleteReason: ''
     }

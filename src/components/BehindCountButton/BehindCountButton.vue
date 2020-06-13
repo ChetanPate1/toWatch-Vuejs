@@ -20,4 +20,4 @@ export default {
   }
 };
 </script>
-<style src="./BehindCountButton.scss" lang="scss"></style>
+<style src="./behind-count-button.scss" lang="scss"></style>

@@ -13,4 +13,4 @@ export default {
 }
 </script>
 
-<style src="./SlideOutPanel.scss" lang="scss"></style>
+<style src="./slide-out-panel.scss" lang="scss"></style>

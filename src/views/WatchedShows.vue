@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import Popup from './Popup/Popup';
-import NoContent from './NoContent/NoContent';
-import WatchedShowCard from './WatchedShowCard/WatchedShowCard';
+import Popup from '@/components/Popup/Popup';
+import NoContent from '@/components/NoContent/NoContent';
+import WatchedShowCard from '@/components/WatchedShowCard/WatchedShowCard';
 
 import { mapState } from 'vuex';
 
