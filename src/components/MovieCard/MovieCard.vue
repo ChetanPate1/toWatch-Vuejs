@@ -1,36 +1,16 @@
 <template lang="html">
-<div>
-  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-30">
-      Are you sure you want to delete this movie?
-    </h4>
+<div class="movie-card"
+  @click.stop="goToMovieDetails(movieId)"
+  tabindex="0"
+  :class="{ 'deleteable': deleteable }"
+  :style="{ 'background-image': 'url('+ imgSrc +')' }">
 
-    <button class="button button-sm red pull-left"
-            type="button"
-            @click="$refs.confirmPopup.close('cancel')">Cancel
-    </button>
-
-    <button class="button button-sm pull-right"
-            type="button"
-            @click="$refs.confirmPopup.close('yes')">Yes
-    </button>
-  </popup>
-
-  <div class="movie-card"
-    @click.stop="goToMovieDetails(movieId)"
-    tabindex="0"
-    :class="{ 'deleteable': deleteable }"
-    :style="{ 'background-image': 'url('+ imgSrc +')' }">
-
-    <button class="icon-button dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
-    <h2>{{ heading }}</h2>
-  </div>
+  <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
+  <h2>{{ heading }}</h2>
 </div>
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
-
 export default {
   name: 'MovieCard',
   data() {
@@ -50,14 +30,11 @@ export default {
       this.$router.push({ name: 'movieDetails', params: { movieId } });
     },
     async confirmDelete() {
-      const result = await this.$refs.confirmPopup.open();
+      const result = await this.$parent.$refs.confirmPopup.open();
       if (result == 'yes') {
         await this.$store.dispatch('movieCollection/deleteFromMovieCollection', this.id);
       }
     }
-  },
-  components: {
-    Popup
   }
 };
 </script>

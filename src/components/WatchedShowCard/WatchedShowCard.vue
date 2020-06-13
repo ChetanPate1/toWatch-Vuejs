@@ -1,55 +1,36 @@
 <template lang="html">
-<div>
-  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-20">
-      Are you sure you want to delete this watched show?
-    </h4>
-
-    <button class="button button-sm red pull-left"
-            type="button"
-            @click="$refs.confirmPopup.close('cancel')">Cancel
-    </button>
-
-    <button class="button button-sm pull-right"
-            type="button"
-            @click="$refs.confirmPopup.close('yes')">Yes
-    </button>
-  </popup>
-
-  <card class="watched-show-card margin-bottom-20" tabindex="0">
-    <div class="content">
-      <div class="bar">
-        <progress-bar :percentage="data.percentage"></progress-bar>
-      </div>
-      
-      <div class="text-ellipsis">
-        <h3 class="margin-bottom-0 text-ellipsis">{{ data.show }}</h3>
-        {{ data.on.title }}
-      </div>
-      
-      <div class="margin-top-10">
-        <small v-if="data.percentage != 100">
-          <span class="visible-xs visible-sm">{{ onEpisode(data.on, true) }}</span>
-          <span class="hidden-xs hidden-sm">{{ onEpisode(data.on) }}</span>
-        </small>
-
-        <div class="margin-top-10">
-          <span class="status red" v-if="data.deleteReason">{{ data.deleteReason }}</span>
-          <span class="status green" v-if="data.percentage == 100">Complete</span>
-        </div>
-      </div>
+<card class="watched-show-card margin-bottom-20" tabindex="0">
+  <div class="content">
+    <div class="bar">
+      <progress-bar :percentage="data.percentage"></progress-bar>
     </div>
     
-    <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="onDelete()"></button>
-    <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="onRewatching()"></button>
-    <button class="icon-button dripicons-media-play" tabindex="0" @click.stop="onContinue()" :disabled="data.percentage == 100"></button>
-    <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
-  </card>
-</div>
+    <div class="text-ellipsis">
+      <h3 class="margin-bottom-0 text-ellipsis">{{ data.show }}</h3>
+      {{ data.on.title }}
+    </div>
+    
+    <div class="margin-top-10">
+      <small v-if="data.percentage != 100">
+        <span class="visible-xs visible-sm">{{ onEpisode(data.on, true) }}</span>
+        <span class="hidden-xs hidden-sm">{{ onEpisode(data.on) }}</span>
+      </small>
+
+      <div class="margin-top-10">
+        <span class="status red" v-if="data.deleteReason">{{ data.deleteReason }}</span>
+        <span class="status green" v-if="data.percentage == 100">Complete</span>
+      </div>
+    </div>
+  </div>
+  
+  <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="onDelete()"></button>
+  <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="onRewatching()"></button>
+  <button class="icon-button dripicons-media-play" tabindex="0" @click.stop="onContinue()" :disabled="data.percentage == 100"></button>
+  <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
+</card>
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
 import Card from '../Card/Card';
 import ProgressBar from '../ProgressBar/ProgressBar';
 
@@ -82,7 +63,7 @@ export default {
       }
     },
     async onDelete() {
-      const result = await this.$refs.confirmPopup.open();
+      const result = await this.$parent.$refs.confirmPopup.open();
 
       if (result == 'yes') {
         await this.$store.dispatch('watchedShows/deleteFromWatchedShows', this.data);
@@ -100,7 +81,6 @@ export default {
     }
   },
   components: {
-    Popup,
     Card,
     ProgressBar
   }

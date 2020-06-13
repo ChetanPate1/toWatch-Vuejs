@@ -1,5 +1,5 @@
 <template>
-<div class="tab-panel" v-bind:style="{ 'left': position(), 'width': panelWidth() }" :class="{ 'active' : active }" >
+<div class="tab-panel" :style="{ 'left': position(), 'width': panelWidth() }" :class="{ 'active' : active }" >
   <slot></slot>
 </div>
 </template>

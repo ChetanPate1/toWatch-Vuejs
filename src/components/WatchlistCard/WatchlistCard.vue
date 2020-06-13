@@ -1,28 +1,5 @@
 <template lang="html">
 <div>
-  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-20">
-      Are you sure you want to delete this show?
-    </h4>
-
-    <div class="margin-bottom-30">
-      <switch-group
-        v-model="deleteReason"
-        :options="options">
-      </switch-group>
-    </div>
-    
-    <button class="button button-sm red pull-left"
-            type="button"
-            @click="$refs.confirmPopup.close('cancel')">Cancel
-    </button>
-
-    <button class="button button-sm pull-right"
-            type="button"
-            @click="$refs.confirmPopup.close('yes')">Yes
-    </button>
-  </popup>
-
   <div class="watchlist-card" tabindex="0" :style="{ 'background-image': 'url('+ imgSrc +')' }">
     <button type="button" class="icon-button red dripicons-trash" @click="confirmDelete(id)"></button>
 
@@ -71,7 +48,6 @@
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
 import SlideOutPanel from '../SlideOutPanel/SlideOutPanel';
 
 import Tabs from '../Tabs/Tabs';
@@ -81,7 +57,7 @@ import TabPanelsContainer from '../Tabs/TabPanelsContainer';
 
 import PanelRow from './PanelRow';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
-import SwitchGroup from '../FormElements/SwitchGroup/SwitchGroup';
+
 import FrostGlass from '../FrostGlass/FrostGlass';
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
 
@@ -96,9 +72,7 @@ export default {
   data() {
     return {
       open: false,
-      tabActive: 1,
-      options: [{ id: 1, label: 'Woke Shit' }, { id: 2, label: 'Boring' }, { id: 3, label: 'Done' }],
-      deleteReason: ''
+      tabActive: 1
     };
   },
   methods: {
@@ -111,7 +85,7 @@ export default {
       }
     },
     async confirmDelete(id) {
-      const result = await this.$refs.confirmPopup.open();
+      const result = await this.$parent.$refs.confirmPopup.open();
       
       if (result == 'yes') {
         await this.$store.dispatch('watching/deleteWatching', {
@@ -144,7 +118,6 @@ export default {
     }
   },
   components: {
-    Popup,
     SlideOutPanel,
     Tabs,
     TabButton,
@@ -152,7 +125,6 @@ export default {
     TabPanelsContainer,
     PanelRow,
     BehindCountButton,
-    SwitchGroup,
     FrostGlass,
     CountdownTimer
   }

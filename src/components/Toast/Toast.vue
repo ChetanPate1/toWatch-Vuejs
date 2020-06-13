@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="toast" v-bind:class="{show: show}">
+<div class="toast" :class="{ show }">
   <h5>{{ title }}</h5>
   <p>{{ message }}</p>
 </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navigation-bar" v-bind:class="{'open' : open }">
+    <nav class="navigation-bar" :class="{'open' : open }">
       <div class="container">
         <a class="brand">
           <strong>toWatch</strong>

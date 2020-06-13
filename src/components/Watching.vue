@@ -4,6 +4,29 @@
     <add-to-watchlist ref="addToWatchlist" :show="selectedShow"></add-to-watchlist>
   </popup>
   
+  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+    <h4 class="margin-top-0 margin-bottom-20">
+      Are you sure you want to delete this show?
+    </h4>
+
+    <div class="margin-bottom-30">
+      <switch-group
+        v-model="deleteReason"
+        :options="options">
+      </switch-group>
+    </div>
+    
+    <button class="button button-sm red pull-left"
+            type="button"
+            @click="$refs.confirmPopup.close('cancel')">Cancel
+    </button>
+
+    <button class="button button-sm pull-right"
+            type="button"
+            @click="$refs.confirmPopup.close('yes')">Yes
+    </button>
+  </popup>
+
   <div class="row">
     <div class="col-xs-12 margin-bottom-30">
       <search-shows @onSelect="onSelect"></search-shows>
@@ -27,6 +50,7 @@
 import WatchlistCard from './WatchlistCard/WatchlistCard';
 import NoContent from './NoContent/NoContent';
 import Popup from './Popup/Popup';
+import SwitchGroup from './FormElements/SwitchGroup/SwitchGroup';
 import SearchShows from './Search/SearchShows';
 import AddToWatchlist from './AddToWatchlist/AddToWatchlist';
 
@@ -38,7 +62,13 @@ export default {
     return {
       selectedShow: {
         title: ''
-      }
+      },
+      options: [
+        { id: 1, label: 'Woke Shit' },
+        { id: 2, label: 'Boring' },
+        { id: 3, label: 'Done' }
+      ],
+      deleteReason: ''
     }
   },
   computed: {
@@ -59,6 +89,7 @@ export default {
     WatchlistCard,
     NoContent,
     Popup,
+    SwitchGroup,
     SearchShows,
     AddToWatchlist
   }

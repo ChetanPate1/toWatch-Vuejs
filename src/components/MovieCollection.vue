@@ -1,30 +1,50 @@
 <template lang="html">
-<div class="container-fluid fade-in">
-  <div class="row margin-bottom-20">
-    <div class="col-xs-12">
-      <search-movies></search-movies>
-    </div>
-  </div>
+<div>
+  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+    <h4 class="margin-top-0 margin-bottom-30">
+      Are you sure you want to delete this movie?
+    </h4>
 
-  <div class="row show-layout">
-    <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in collection" :key="item._id">
-      <movie-card
-        :heading="item.movie.title"
-        :img-src="item.movie.poster"
-        :movie-id="item.movie._id"
-        :id="item._id"
-        :deleteable="true">
-      </movie-card>
+    <button class="button button-sm red pull-left"
+            type="button"
+            @click="$refs.confirmPopup.close('cancel')">Cancel
+    </button>
+
+    <button class="button button-sm pull-right"
+            type="button"
+            @click="$refs.confirmPopup.close('yes')">Yes
+    </button>
+  </popup>
+
+  <div class="container-fluid fade-in">
+    <div class="row margin-bottom-20">
+      <div class="col-xs-12">
+        <search-movies></search-movies>
+      </div>
     </div>
-    <no-content message="Your movie collection is empty!" :condition="!collection.length"></no-content>
+
+    <div class="row show-layout">
+      <div class="col-xs-6 col-sm-3 col-md-2" v-for="item in collection" :key="item._id">
+        <movie-card
+          :heading="item.movie.title"
+          :img-src="item.movie.poster"
+          :movie-id="item.movie._id"
+          :id="item._id"
+          :deleteable="true">
+        </movie-card>
+      </div>
+      <no-content message="Your movie collection is empty!" :condition="!collection.length"></no-content>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
+import Popup from './Popup/Popup';
 import SearchMovies from './Search/SearchMovies';
 import MovieCard from './MovieCard/MovieCard';
 import NoContent from './NoContent/NoContent';
+
 import { mapState } from 'vuex';
 
 export default {
@@ -38,6 +58,7 @@ export default {
     await this.$store.dispatch('movieCollection/getMovieCollection');
   },
   components: {
+    Popup,
     SearchMovies,
     MovieCard,
     NoContent

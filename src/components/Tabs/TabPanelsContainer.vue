@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="tab-panels-container" v-bind:style="{ 'width': panelsWidth, 'transform': moveTo() }" ref="panels_container">
+<div class="tab-panels-container" :style="{ 'width': panelsWidth, 'transform': moveTo() }" ref="panels_container">
    <slot></slot>
 </div>
 </template>

@@ -5,12 +5,12 @@
         @click="empty"
         v-if="foundShows.length">
     </button>
-    <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
+    <div class="loader" :class="{'show' : sendStatus.loader }"></div>
     <input class="show-search" type="text" name="showName" placeholder="Track a show" v-model="form.showName">
 
     <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
 
-    <div class="search-results" v-bind:class="{'show' : foundShows }">
+    <div class="search-results" :class="{'show' : foundShows }">
       <search-result-item 
         v-for="(show, index) in foundShows" :key="index"
         :poster="show.Poster"

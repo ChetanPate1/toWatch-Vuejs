@@ -14,7 +14,7 @@
     </button>
   </popup>
 
-  <div class="show-card" tabindex="0" v-bind:class="{ 'deleteable': deleteable }" v-bind:style="{ 'background-image': 'url('+ imgSrc +')' }">
+  <div class="show-card" tabindex="0" :class="{ 'deleteable': deleteable }" :style="{ 'background-image': 'url('+ imgSrc +')' }">
     <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
     <button class="icon-button dripicons-plus" tabindex="0" @click.stop="onAddToWatchlist()"></button>
     <button class="icon-button dripicons-clockwise" tabindex="0" @click.stop="update()"></button>

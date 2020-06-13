@@ -5,13 +5,13 @@
         @click="empty"
         v-if="foundMovies.length">
     </button>
-    <div class="loader" v-bind:class="{'show' : sendStatus.loader }"></div>
+    <div class="loader" :class="{'show' : sendStatus.loader }"></div>
     <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
     <button type="submit" class="dripicons-search"
         :disabled="sendStatus.disableButton">
     </button>
 
-    <div class="search-results" v-bind:class="{'show' : foundMovies }">
+    <div class="search-results" :class="{'show' : foundMovies }">
       <search-result-item 
         v-for="(movie, index) in foundMovies" :key="index"
         :poster="movie.Poster"

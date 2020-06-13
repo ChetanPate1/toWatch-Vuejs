@@ -1,5 +1,5 @@
 <template lang="html">
-<label class="check-box" v-bind:class="{'light': type === 'light'}">
+<label class="check-box" :class="{'light': type === 'light'}">
   <input type="checkbox"
     :id="name"
     :name="name" 
