@@ -1,27 +1,44 @@
 import axios from '../../http';
 import {
+  WATCHING_SET,
   WATCHING_GET,
   WATCHING_ADD,
   WATCHING_DELETE,
   EPISODES_GET,
-  WATCHING_TOGGLE_EPISODE_WATCHED } from '../mutation-types';
+  WATCHING_TOGGLE_EPISODE_WATCHED,
+  WATCHING_REQUESTING } from '../mutation-types';
 
 const state = {
-  watching: []
+  watching: [],
+  currentPage: 1,
+  requesting: false,
+  totalPages: 10,
+  pageSize: 15
 };
 
 const getters = {};
 
 const actions = {
-  async getWatching({ commit, dispatch }) {
+  async getWatching({ commit, dispatch }, { currentPage }) {
+    if(state.requesting || state.totalPages < currentPage) return;
+
     try {
+      commit(WATCHING_REQUESTING, true);
+
       const res = await axios({
         method: 'GET',
         url: '/watchings'
       });
 
+      if (currentPage === 1) {
+        commit(WATCHING_REQUESTING, false);
+        return commit(WATCHING_SET, res.data);
+      }
+
+      commit(WATCHING_REQUESTING, false);
       commit(WATCHING_GET, res.data);
     } catch ({ data }) {
+      commit(WATCHING_REQUESTING, false);
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
@@ -84,8 +101,23 @@ const actions = {
 }
 
 const mutations = {
-  [WATCHING_GET](state, watching) {
+  [WATCHING_REQUESTING](state, value) {
+    state.requesting = value;
+  },
+  [WATCHING_SET](state, { watching, currentPage, totalPages, pageSize }) {
+    state.currentPage = currentPage;
+    state.totalPages = totalPages;
     state.watching = watching;
+    state.pageSize = pageSize;
+  },
+  [WATCHING_GET](state, { watching, currentPage, totalPages, pageSize }) {
+    state.currentPage = currentPage;
+    state.totalPages = totalPages;
+    state.pageSize = pageSize;
+    state.watching = [
+      ...state.watching,
+      ...watching
+    ];
   },
   [WATCHING_ADD](state, watching) {
     state.watching = [...state.watching, watching];
@@ -128,11 +160,7 @@ const mutations = {
         watch.episode = episode;
         watch.show.seasons.map(season => {
           if (season._id === episode.season._id) {
-          
-
-            return season.episodes.map((item, index) => {
-              console.log(item.number <= episode.number, item.number, episode.number);
-              
+            return season.episodes.map((item) => {
               item.watched = currentSeasonEpisodesBefore(item);
               return item;
             });

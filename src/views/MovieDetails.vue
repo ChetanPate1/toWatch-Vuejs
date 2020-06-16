@@ -7,22 +7,22 @@
               <div class="movie-details">
                 <div class="col-sm-12">
                   <h1>
-                    {{ movie.title }} 
-                    <span class="runtime">{{ movie.runtime }}</span> 
-                    <span class="year">{{ movie.year }}</span>
+                    {{ movieDetails.title }} 
+                    <span class="runtime">{{ movieDetails.runtime }}</span> 
+                    <span class="year">{{ movieDetails.year }}</span>
                   </h1>
-                  <h4 class="genre">{{ movie.genre }}</h4>
+                  <h4 class="genre">{{ movieDetails.genre }}</h4>
                 </div>
 
                 <div class="col-sm-6 col-md-5">
-                  <p>{{ movie.plot }}</p>
+                  <p>{{ movieDetails.plot }}</p>
                 </div>
               </div>
           </div>
         </div>
 
         <div class="row ratings margin-top-50">
-          <div class="col-xs-4" v-for="(item, index) in movie.ratings" :key="index">
+          <div class="col-xs-4" v-for="(item, index) in movieDetails.ratings" :key="index">
               <div class="rating">
                 <p>{{ item.source }}</p>
                 <h4>{{ item.value }}</h4>
@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="poster-gradient"></div>
-    <img class="poster-background" :class="{ 'enter' : showPoster }" :src="movie.posterXL" />
+    <img class="poster-background" :class="{ 'enter' : showPoster }" :src="movieDetails.posterXL" />
   </div>
 </div>
 </template>
@@ -48,18 +48,17 @@ export default {
   },
   computed: {
     ...mapState({
-      movie: ({ movies }) => movies.movie
+      movieDetails: ({ movies }) => movies.movieDetails
     })
   },
   async mounted() {
     const { movieId } = this.$route.params;
-    await this.$store.dispatch('movies/movieGet', movieId);
+    await this.$store.dispatch('movies/movieDetailsGet', movieId);
 
     setTimeout(() => {
       this.showPoster = true;
     }, 500);
-  },
-  components: {}
+  }
 };
 </script>
 

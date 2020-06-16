@@ -3,20 +3,21 @@
   <div class="form-element search dark">
     <button type="button" class="dripicons-cross"
         @click="empty"
-        v-if="foundShows.length">
+        v-if="showsFound.length">
     </button>
-    <div class="loader" :class="{'show' : sendStatus.loader }"></div>
+
+    <loader :show="requesting"></loader>
     <input class="show-search" type="text" name="showName" placeholder="Track a show" v-model="form.showName">
 
-    <button type="submit" class="dripicons-search" :disabled="sendStatus.disableButton"></button>
+    <button type="submit" class="dripicons-search" :disabled="requesting"></button>
 
-    <div class="search-results" :class="{'show' : foundShows }">
+    <div class="search-results" :class="{'show' : showsFound }">
       <search-result-item 
-        v-for="(show, index) in foundShows" :key="index"
+        v-for="(show, index) in showsFound" :key="index"
         :poster="show.Poster"
         :title="show.Title"
         :year="show.Year"
-        :disabled="sendStatus.disableButton"
+        :disabled="requesting"
         @click="addSeries(show)"
       ></search-result-item>
     </div>
@@ -26,6 +27,7 @@
 
 <script>
 import SearchResultItem from './SearchResultItem';
+import Loader from '../Loader/Loader';
 import { mapState } from 'vuex';
 
 export default {
@@ -35,46 +37,38 @@ export default {
       form: {
         showName: ''
       },
-      sendStatus: {
-        disableButton: false,
-        loader: false
-      },
-      toast: {
-        content: '',
-        action: '',
-        show: false
-      }
+      requesting: false
     };
   },
   computed: {
     ...mapState({
-      foundShows: ({ shows }) => shows.foundShows
+      showsFound: ({ shows }) => shows.showsFound
     })
   },
   methods: {
     async addSeries(show) {
-      this.sendStatus.loader = true;
-      this.sendStatus.disableButton = true;
-
+      this.requesting = true;
       const data = await this.$store.dispatch('shows/save', show);
       this.$emit('onSelect', data);
-      this.sendStatus.loader = false;
-      this.sendStatus.disableButton = false;
-      this.form.showName = '';
-      this.$store.dispatch('shows/emptyFoundShows');
+      this.requesting = false;
+      this.empty();
     },
     setType(type) {
       this.type = type;
     },
-    findShow() {
-      this.$store.dispatch('shows/searchForShow', this.form);
+    async findShow() {
+      this.requesting = true;
+      await this.$store.dispatch('shows/showsGet', this.form);
+      this.requesting = false;
     },
     empty() {
-      this.$store.dispatch('shows/emptyFoundShows');
+      this.form.showName = '';
+      this.$store.dispatch('shows/reset');
     }
   },
   components: {
-    SearchResultItem
+    SearchResultItem,
+    Loader
   }
 };
 </script>

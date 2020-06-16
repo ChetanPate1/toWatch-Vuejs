@@ -86,7 +86,6 @@ export default {
     },
     async confirmDelete(id) {
       const result = await this.$parent.$refs.confirmPopup.open();
-      console.log(result);
 
       if (result == 'dismiss') return;
       

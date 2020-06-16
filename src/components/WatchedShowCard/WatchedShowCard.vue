@@ -12,8 +12,8 @@
     
     <div class="margin-top-10">
       <small v-if="data.percentage != 100">
-        <span class="visible-xs visible-sm">{{ onEpisode(data.on, true) }}</span>
-        <span class="hidden-xs hidden-sm">{{ onEpisode(data.on) }}</span>
+        <span class="visible-sm">{{ onEpisode(data.on, true) }}</span>
+        <span class="hidden-sm">{{ onEpisode(data.on) }}</span>
       </small>
 
       <div class="margin-top-10">
@@ -161,14 +161,14 @@ export default {
 
   .dripicons-media-play {
     bottom: 15px;
-    right: 25px;
+    right: 12px;
     transition: 250ms all ease;
     box-shadow: none;
   }
 
   .dripicons-clockwise {
     bottom: 15px;
-    right: 65px;
+    right: 50px;
     box-shadow: none;
 
     .watched-count {
@@ -208,6 +208,12 @@ export default {
   &:focus {
     .icon-button {
       transform: translate(0, 0);
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .dripicons-media-play, .dripicons-clockwise {
+      bottom: 10px;
     }
   }
 }

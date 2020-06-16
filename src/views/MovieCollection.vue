@@ -33,8 +33,19 @@
           :deleteable="true">
         </movie-card>
       </div>
-      <no-content message="Your movie collection is empty!" :condition="!collection.length"></no-content>
     </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <loader :show="requesting"></loader>
+      </div>
+    </div>
+    
+    <reached-end :show="reachedEnd">
+      Reached End
+    </reached-end>
+
+    <no-content message="Your movie collection is empty!" :condition="!collection.length"></no-content>
   </div>
 </div>
 </template>
@@ -44,24 +55,56 @@ import Popup from '@/components/Popup/Popup';
 import SearchMovies from '@/components/Search/SearchMovies';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import NoContent from '@/components/NoContent/NoContent';
+import Loader from '@/components/Loader/Loader';
+import ReachedEnd from '@/components/ReachedEnd/ReachedEnd';
 
 import { mapState } from 'vuex';
 
 export default {
   name: 'MovieCollection',
+  async mounted() {
+    await this.$store.dispatch('movieCollection/getMovieCollection', {
+      currentPage: 1
+    });
+
+    this.initScroll();
+  },
   computed: {
     ...mapState({
-      collection: ({ movieCollection }) => movieCollection.collection
+      collection: ({ movieCollection }) => movieCollection.collection,
+      currentPage:  ({ movieCollection }) => movieCollection.currentPage,
+      reachedEnd: ({ movieCollection }) => {
+        const { collection, pageSize, currentPage, totalPages } = movieCollection;
+        
+        if (collection.length < pageSize) {
+          return false;
+        }
+
+        return totalPages == currentPage;
+      },
+      requesting: ({ movieCollection }) => movieCollection.requesting
     })
   },
-  async created() {
-    await this.$store.dispatch('movieCollection/getMovieCollection');
+  methods: {
+    initScroll() {
+      window.onscroll = () => {
+        const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+
+        if (bottomOfWindow) {
+          this.$store.dispatch('movieCollection/getMovieCollection', {
+            currentPage: this.currentPage + 1
+          });
+        }
+      };
+    }
   },
   components: {
     Popup,
     SearchMovies,
     MovieCard,
-    NoContent
+    NoContent,
+    Loader,
+    ReachedEnd
   }
 };
 </script>

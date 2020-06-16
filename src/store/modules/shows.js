@@ -1,16 +1,16 @@
 import axios from '../../http';
 import {
-  UPDATE_FOUND_SHOWS, 
-  EMPTY_FOUND_SHOWS } from '../mutation-types';
+  SHOWS_GET, 
+  SHOWS_RESET } from '../mutation-types';
 
 const state = {
-  foundShows: []
+  showsFound: []
 };
 
 const getters = {};
 
 const actions = {
-  async searchForShow({ commit, dispatch }, { type, showName }) {
+  async showsGet({ commit, dispatch }, { type, showName }) {
     const res = await axios({
       method: 'GET',
       url: process.env.VUE_APP_OMDB_API_URL,
@@ -28,7 +28,7 @@ const actions = {
       });
     }
 
-    commit(UPDATE_FOUND_SHOWS, res.data.Search);
+    commit(SHOWS_GET, res.data.Search);
   },
   async updateShow({ dispatch }, { imdbId , showId }) {
     try {
@@ -78,17 +78,17 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  emptyFoundShows({ commit }) {
-    commit(EMPTY_FOUND_SHOWS);
+  reset({ commit }) {
+    commit(SHOWS_RESET);
   }
 };
 
 const mutations = {
-  [UPDATE_FOUND_SHOWS](state, foundShows) {
-    state.foundShows = foundShows;
+  [SHOWS_GET](state, showsFound) {
+    state.showsFound = showsFound;
   },
-  [EMPTY_FOUND_SHOWS](state) {
-    state.foundShows = [];
+  [SHOWS_RESET](state) {
+    state.showsFound = [];
   }
 };
 

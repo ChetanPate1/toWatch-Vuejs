@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a class="logout-button" v-if="token" @click.prevent="logout" href>SIGNOUT</a>
     <nav class="navigation-bar" :class="{'open' : open }">
       <div class="container">
         <a class="brand">
@@ -32,7 +33,6 @@
         <router-link :to="{ path: '/login'}" tag="li" v-if="!token">
           <a>SIGNIN</a>
         </router-link>
-        <a v-if="token" @click.prevent="logout" href>SIGNOUT</a>
       </ul>
     </nav>
     <button class="navigation-button" type="button" name="button" @click="toggleOpen">

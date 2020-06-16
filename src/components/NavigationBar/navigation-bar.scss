@@ -34,7 +34,7 @@
 
     li {
       display: inline-block;
-      float: left;
+
       a {
         display: block;
         position: relative;
@@ -102,6 +102,25 @@
   }
   @media (max-width: 480px) {
     width: 80%;
+  }
+}
+
+.logout-button {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1300;
+  font-size: 12px;
+  padding: 10px;
+  color: $base-color;
+
+  &:hover {
+    color: $base-color;
+  }
+
+  @media (max-width: 991px) {
+    right: auto;
+    left: 0;
   }
 }
 

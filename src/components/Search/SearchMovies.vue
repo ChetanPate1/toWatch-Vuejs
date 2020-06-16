@@ -3,23 +3,23 @@
   <div class="form-element search dark">
     <button type="button" class="dripicons-cross"
         @click="empty"
-        v-if="foundMovies.length">
+        v-if="moviesFound.length">
     </button>
-    <div class="loader" :class="{'show' : sendStatus.loader }"></div>
+    <loader :show="requesting"></loader>
     <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
     <button type="submit" class="dripicons-search"
-        :disabled="sendStatus.disableButton">
+        :disabled="requesting">
     </button>
 
-    <div class="search-results" :class="{'show' : foundMovies }">
+    <div class="search-results" :class="{'show' : moviesFound }">
       <search-result-item 
-        v-for="(movie, index) in foundMovies" :key="index"
+        v-for="(movie, index) in moviesFound" :key="index"
         :poster="movie.Poster"
         :title="movie.Title"
         :plot="movie.Plot"
         :year="movie.Year"
         @click="addMovie(movie)"
-        :disabled="sendStatus.disableButton"
+        :disabled="requesting"
       ></search-result-item>
     </div>
   </div>
@@ -28,6 +28,8 @@
 
 <script>
 import SearchResultItem from './SearchResultItem';
+import Loader from '../Loader/Loader';
+
 import { mapState } from 'vuex';
 
 export default {
@@ -35,37 +37,32 @@ export default {
   data() {
     return {
       name: '',
-      sendStatus: {
-        disableButton: false,
-        loader: false,
-        validation: ''
-      }
+      requesting: false
     };
   },
   computed: {
     ...mapState({
-      foundMovies: ({ movies }) => movies.foundMovies
+      moviesFound: ({ movies }) => movies.moviesFound
     })
   },
   methods: {
     async addMovie(movie) {
-      this.sendStatus.disableButton = true;
       await this.$store.dispatch('movieCollection/saveToMovieCollectionMovie', movie);
-      this.name = '';
-      this.sendStatus.disableButton = false;
       this.empty();
     },
     async findShow() {
-      this.sendStatus.disableButton = true;
-      await this.$store.dispatch('movies/findMovies', this.name);
-      this.sendStatus.disableButton = false;
+      this.requesting = true;
+      await this.$store.dispatch('movies/movieGet', this.name);
+      this.requesting = false;
     },
     empty() {
-      this.$store.dispatch('movies/emptyFoundMovies');
+      this.name = '';
+      this.$store.dispatch('movies/reset');
     }
   },
   components: {
-    SearchResultItem
+    SearchResultItem,
+    Loader
   }
 };
 </script>

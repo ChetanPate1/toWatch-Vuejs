@@ -21,6 +21,15 @@
       <watched-show-card :data="item"></watched-show-card>
     </div>
     
+    <div class="row">
+      <div class="col-xs-12">
+        <loader :show="requesting"></loader>
+      </div>
+    </div>
+
+    <reached-end :show="reachedEnd">
+      Reached End
+    </reached-end>
     <no-content message="You haven't watched any shows yet!" :condition="!watchedShows.length"></no-content>
   </div>
 </div>
@@ -30,6 +39,8 @@
 import Popup from '@/components/Popup/Popup';
 import NoContent from '@/components/NoContent/NoContent';
 import WatchedShowCard from '@/components/WatchedShowCard/WatchedShowCard';
+import Loader from '@/components/Loader/Loader';
+import ReachedEnd from '@/components/ReachedEnd/ReachedEnd';
 
 import { mapState } from 'vuex';
 
@@ -43,20 +54,52 @@ export default {
       }
     };
   },
+  mounted() {
+    this.$store.dispatch('watchedShows/getWatchedShows', {
+      currentPage: 1
+    });
+
+    this.initScroll();
+  },
   computed: {
     ...mapState({
-      watchedShows: state => state.watchedShows.watchedShows
+      watchedShows: ({ watchedShows }) => watchedShows.watchedShows,
+      currentPage: ({ watchedShows }) => watchedShows.currentPage,
+      reachedEnd: ({ watchedShows }) => {
+        const { pageSize, currentPage, totalPages } = watchedShows;
+        
+        if (watchedShows.watchedShows.length < pageSize) {
+          return false;
+        }
+
+        return totalPages == currentPage;
+      },
+      requesting: ({ watchedShows }) => watchedShows.requesting
     })
   },
-  mounted() {
-    this.$store.dispatch('watchedShows/getWatchedShows');
+  methods: {
+    initScroll() {
+      window.onscroll = () => {
+        const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+
+        if (bottomOfWindow) {
+          this.$store.dispatch('watchedShows/getWatchedShows', {
+            currentPage: this.currentPage + 1
+          });
+        }
+      };
+    }
   },
   components: {
     Popup,
     NoContent,
-    WatchedShowCard
+    WatchedShowCard,
+    Loader,
+    ReachedEnd
   }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>

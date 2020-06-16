@@ -1,30 +1,18 @@
 import axios from '../../http';
 import {
+  MOVIE_DETAILS_GET,
   MOVIE_GET,
-  UPDATE_FOUND_MOVIES,
-  EMPTY_FOUND_MOVIES } from '../mutation-types';
+  MOVIE_RESET } from '../mutation-types';
 
 const state = {
-  movie: {},
-  foundMovies: []
+  movieDetails: {},
+  moviesFound: []
 };
 
 const getters = {};
 
 const actions = {
-  async movieGet({ dispatch, commit }, movieId) {
-    try {
-      const { data }  = await axios({
-        method: 'GET',
-        url: `/movies/${movieId}`
-      });
-
-      commit(MOVIE_GET, data);
-    } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
-    }
-  },
-  async findMovies({ commit, dispatch }, movie) {
+  async movieGet({ commit, dispatch }, movie) {
     if (!movie) return;
     try {
       const { data } = await axios({
@@ -48,7 +36,7 @@ const actions = {
       const posterUrl = data.Poster;
       const poster = posterUrl.substring(0, posterUrl.length - 7);
   
-      commit(UPDATE_FOUND_MOVIES, [{
+      commit(MOVIE_GET, [{
         ...data,
         Poster: poster + '125.jpg'
       }]);
@@ -56,20 +44,32 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  emptyFoundMovies({ commit }) {
-    commit(EMPTY_FOUND_MOVIES);
+  reset({ commit }) {
+    commit(MOVIE_RESET);
+  },
+  async movieDetailsGet({ dispatch, commit }, movieId) {
+    try {
+      const { data }  = await axios({
+        method: 'GET',
+        url: `/movies/${movieId}`
+      });
+
+      commit(MOVIE_DETAILS_GET, data);
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+    }
   }
 };
 
 const mutations = {
-  [MOVIE_GET](state, data) {
-    state.movie = data;
+  [MOVIE_DETAILS_GET](state, data) {
+    state.movieDetails = data;
   },
-  [UPDATE_FOUND_MOVIES](state, movies) {
-    state.foundMovies = movies;
+  [MOVIE_GET](state, movies) {
+    state.moviesFound = movies;
   },
-  [EMPTY_FOUND_MOVIES](state) {
-    state.foundMovies = [];
+  [MOVIE_RESET](state) {
+    state.moviesFound = [];
   }
 };
 
