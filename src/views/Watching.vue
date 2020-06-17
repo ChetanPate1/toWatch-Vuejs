@@ -35,10 +35,10 @@
       
       <div class="col-xs-12 col-sm-6 col-md-3" v-for="item in watching" :key="item._id">
         <watchlist-card
-          :heading="item.show.title"
+          :heading="item.show.name"
           :id="item._id"
           :data="item"
-          :img-src="item.show.poster">
+          :img-src="item.show.image.original">
         </watchlist-card>
       </div>
     </div>

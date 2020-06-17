@@ -4,7 +4,7 @@
     <button type="button" class="icon-button red dripicons-trash" @click="confirmDelete(id)"></button>
 
     <h2>{{ heading }}</h2>
-    <h4>{{ data.episode ? data.episode.title : '' }}</h4>
+    <h4>{{ data.episode ? data.episode.name : '' }}</h4>
     <h5>On {{ data.episode ? `Season ${data.episode.season.number} Episode ${data.episode.number}` : '' }}</h5>
     
     <behind-count-button
@@ -34,9 +34,9 @@
                     :key="episode._id"
                     :watching-id="id"
                     :number="episode.number"
-                    :title="episode.title"
+                    :title="episode.name"
                     :watched="episode.watched"
-                    :released="episode.released"
+                    :released="episode.airdate"
                     @click="watched(episode)">
                 </panel-row>
               </tab-panel>

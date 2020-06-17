@@ -7,8 +7,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(function (config) {
     const { token } = Store.state.storage;
-
-    if (token && config.url !== process.env.VUE_APP_OMDB_API_URL) {
+    
+    if (token && config.url.indexOf(process.env.VUE_APP_TVMAZE_API_URL) < 0) {
         config.headers['Authorization'] = `token ${token}`;
     }
 

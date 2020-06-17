@@ -6,8 +6,8 @@
     </div>
     
     <div class="text-ellipsis">
-      <h3 class="margin-bottom-0 text-ellipsis">{{ data.show }}</h3>
-      {{ data.on.title }}
+      <h3 class="margin-bottom-0 text-ellipsis">{{ data.name }}</h3>
+      {{ data.on.name }}
     </div>
     
     <div class="margin-top-10">
@@ -69,8 +69,8 @@ export default {
       }
     },
     async onRewatching() {
-      const rewatch = await this.$store.dispatch('watchedShows/rewatching', this.data);
-      
+      // const rewatch = await this.$store.dispatch('watchedShows/rewatching', this.data);
+      const rewatch = await this.$store.dispatch('shows/updateShow', this.data.showId);
       if (rewatch) {
         this.$router.push({ name: 'watching' });
       }

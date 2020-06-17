@@ -13,10 +13,10 @@
 
     <div class="search-results" :class="{'show' : showsFound }">
       <search-result-item 
-        v-for="(show, index) in showsFound" :key="index"
-        :poster="show.Poster"
-        :title="show.Title"
-        :year="show.Year"
+        v-for="show in showsFound" :key="show.id"
+        :poster="show.image.medium"
+        :title="show.name"
+        :year="show.premiered"
         :disabled="requesting"
         @click="addSeries(show)"
       ></search-result-item>
@@ -46,20 +46,17 @@ export default {
     })
   },
   methods: {
+    async findShow() {
+      this.requesting = true;
+      await this.$store.dispatch('shows/showsGet', this.form.showName);
+      this.requesting = false;
+    },
     async addSeries(show) {
       this.requesting = true;
       const data = await this.$store.dispatch('shows/save', show);
       this.$emit('onSelect', data);
       this.requesting = false;
       this.empty();
-    },
-    setType(type) {
-      this.type = type;
-    },
-    async findShow() {
-      this.requesting = true;
-      await this.$store.dispatch('shows/showsGet', this.form);
-      this.requesting = false;
     },
     empty() {
       this.form.showName = '';
