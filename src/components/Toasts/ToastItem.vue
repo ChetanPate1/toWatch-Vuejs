@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="toast" :class="{ show }">
+<div class="toast-item" @click.prevent="dismiss">
   <h5>{{ title }}</h5>
   <p>{{ message }}</p>
 </div>
@@ -7,34 +7,29 @@
 
 <script>
 export default {
-  name: 'Toast',
+  name: 'ToastItem',
   props: {
     title: String,
     message: String,
-    show: Boolean
+    timestamp: Number
   },
   methods: {
     dismiss() {
-      this.$store.dispatch('toastDismiss');
+      this.$store.dispatch('toastDismiss', this.timestamp);
     }
   }
 };
 </script>
 
 <style lang="scss">
-.toast {
-  position: fixed;
-  right: 15px;
-  top: 120px;
-  max-width: 300px;
+.toast-item {
+  display: inline-block;
   width: 100%;
   background-color: $base-color;
   padding: 20px;
   border-radius: 7px;
   z-index: 1000;
-  transform: translate3d(120%, 0, 0) scale(0);
-  opacity: 0;
-  transition: all 400ms ease;
+  margin-bottom: 10px;
 
   h5,
   p {
@@ -51,9 +46,8 @@ export default {
     font-size: 12px;
   }
 
-  &.show {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+  &:hover {
+    cursor: pointer;
   }
 }
 </style>

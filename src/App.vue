@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-    <toast
-      v-for="(toast, index) in toasts"
-      :key="index"
-      :title="toast.title"
-      :message="toast.message"
-      :show="toast.show"
-      :timestamp="toast.timestamp"
-    ></toast>
+    <toasts></toasts>
 
     <navigation-bar></navigation-bar>
     <router-view />
@@ -16,7 +9,7 @@
 
 <script>
 import NavigationBar from './components/NavigationBar/NavigationBar';
-import Toast from './components/Toast/Toast';
+import Toasts from './components/Toasts/Toasts';
 
 import { mapGetters } from 'vuex';
 
@@ -30,7 +23,7 @@ export default {
   },
   components: {
     NavigationBar,
-    Toast
+    Toasts
   }
 };
 </script>

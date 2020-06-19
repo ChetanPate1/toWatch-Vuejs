@@ -56,7 +56,11 @@ const actions = {
         data: res.data
       });
       
-      dispatch('showToast', { title: 'Show Updated.', message: data.message }, { root: true });
+      if (data.updated == false) {
+        dispatch('showToast', { title: 'Already Updated.', message: data.message }, { root: true });
+      } else {
+        dispatch('showToast', { title: 'Show Updated.', message: data.message }, { root: true });
+      }
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error.', message: data }, { root: true });
     }
