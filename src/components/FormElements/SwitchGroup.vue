@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="switch-group">
-  <div class="switch-group-item" 
+  <div class="switch-group-item"
     v-for="item in options"
     :key="item.id"
     :class="{ active: item.label == model }"
@@ -8,7 +8,7 @@
     <label :for="item.label">
       <input type="radio"
         :id="item.label"
-        :name="item.label" 
+        :name="item.label"
         :value="model"
         :checked="item.label == model"
         @input="$emit('input', item.label); model = item.label" />
@@ -32,6 +32,11 @@ export default {
   },
   create() {
     this.model = this.value;
+  },
+  watch: {
+    value(n) {
+      this.model = this.value;
+    }
   }
 };
 </script>
@@ -49,7 +54,7 @@ export default {
     width: 100%;
     text-align: center;
     color: $base-color;
-  
+
     input {
       position: absolute;
       top: 0;

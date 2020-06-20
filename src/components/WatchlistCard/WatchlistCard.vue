@@ -82,6 +82,8 @@ export default {
       }
     },
     async confirmDelete(id) {
+      this.$parent.deleteReason = '';
+
       const result = await this.$parent.$refs.confirmPopup.open();
 
       if (result == 'dismiss') return;
@@ -90,6 +92,7 @@ export default {
         await this.$store.dispatch('watching/deleteWatching', {
           id, deleteReason: result.deleteReason
         });
+        await this.$store.dispatch('watching/getWatching');
       }
     },
     tabButtonName(number) {

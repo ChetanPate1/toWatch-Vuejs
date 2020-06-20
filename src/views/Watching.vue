@@ -3,7 +3,7 @@
   <popup title="Add To Watch List" size="md" ref="popup">
     <add-to-watchlist ref="addToWatchlist" :show="selectedShow"></add-to-watchlist>
   </popup>
-  
+
   <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
     <h4 class="margin-top-0 margin-bottom-20">
       Are you sure you want to delete this show?
@@ -15,7 +15,7 @@
         :options="options">
       </switch-group>
     </div>
-    
+
     <button class="button button-sm red pull-left"
             type="button"
             @click="$refs.confirmPopup.close({ answer: 'cancel' })">Cancel
@@ -32,7 +32,7 @@
       <div class="col-xs-12 margin-bottom-30">
         <search-shows @onSelect="onSelect"></search-shows>
       </div>
-      
+
       <div class="col-xs-12 col-sm-6 col-md-3" v-for="item in watching" :key="item._id">
         <watchlist-card
           :heading="item.show.name"
@@ -62,7 +62,7 @@
 import WatchlistCard from '@/components/WatchlistCard/WatchlistCard';
 import NoContent from '@/components/NoContent/NoContent';
 import Popup from '@/components/Popup/Popup';
-import SwitchGroup from '@/components/FormElements/SwitchGroup/SwitchGroup';
+import SwitchGroup from '@/components/FormElements/SwitchGroup';
 import SearchShows from '@/components/Search/SearchShows';
 import AddToWatchlist from '@/components/AddToWatchlist/AddToWatchlist';
 import Loader from '@/components/Loader/Loader';
@@ -85,7 +85,7 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('watching/getWatching', { 
+    await this.$store.dispatch('watching/getWatching', {
       currentPage: 1
     });
 
@@ -97,7 +97,7 @@ export default {
       currentPage:  ({ watching }) => watching.currentPage,
       reachedEnd: ({ watching }) => {
         const { pageSize, currentPage, totalPages } = watching;
-        
+
         if (watching.watching.length < pageSize) {
           return false;
         }

@@ -1,7 +1,7 @@
 <template lang="html">
 <card class="watched-show-card margin-bottom-20" tabindex="0">
   <div class="status-dot"
-    :class="{ ended: data.status == 'Ended', running: data.status == 'Running' }">
+    :class="{ ended: data.status == 'Ended', running: (data.status == 'Running' || data.status == 'To Be Determined') }">
   </div>
 
   <div class="content">
@@ -22,7 +22,9 @@
 
       <div class="margin-top-10">
         <span class="status red" v-if="data.deleteReason">{{ data.deleteReason }}</span>
-        <span class="status green" v-if="data.percentage == 100">Complete</span>
+        <span class="status green" v-if="data.percentage == 100">
+          {{ data.status == 'Running' ? 'Up To Date' : 'Complete'}}
+        </span>
       </div>
     </div>
   </div>
@@ -87,6 +89,7 @@ export default {
 
       if (result == 'yes') {
         await this.$store.dispatch('watchedShows/deleteFromWatchedShows', this.data);
+        await this.$store.dispatch('watchedShows/getWatchedShows');
       }
     },
     onEpisode(on, small) {
