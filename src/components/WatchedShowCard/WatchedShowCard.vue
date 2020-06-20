@@ -1,15 +1,19 @@
 <template lang="html">
 <card class="watched-show-card margin-bottom-20" tabindex="0">
+  <div class="status-dot"
+    :class="{ ended: data.status == 'Ended', running: data.status == 'Running' }">
+  </div>
+
   <div class="content">
     <div class="bar">
       <progress-bar :percentage="data.percentage"></progress-bar>
     </div>
-    
+
     <div class="text-ellipsis">
       <h3 class="margin-bottom-0 text-ellipsis">{{ data.name }}</h3>
       {{ data.on.name }}
     </div>
-    
+
     <div class="margin-top-10">
       <small v-if="data.percentage != 100">
         <span class="visible-sm">{{ onEpisode(data.on, true) }}</span>
@@ -22,18 +26,18 @@
       </div>
     </div>
   </div>
-  
+
   <button class="icon-button red dripicons-trash"
     tabindex="0"
     @click.stop="onDelete()"></button>
 
-  <button class="icon-button dripicons-clockwise" 
+  <button class="icon-button dripicons-clockwise"
     :class="{ count: data.watchedCount > 0 }"
     tabindex="0"
     @click.stop="onRewatching()">
     <div class="watched-count">{{ data.watchedCount }}</div>
   </button>
-  
+
   <button class="icon-button dripicons-media-play"
     tabindex="0"
     @click.stop="onContinue()"
@@ -63,17 +67,20 @@ export default {
   methods: {
     async onContinue() {
       const continueWatching = await this.$store.dispatch('watchedShows/continueWatching', this.data);
-      
+
       if (continueWatching) {
         this.$router.push({ name: 'watching' });
       }
     },
     async onRewatching() {
-      // const rewatch = await this.$store.dispatch('watchedShows/rewatching', this.data);
-      const rewatch = await this.$store.dispatch('shows/updateShow', this.data.showId);
+      const rewatch = await this.$store.dispatch('watchedShows/rewatching', this.data);
+
       if (rewatch) {
         this.$router.push({ name: 'watching' });
       }
+    },
+    async onUpdate() {
+      await this.$store.dispatch('shows/updateShow', this.data.showId);
     },
     async onDelete() {
       const result = await this.$parent.$refs.confirmPopup.open();
@@ -105,7 +112,7 @@ export default {
   position: relative;
   padding-left: 125px;
   padding-right: 25px;
-  min-height: 140px;
+  min-height: 160px;
   color: #b7b7b7;
   overflow: hidden;
 
@@ -114,10 +121,10 @@ export default {
     font-weight: bold;
     color: #ffffff;
   }
-  
+
   .content {
     position: relative;
-    
+
     .bar {
       position: absolute;
       top: -15px;
@@ -126,7 +133,7 @@ export default {
     }
 
     .text-ellipsis {
-      white-space: nowrap; 
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -136,7 +143,7 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    width: 95px;
+    width: 105px;
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -201,6 +208,25 @@ export default {
     }
   }
 
+  .status-dot {
+    position: absolute;
+    z-index: 10;
+    top: 14px;
+    right: 10px;
+    height: 7px;
+    width: 7px;
+    border-radius: 50%;
+
+    &.ended {
+      background-color: #070710;
+    }
+
+    &.running {
+      animation: pulse 1s infinite;
+      background-color: $green;
+    }
+  }
+
   &:hover {
     cursor: pointer;
   }
@@ -216,5 +242,11 @@ export default {
       bottom: 10px;
     }
   }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
 }
 </style>

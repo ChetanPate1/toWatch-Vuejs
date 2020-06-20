@@ -20,7 +20,7 @@
     <div class="col-sm-6 col-md-4" v-for="item in watchedShows" :key="item._id">
       <watched-show-card :data="item"></watched-show-card>
     </div>
-    
+
     <div class="row">
       <div class="col-xs-12">
         <loader :show="requesting"></loader>
@@ -48,6 +48,7 @@ export default {
   name: 'Watched',
   data() {
     return {
+      updating: false,
       statusClasses: {
         Running: 'green',
         Ended: 'red'
@@ -67,7 +68,7 @@ export default {
       currentPage: ({ watchedShows }) => watchedShows.currentPage,
       reachedEnd: ({ watchedShows }) => {
         const { pageSize, currentPage, totalPages } = watchedShows;
-        
+
         if (watchedShows.watchedShows.length < pageSize) {
           return false;
         }

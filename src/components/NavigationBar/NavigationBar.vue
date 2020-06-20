@@ -24,7 +24,7 @@
           </router-link>
           <router-link :to="{ path: '/watching'}" tag="li" v-if="token">
             <a>
-              <span class="dripicons-preview"></span> WATCHING
+              <span class="dripicons-monitor"></span> WATCHING
             </a>
           </router-link>
         </ul>

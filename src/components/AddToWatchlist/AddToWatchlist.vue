@@ -2,7 +2,7 @@
 <form name="form" v-on:submit.prevent="add(form)">
   <div class="form-element">
     <label for="series">Series Name</label>
-    {{ show.title }}
+    {{ show.name }}
   </div>
 
   <div class="form-element" v-if="show._id">
@@ -10,7 +10,7 @@
     <div class="select-series">
         <div class="col-xs-3" v-for="item in show.seasons" :key="item._id">
           <label class="radio" :class="{'selected' : form.seasonId == item._id }" >
-              <input type="radio" 
+              <input type="radio"
                 v-model="form.seasonId"
                 :value="item._id">{{ item.number }}
           </label>
@@ -24,7 +24,7 @@
         <div class="col-xs-3" v-for="episode in findEpisodes(form.seasonId)" :key="episode._id">
           <label class="radio"
             :class="{'selected' : form.episodeId == episode._id }">
-              <input type="radio" 
+              <input type="radio"
                 v-model="form.episodeId"
                 :value="episode._id">{{ episode.number }}
           </label>

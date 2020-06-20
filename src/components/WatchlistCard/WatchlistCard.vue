@@ -6,7 +6,7 @@
     <h2>{{ heading }}</h2>
     <h4>{{ data.episode ? data.episode.name : '' }}</h4>
     <h5>On {{ data.episode ? `Season ${data.episode.season.number} Episode ${data.episode.number}` : '' }}</h5>
-    
+
     <behind-count-button
         @click="toggleOpen"
         :count="data.behindCount"
@@ -58,9 +58,6 @@ import TabPanelsContainer from '../Tabs/TabPanelsContainer';
 import PanelRow from './PanelRow';
 import BehindCountButton from '../BehindCountButton/BehindCountButton';
 
-import FrostGlass from '../FrostGlass/FrostGlass';
-import CountdownTimer from '../CountdownTimer/CountdownTimer';
-
 export default {
   name: 'WatchlistCard',
   props: {
@@ -79,7 +76,7 @@ export default {
     async toggleOpen() {
       this.open = !this.open;
       const { episode } = this.data;
-      
+
       if (this.open) {
         await this.tabSelect(this.data.show.seasons[episode.season.number - 1]);
       }
@@ -88,7 +85,7 @@ export default {
       const result = await this.$parent.$refs.confirmPopup.open();
 
       if (result == 'dismiss') return;
-      
+
       if(result.answer == 'yes') {
         await this.$store.dispatch('watching/deleteWatching', {
           id, deleteReason: result.deleteReason
@@ -99,7 +96,7 @@ export default {
       return number < 10 ? `S0${number}` : `S${number}`;
     },
     async tabSelect(season) {
-      await this.$store.dispatch('watching/getEpisodes', { 
+      await this.$store.dispatch('watching/getEpisodes', {
         watchingId: this.id,
         seasonId: season._id
       });
@@ -126,9 +123,7 @@ export default {
     TabPanel,
     TabPanelsContainer,
     PanelRow,
-    BehindCountButton,
-    FrostGlass,
-    CountdownTimer
+    BehindCountButton
   }
 };
 </script>

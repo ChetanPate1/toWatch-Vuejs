@@ -52,28 +52,29 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
-  async continueWatching({ dispatch }, { showId, show }) {
+  async continueWatching({ dispatch }, { showId, name }) {
+
     try {
       await axios({
         method: 'POST',
         url: `/watched-shows/${showId}/continue`
       });
-      
-      dispatch('showToast', { title: 'Continue Watching', message: show }, { root: true });
+
+      dispatch('showToast', { title: 'Continue Watching', message: name }, { root: true });
       return true;
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data }, { root: true });
       return false;
     }
   },
-  async rewatching({ dispatch }, { showId, show }) {
+  async rewatching({ dispatch }, { showId, name }) {
     try {
       await axios({
         method: 'POST',
         url: `/watched-shows/${showId}/rewatch`
       });
-      
-      dispatch('showToast', { title: 'Rewatching', message: show }, { root: true });
+
+      dispatch('showToast', { title: 'Rewatching', message: name }, { root: true });
       return true;
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data }, { root: true });
