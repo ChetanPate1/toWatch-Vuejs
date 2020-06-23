@@ -34,8 +34,8 @@ export default {
     this.model = this.value;
   },
   watch: {
-    value(n) {
-      this.model = this.value;
+    value(newValue) {
+      this.model = newValue;
     }
   }
 };

@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import Popup from '../Popup/Popup';
-
 export default {
   name: 'ShowCard',
   data() {
@@ -41,19 +39,7 @@ export default {
       };
       await this.$store.dispatch('lookups/getSeasons', this.showId);
       this.$parent.$refs.popup.open();
-    },
-    async confirmDelete() {
-      const result = await this.$refs.confirmPopup.open();
-
-      if (result == 'yes') {
-        await this.$store.dispatch('showCollection/deleteFromShowCollection', {
-          id: this.id
-        });
-      }
     }
-  },
-  components: {
-    Popup
   }
 };
 </script>
