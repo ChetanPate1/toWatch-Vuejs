@@ -12,16 +12,16 @@
 
             <div class="form-element dark">
                <label for="password">Password</label>
-               <button class="forgot-password" type="button" @click="$router.push({ name: 'forgotPassword' })">Forgotten your password?</button>
+               <!-- <button class="forgot-password" type="button" @click="$router.push({ name: 'forgotPassword' })">Forgotten your password?</button> -->
                <input name="password" type="password" v-model="form.password" required>
             </div>
 
             <div class="row margin-top-50">
-              <div class="col-xs-6">
+              <!-- <div class="col-xs-6">
                  <button type="button" @click="$router.push({ name: 'register' })" class="button ghost">Register</button>
-              </div>
+              </div> -->
 
-               <div class="col-xs-6 text-right">
+               <div class="col-xs-12 text-right">
                   <button type="submit" class="button">Sign in</button>
                </div>
             </div>

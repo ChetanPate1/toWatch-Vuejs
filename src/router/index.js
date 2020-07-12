@@ -27,21 +27,21 @@ const router = new Router({
       name: 'login',
       component: Login
     },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register
-    },
-    {
-      path: '/forgot-password',
-      name: 'forgotPassword',
-      component: ForgotPassword
-    },
-    {
-      path: '/change-password/:resetToken',
-      name: 'changePassword',
-      component: ChangePassword
-    },
+    // {
+    //   path: '/register',
+    //   name: 'register',
+    //   component: Register
+    // },
+    // {
+    //   path: '/forgot-password',
+    //   name: 'forgotPassword',
+    //   component: ForgotPassword
+    // },
+    // {
+    //   path: '/change-password/:resetToken',
+    //   name: 'changePassword',
+    //   component: ChangePassword
+    // },
     {
       path: '/watching',
       name: 'watching',
