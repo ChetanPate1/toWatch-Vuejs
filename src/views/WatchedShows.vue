@@ -18,7 +18,7 @@
 
   <div class="container fade-in">
     <div class="row margin-bottom-20">
-      <div class="col-md-3">
+      <div class="col-sm-5 col-md-4">
         <switch-group
           dark
           v-model="filter.sort"
