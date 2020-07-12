@@ -16,6 +16,11 @@
     </button>
   </popup>
 
+  <pager
+    :current-page="currentPage"
+    :total-pages="totalPages">
+  </pager>
+
   <div class="container-fluid fade-in">
     <div class="row margin-bottom-20">
       <div class="col-xs-12">
@@ -56,6 +61,7 @@ import SearchMovies from '@/components/Search/SearchMovies';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import NoContent from '@/components/NoContent/NoContent';
 import Loader from '@/components/Loader/Loader';
+import Pager from '@/components/Pager/Pager';
 import ReachedEnd from '@/components/ReachedEnd/ReachedEnd';
 
 import { mapState } from 'vuex';
@@ -73,6 +79,7 @@ export default {
     ...mapState({
       collection: ({ movieCollection }) => movieCollection.collection,
       currentPage:  ({ movieCollection }) => movieCollection.currentPage,
+      totalPages:  ({ movieCollection }) => movieCollection.totalPages,
       reachedEnd: ({ movieCollection }) => {
         const { collection, pageSize, currentPage, totalPages } = movieCollection;
 
@@ -104,6 +111,7 @@ export default {
     MovieCard,
     NoContent,
     Loader,
+    Pager,
     ReachedEnd
   }
 };

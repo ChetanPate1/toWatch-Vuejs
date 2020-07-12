@@ -16,6 +16,11 @@
     </button>
   </popup>
 
+  <pager
+    :current-page="currentPage"
+    :total-pages="totalPages">
+  </pager>
+
   <div class="container fade-in">
     <div class="row margin-bottom-20">
       <div class="col-sm-5 col-md-4">
@@ -54,6 +59,7 @@ import NoContent from '@/components/NoContent/NoContent';
 import WatchedShowCard from '@/components/WatchedShowCard/WatchedShowCard';
 import SwitchGroup from '@/components/FormElements/SwitchGroup';
 import Loader from '@/components/Loader/Loader';
+import Pager from '@/components/Pager/Pager';
 import ReachedEnd from '@/components/ReachedEnd/ReachedEnd';
 
 import { mapState } from 'vuex';
@@ -80,6 +86,7 @@ export default {
     ...mapState({
       watchedShows: ({ watchedShows }) => watchedShows.watchedShows,
       currentPage: ({ watchedShows }) => watchedShows.currentPage,
+      totalPages: ({ watchedShows }) => watchedShows.totalPages,
       filter: ({ watchedShows }) => watchedShows.filter,
       reachedEnd: ({ watchedShows }) => {
         const { pageSize, currentPage, totalPages } = watchedShows;
@@ -117,6 +124,7 @@ export default {
     WatchedShowCard,
     SwitchGroup,
     Loader,
+    Pager,
     ReachedEnd
   }
 };

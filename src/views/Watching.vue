@@ -27,6 +27,11 @@
     </button>
   </popup>
 
+  <pager
+    :current-page="currentPage"
+    :total-pages="totalPages">
+  </pager>
+
   <div class="container-fluid fade-in">
     <div class="row">
       <div class="col-xs-12 margin-bottom-30">
@@ -66,6 +71,7 @@ import SwitchGroup from '@/components/FormElements/SwitchGroup';
 import SearchShows from '@/components/Search/SearchShows';
 import AddToWatchlist from '@/components/AddToWatchlist/AddToWatchlist';
 import Loader from '@/components/Loader/Loader';
+import Pager from '@/components/Pager/Pager';
 import ReachedEnd from '@/components/ReachedEnd/ReachedEnd';
 
 import { mapState } from 'vuex';
@@ -95,6 +101,7 @@ export default {
     ...mapState({
       watching: ({ watching }) => watching.watching,
       currentPage:  ({ watching }) => watching.currentPage,
+      totalPages:  ({ watching }) => watching.totalPages,
       reachedEnd: ({ watching }) => {
         const { pageSize, currentPage, totalPages } = watching;
 
@@ -132,6 +139,7 @@ export default {
     SearchShows,
     AddToWatchlist,
     Loader,
+    Pager,
     ReachedEnd
   }
 };
