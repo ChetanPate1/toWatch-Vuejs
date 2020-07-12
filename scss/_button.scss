@@ -33,6 +33,17 @@ button {
     }
   }
 
+  &.ghost {
+    color: $base-color;
+    background-color: transparent;
+    border: 1px solid $base-color;
+
+    &:hover {
+      background-color: $base-color;
+      color: #fff;
+    }
+  }
+
   &.red {
     color: $danger-color;
     background-color: transparent;

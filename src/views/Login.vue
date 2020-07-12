@@ -9,13 +9,19 @@
                <label for="email">Email</label>
                <input name="email" type="email" v-model="form.email" required>
             </div>
+
             <div class="form-element dark">
                <label for="password">Password</label>
+               <button class="forgot-password" type="button" @click="$router.push({ name: 'forgotPassword' })">Forgotten your password?</button>
                <input name="password" type="password" v-model="form.password" required>
             </div>
 
-            <div class="row">
-               <div class="col-xs-12 text-right">
+            <div class="row margin-top-50">
+              <div class="col-xs-6">
+                 <button type="button" @click="$router.push({ name: 'register' })" class="button ghost">Register</button>
+              </div>
+
+               <div class="col-xs-6 text-right">
                   <button type="submit" class="button">Sign in</button>
                </div>
             </div>
@@ -44,6 +50,13 @@ export default {
       token: ({ storage }) => storage.token
     })
    },
+   mounted() {
+     const { token } = this.$route.params;
+
+     if(token) {
+       this.$store.dispatch('auth/verifyEmail', token);
+     }
+   },
    methods: {
       onLogin() {
          this.$store.dispatch('auth/signUserIn', this.form);
@@ -55,8 +68,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped="true">
+<style lang="scss" scoped>
 h2{
    color: #ffffff;
+}
+
+.forgot-password {
+  position: absolute;
+  right: 0;
+  bottom: -24px;
+  background: transparent;
+  border: none;
+  color: #5d5d61;
 }
 </style>

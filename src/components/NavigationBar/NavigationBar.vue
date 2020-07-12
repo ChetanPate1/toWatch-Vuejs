@@ -6,35 +6,43 @@
         <a class="brand">
           <strong>toWatch</strong>
         </a>
-        <ul class="links margin-top-xs-40">
-          <router-link :to="{ path: '/most-popular'}" tag="li"  v-if="!token">
-            <a @click="open =false">
+
+        <ul class="links margin-top-xs-40" v-if="!token">
+          <router-link :to="{ name: 'mostPopular'}" tag="li">
+            <a>
               <span class="dripicons-star"></span> MOST POPULAR
             </a>
           </router-link>
-          <router-link :to="{ path: '/movie-collection'}" tag="li" v-if="token">
+        </ul>
+
+        <ul class="links margin-top-xs-40" v-if="token">
+          <router-link :to="{ name: 'movieCollection'}" tag="li">
             <a>
               <span class="dripicons-camcorder"></span> MOVIE COLLECTION
             </a>
           </router-link>
-          <router-link :to="{ path: '/watched-shows'}" tag="li" v-if="token">
+
+          <router-link :to="{ name: 'watchedShows'}" tag="li">
             <a>
               <span class="dripicons-preview"></span> WATCHED SHOWS
             </a>
           </router-link>
-          <router-link :to="{ path: '/watching'}" tag="li" v-if="token">
+
+          <router-link :to="{ name: 'watching'}" tag="li">
             <a>
               <span class="dripicons-monitor"></span> WATCHING
             </a>
           </router-link>
         </ul>
       </div>
-      <ul class="links auth">
-        <router-link :to="{ path: '/login'}" tag="li" v-if="!token">
+
+      <ul class="links auth" v-if="!token">
+        <router-link :to="{ name: 'login'}" tag="li">
           <a>SIGNIN</a>
         </router-link>
       </ul>
     </nav>
+    
     <button class="navigation-button" type="button" name="button" @click="toggleOpen">
       <span class="dripicons-menu"></span>
     </button>

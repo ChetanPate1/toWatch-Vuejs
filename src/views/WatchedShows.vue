@@ -17,8 +17,21 @@
   </popup>
 
   <div class="container fade-in">
-    <div class="col-sm-6 col-md-4" v-for="item in watchedShows" :key="item._id">
-      <watched-show-card :data="item"></watched-show-card>
+    <div class="row margin-bottom-20">
+      <div class="col-md-3">
+        <switch-group
+          dark
+          v-model="filter.sort"
+          :options="options"
+          @input="onChangeTab">
+        </switch-group>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 col-md-4" v-for="item in watchedShows" :key="item._id">
+        <watched-show-card :data="item"></watched-show-card>
+      </div>
     </div>
 
     <div class="row">
@@ -39,6 +52,7 @@
 import Popup from '@/components/Popup/Popup';
 import NoContent from '@/components/NoContent/NoContent';
 import WatchedShowCard from '@/components/WatchedShowCard/WatchedShowCard';
+import SwitchGroup from '@/components/FormElements/SwitchGroup';
 import Loader from '@/components/Loader/Loader';
 import ReachedEnd from '@/components/ReachedEnd/ReachedEnd';
 
@@ -48,12 +62,12 @@ export default {
   name: 'Watched',
   data() {
     return {
-      updating: false,
-      statusClasses: {
-        Running: 'green',
-        Ended: 'red'
-      }
-    };
+      options: [
+        { id: 'Shows', label: 'Shows' },
+        { id: 'Woke Shit', label: 'Woke Shit' },
+        { id: 'Boring', label: 'Boring' }
+      ]
+    }
   },
   mounted() {
     this.$store.dispatch('watchedShows/getWatchedShows', {
@@ -66,6 +80,7 @@ export default {
     ...mapState({
       watchedShows: ({ watchedShows }) => watchedShows.watchedShows,
       currentPage: ({ watchedShows }) => watchedShows.currentPage,
+      filter: ({ watchedShows }) => watchedShows.filter,
       reachedEnd: ({ watchedShows }) => {
         const { pageSize, currentPage, totalPages } = watchedShows;
 
@@ -79,6 +94,11 @@ export default {
     })
   },
   methods: {
+    onChangeTab() {
+      this.$store.dispatch('watchedShows/getWatchedShows', {
+        currentPage: 1
+      });
+    },
     initScroll() {
       window.onscroll = () => {
         const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -95,6 +115,7 @@ export default {
     Popup,
     NoContent,
     WatchedShowCard,
+    SwitchGroup,
     Loader,
     ReachedEnd
   }

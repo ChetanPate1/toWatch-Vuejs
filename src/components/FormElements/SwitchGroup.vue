@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="switch-group">
+<div class="switch-group" :class="{ dark }">
   <div class="switch-group-item"
     v-for="item in options"
     :key="item.id"
@@ -22,6 +22,7 @@
 export default {
   name: 'SwitchGroup',
   props: {
+    dark: Boolean,
     value: String,
     options: Array
   },
@@ -78,6 +79,10 @@ export default {
         color: #fff;
       }
     }
+  }
+
+  &.dark {
+    border: 1px solid $base-color;
   }
 }
 </style>

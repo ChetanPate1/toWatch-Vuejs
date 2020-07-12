@@ -77,7 +77,7 @@ const actions = {
         method: 'GET',
         url: `/episodes/${seasonId}`
       });
-      
+
       commit(EPISODES_GET, { watchingId, seasonId, episodes: data });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
@@ -89,8 +89,8 @@ const actions = {
         method: 'POST',
         url: `/watching/${watchingId}/watched/${episode._id}`
       });
-      
-      commit(WATCHING_TOGGLE_EPISODE_WATCHED, { 
+
+      commit(WATCHING_TOGGLE_EPISODE_WATCHED, {
         watchingId,
         data
       });
@@ -135,7 +135,7 @@ const mutations = {
       ...item,
       watched: episodesBefore || currentSeasonEpisodesBefore(item)
     }))
-    
+
     state.watching.map(item => {
       if (item._id === watchingId) {
         item.show.seasons.map(season => {

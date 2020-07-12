@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import MostPopular from '@/views/MostPopular';
 import Login from '@/views/Login';
+import Register from '@/views/Register';
+import ForgotPassword from '@/views/ForgotPassword';
+import ChangePassword from '@/views/ChangePassword';
 import Watching from '@/views/Watching';
 import WatchedShows from '@/views/WatchedShows';
 import MovieCollection from '@/views/MovieCollection';
@@ -20,9 +23,24 @@ const router = new Router({
       component: MostPopular
     },
     {
-      path: '/login',
+      path: '/login/:token?',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgotPassword',
+      component: ForgotPassword
+    },
+    {
+      path: '/change-password/:resetToken',
+      name: 'changePassword',
+      component: ChangePassword
     },
     {
       path: '/watching',

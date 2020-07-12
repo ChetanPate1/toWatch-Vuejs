@@ -9,19 +9,6 @@ const state = {
 const getters = {};
 
 const actions = {
-  async getSeasons({ commit, dispatch }, showId) {
-    try {
-      commit('resetState', 'seasons');
-      const res = await axios({
-        method: 'GET',
-        url: `/seasons/${showId}`
-      });
-
-      commit(SEASONS_GET, res.data);
-    } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data }, { root: true });
-    }
-  },
   async getEpisodes({ commit, dispatch }, seasonId) {
     try {
       commit('resetState', 'episodes');
