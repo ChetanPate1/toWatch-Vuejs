@@ -4,15 +4,18 @@
     <add-to-watchlist ref="addToWatchlist" :show="selectedShow"></add-to-watchlist>
   </popup>
 
-  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+  <popup title="Confirm" size="md" ref="confirmPopup" @open="showTypeId = showTypeList[0].id">
     <h4 class="margin-top-0 margin-bottom-20">
       Are you sure you want to delete this show?
     </h4>
 
     <div class="margin-bottom-30">
+      <label>Place Show In:</label>
       <switch-group
-        v-model="deleteReason"
-        :options="options">
+        id="showType"
+        v-model="showTypeId"
+        value-key="id"
+        :options="showTypeList">
       </switch-group>
     </div>
 
@@ -23,11 +26,12 @@
 
     <button class="button button-sm pull-right"
             type="button"
-            @click="$refs.confirmPopup.close({ answer: 'yes', deleteReason })">Yes
+            @click="$refs.confirmPopup.close({ answer: 'yes', showTypeId })">Yes
     </button>
   </popup>
 
   <pager
+    v-if="watching.length > 6"
     :current-page="currentPage"
     :total-pages="totalPages">
   </pager>
@@ -58,7 +62,7 @@
       Reached End
     </reached-end>
 
-    <no-content message="Your watch list is empty!" :condition="!watching.length"></no-content>
+    <no-content message="Your watch list is empty!" v-if="watching.length == 0"></no-content>
   </div>
 </div>
 </template>
@@ -83,23 +87,23 @@ export default {
       selectedShow: {
         title: ''
       },
-      options: [
-        { id: 1, label: 'Woke Shit' },
-        { id: 2, label: 'Boring' }
-      ],
-      deleteReason: ''
+      showTypeId: null
     }
   },
   async mounted() {
+    await this.$store.dispatch('lookups/getEpisodeTags');
+    await this.$store.dispatch('lookups/getShowTypes');
     await this.$store.dispatch('watching/getWatching', {
       currentPage: 1
     });
-
+    
     this.initScroll();
   },
   computed: {
     ...mapState({
       watching: ({ watching }) => watching.watching,
+      episodeTagsList: ({ lookups }) => lookups.episodeTags,
+      showTypeList: ({ lookups }) => lookups.showTypes,
       currentPage:  ({ watching }) => watching.currentPage,
       totalPages:  ({ watching }) => watching.totalPages,
       reachedEnd: ({ watching }) => {

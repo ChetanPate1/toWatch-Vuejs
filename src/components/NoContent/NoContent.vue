@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="no-content" :class="{ 'show': condition }">
+<div class="no-content">
    <h1>{{ message }}</h1>
 </div>
 </template>
@@ -8,8 +8,7 @@
 export default {
    name: 'NoContent',
    props: {
-      message: String,
-      condition: Boolean
+      message: String
    }
 }
 </script>
@@ -22,8 +21,6 @@ export default {
    top: 0;
    left: 0;
    z-index: 100;
-   opacity: 0;
-   transform: translate(0, -100%);
 
    h1{
       position: absolute;
@@ -34,11 +31,6 @@ export default {
       text-align: center;
       color: #05051b;
       transform: translate(0, -50%);
-   }
-
-   &.show{
-      opacity: 1;
-      transform: translate(0, 0);
    }
 }
 

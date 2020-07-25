@@ -6,7 +6,7 @@ import {
   WATCHED_SHOWS_DELETE } from '../mutation-types';
 
 const state = {
-  filter: { sort: 'Shows' },
+  filter: { sort: 'Collection' },
   currentPage: 1,
   watchedShows: [],
   requesting: false,
@@ -18,7 +18,7 @@ const getters = {};
 
 const actions = {
   async getWatchedShows({ state, dispatch, commit }, { currentPage }) {
-    if(state.requesting || state.totalPages < currentPage) return;
+    if(state.requesting || state.totalPages < currentPage && currentPage > 1) return;
 
     try {
       commit(WATCHED_SHOWS_REQUESTING, true);
@@ -28,7 +28,7 @@ const actions = {
         url: '/watched-shows',
         params: {
           currentPage,
-          sort: state.filter.sort == 'Shows' ? null : state.filter.sort
+          showType: state.filter.sort
         }
       });
 

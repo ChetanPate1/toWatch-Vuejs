@@ -7,7 +7,7 @@
           <strong>toWatch</strong>
         </a>
 
-        <ul class="links margin-top-xs-40" v-if="!token">
+        <ul class="links margin-top-xs-40" v-if="!token" @click="open = false">
           <router-link :to="{ name: 'mostPopular'}" tag="li">
             <a>
               <span class="dripicons-star"></span> MOST POPULAR
@@ -15,7 +15,7 @@
           </router-link>
         </ul>
 
-        <ul class="links margin-top-xs-40" v-if="token">
+        <ul class="links margin-top-xs-40" v-if="token" @click="open = false">
           <router-link :to="{ name: 'movieCollection'}" tag="li">
             <a>
               <span class="dripicons-camcorder"></span> MOVIE COLLECTION
@@ -42,7 +42,7 @@
         </router-link>
       </ul>
     </nav>
-    
+
     <button class="navigation-button" type="button" name="button" @click="toggleOpen">
       <span class="dripicons-menu"></span>
     </button>

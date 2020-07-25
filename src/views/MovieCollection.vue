@@ -17,6 +17,7 @@
   </popup>
 
   <pager
+    v-if="collection.length > 15"
     :current-page="currentPage"
     :total-pages="totalPages">
   </pager>

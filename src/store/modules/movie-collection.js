@@ -1,5 +1,5 @@
 import axios from '../../http';
-import { 
+import {
   MOVIE_COLLECTION_SET,
   MOVIE_COLLECTION_GET,
   MOVIE_COLLECTION_ADD,
@@ -18,7 +18,7 @@ const getters = {};
 
 const actions = {
   async getMovieCollection({ commit, dispatch }, { currentPage }) {
-    if(state.requesting || state.totalPages < currentPage) return;
+    if(state.requesting || state.totalPages < currentPage && currentPage > 1) return;
     
     try {
       commit(MOVIE_COLLECTION_REQUESTING, true);
@@ -54,7 +54,7 @@ const actions = {
       });
 
       commit(MOVIE_COLLECTION_ADD, data.movie);
-      
+
       dispatch('showToast', { title: 'Movie added.', message: data.message }, { root: true });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });

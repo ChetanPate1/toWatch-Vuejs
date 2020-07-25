@@ -26,11 +26,13 @@ export default {
   },
   methods: {
     open() {
+      this.$emit('open');
       this.popupOpen = true;
 
       return new Promise(resolve => {
         this.close = reason => {
           this.popupOpen = false;
+          this.$emit('close');
           resolve(reason);
         };
       });

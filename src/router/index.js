@@ -32,16 +32,16 @@ const router = new Router({
     //   name: 'register',
     //   component: Register
     // },
-    // {
-    //   path: '/forgot-password',
-    //   name: 'forgotPassword',
-    //   component: ForgotPassword
-    // },
-    // {
-    //   path: '/change-password/:resetToken',
-    //   name: 'changePassword',
-    //   component: ChangePassword
-    // },
+    {
+      path: '/forgot-password',
+      name: 'forgotPassword',
+      component: ForgotPassword
+    },
+    {
+      path: '/change-password/:resetToken',
+      name: 'changePassword',
+      component: ChangePassword
+    },
     {
       path: '/watching',
       name: 'watching',

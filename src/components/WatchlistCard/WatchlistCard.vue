@@ -29,6 +29,7 @@
                 :active="isTabSelected(season)"
                 :number="season.number"
                 :key="season._id">
+
                 <panel-row
                     v-for="episode in season.episodes"
                     :key="episode._id"
@@ -37,7 +38,10 @@
                     :title="episode.name"
                     :watched="episode.watched"
                     :released="episode.airdate"
-                    @click="watched(episode)">
+                    :tags="episode.tags"
+                    @click="watched(episode)"
+                    @onOpen="(open) => onGetTags(open, episode)"
+                    @tag="(tag) => onTag(tag, episode)">
                 </panel-row>
               </tab-panel>
           </tab-panels-container>
@@ -82,18 +86,35 @@ export default {
       }
     },
     async confirmDelete(id) {
-      this.$parent.deleteReason = '';
-
       const result = await this.$parent.$refs.confirmPopup.open();
 
       if (result == 'dismiss') return;
 
       if(result.answer == 'yes') {
         await this.$store.dispatch('watching/deleteWatching', {
-          id, deleteReason: result.deleteReason
+          id, showTypeId: result.showTypeId
         });
-        await this.$store.dispatch('watching/getWatching');
+        await this.$store.dispatch('watching/getWatching', {
+          currentPage: 1
+        });
       }
+    },
+    async onGetTags(isOpen, episode) {
+      if(isOpen) {
+        await this.$store.dispatch('watching/getEpisodeTags', {
+          watchingId: this.id,
+          episode
+        });
+
+        this.$forceUpdate();
+      }
+    },
+    async onTag(tag, episode) {
+      await this.$store.dispatch('watching/toggleTag', {
+        watchingId: this.id,
+        tagId: tag.id,
+        episode
+      });
     },
     tabButtonName(number) {
       return number < 10 ? `S0${number}` : `S${number}`;

@@ -21,9 +21,8 @@
       </small>
 
       <div class="margin-top-10">
-        <span class="status red" v-if="data.deleteReason">{{ data.deleteReason }}</span>
         <span class="status green" v-if="data.percentage == 100">
-          {{ data.status == 'Running' ? 'Up To Date' : 'Complete'}}
+          {{ data.status == 'Running' ? 'Up To Date' : 'Complete' }}
         </span>
       </div>
     </div>
@@ -58,14 +57,6 @@ export default {
   props: {
     data: Object
   },
-  data() {
-    return {
-      statusClasses: {
-        Running: 'green',
-        Ended: 'red'
-      }
-    };
-  },
   methods: {
     async onContinue() {
       const continueWatching = await this.$store.dispatch('watchedShows/continueWatching', this.data);
@@ -98,9 +89,6 @@ export default {
       }
 
       return `Season ${on.season} Episode ${on.episode}`;
-    },
-    statusClass(statusName) {
-      return this.statusClasses[statusName];
     }
   },
   components: {
@@ -189,25 +177,6 @@ export default {
       text-align: left;
       color: $base-color;
       line-height: 25px;
-    }
-  }
-
-  .status {
-    display: inline;
-    text-align: center;
-    border: 2px solid;
-    border-radius: 5px;
-    font-size: 11px;
-    padding: 4px 10px;
-
-    &.green {
-      color: $green;
-    }
-    &.purple {
-      color: $base-color;
-    }
-    &.red {
-      color: $danger-color;
     }
   }
 

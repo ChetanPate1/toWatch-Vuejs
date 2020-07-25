@@ -1,6 +1,6 @@
 <template lang="html">
 <div>
-  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
+  <popup title="Confirm" size="md" ref="confirmPopup">
     <h4 class="margin-top-0 margin-bottom-20">
       Are you sure you want to delete this watched show?
     </h4>
@@ -17,6 +17,7 @@
   </popup>
 
   <pager
+    v-if="watchedShows.length > 15"
     :current-page="currentPage"
     :total-pages="totalPages">
   </pager>
@@ -27,7 +28,7 @@
         <switch-group
           dark
           v-model="filter.sort"
-          :options="options"
+          :options="showTypeList"
           @input="onChangeTab">
         </switch-group>
       </div>
@@ -48,7 +49,7 @@
     <reached-end :show="reachedEnd">
       Reached End
     </reached-end>
-    <no-content message="You haven't watched any shows yet!" :condition="!watchedShows.length"></no-content>
+    <no-content message="You haven't watched any shows yet!" v-if="watchedShows.length == 0"></no-content>
   </div>
 </div>
 </template>
@@ -66,19 +67,12 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Watched',
-  data() {
-    return {
-      options: [
-        { id: 'Shows', label: 'Shows' },
-        { id: 'Woke Shit', label: 'Woke Shit' },
-        { id: 'Boring', label: 'Boring' }
-      ]
-    }
-  },
-  mounted() {
+  async mounted() {
     this.$store.dispatch('watchedShows/getWatchedShows', {
       currentPage: 1
     });
+
+    await this.$store.dispatch('lookups/getShowTypes');
 
     this.initScroll();
   },
@@ -87,6 +81,7 @@ export default {
       watchedShows: ({ watchedShows }) => watchedShows.watchedShows,
       currentPage: ({ watchedShows }) => watchedShows.currentPage,
       totalPages: ({ watchedShows }) => watchedShows.totalPages,
+      showTypeList: ({ lookups }) => lookups.showTypes,
       filter: ({ watchedShows }) => watchedShows.filter,
       reachedEnd: ({ watchedShows }) => {
         const { pageSize, currentPage, totalPages } = watchedShows;
@@ -130,6 +125,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

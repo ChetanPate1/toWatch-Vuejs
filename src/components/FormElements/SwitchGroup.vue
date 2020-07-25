@@ -3,15 +3,15 @@
   <div class="switch-group-item"
     v-for="item in options"
     :key="item.id"
-    :class="{ active: item.label == model }"
+    :class="{ active: item[valueKey] == model }"
     :style="{ width: `${100/options.length}%` }">
     <label :for="item.label">
       <input type="radio"
         :id="item.label"
         :name="item.label"
-        :value="model"
-        :checked="item.label == model"
-        @input="$emit('input', item.label); model = item.label" />
+        :value="item[valueKey]"
+        :checked="item[valueKey] == model"
+        @input="$emit('input', item[valueKey]); model = item[valueKey]" />
         {{ item.label }}
     </label>
   </div>
@@ -24,7 +24,15 @@ export default {
   props: {
     dark: Boolean,
     value: String,
-    options: Array
+    options: Array,
+    labelKey: {
+      type: String,
+      default: 'label'
+    },
+    valueKey: {
+      type: String,
+      default: 'label'
+    }
   },
   data() {
     return {
@@ -48,6 +56,8 @@ export default {
   width: 100%;
   border: 1px solid #ccc8c8;
   border-radius: 5px;
+  position: relative;
+  z-index: 200;
 
   > .switch-group-item {
     position: relative;

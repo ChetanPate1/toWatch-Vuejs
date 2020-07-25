@@ -34,7 +34,7 @@ export default {
     height: 100%;
     width: 100%;
     border-radius: 0;
-    transition: 300ms width ease;
+    transition: 400ms width ease;
   }
 }
 </style>

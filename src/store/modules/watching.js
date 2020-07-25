@@ -6,6 +6,8 @@ import {
   WATCHING_DELETE,
   EPISODES_GET,
   WATCHING_TOGGLE_EPISODE_WATCHED,
+  WATCHING_TOGGLE_TAG,
+  WATCHING_GET_TAG,
   WATCHING_REQUESTING } from '../mutation-types';
 
 const state = {
@@ -20,7 +22,7 @@ const getters = {};
 
 const actions = {
   async getWatching({ commit, dispatch }, { currentPage }) {
-    if(state.requesting || state.totalPages < currentPage) return;
+    if(state.requesting || state.totalPages < currentPage && currentPage > 1) return;
 
     try {
       commit(WATCHING_REQUESTING, true);
@@ -56,16 +58,15 @@ const actions = {
       dispatch('showToast', { title: 'Error', message: data }, { root: true });
     }
   },
-  async deleteWatching({ dispatch, commit }, { id, deleteReason }) {
+  async deleteWatching({ state, dispatch, commit }, { id, showTypeId }) {
     try {
       const { data }  = await axios({
         method: 'DELETE',
         url: `/watchings/${id}`,
-        data: { deleteReason }
+        data: { showTypeId }
       });
 
       commit(WATCHING_DELETE, id);
-
       dispatch('showToast', { title: 'Show Deleted', message: data.message }, { root: true });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
@@ -93,6 +94,42 @@ const actions = {
       commit(WATCHING_TOGGLE_EPISODE_WATCHED, {
         watchingId,
         data
+      });
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+    }
+  },
+  async getEpisodeTags({ rootState, commit, dispatch }, { watchingId, episode }) {
+    try {
+      const { episodeTags } = rootState.lookups;
+      const { data }  = await axios({
+        method: 'GET',
+        url: `/episode-tags/${episode._id}/tag`
+      });
+
+      commit(WATCHING_GET_TAG, {
+        watchingId,
+        data,
+        episode,
+        episodeTags
+      });
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
+    }
+  },
+  async toggleTag({ rootState, commit, dispatch }, { watchingId, tagId, episode }) {
+    try {
+      const { episodeTags } = rootState.lookups;
+      const { data }  = await axios({
+        method: 'POST',
+        url: `/episode-tags/${episode._id}/tag/${tagId}`
+      });
+
+      commit(WATCHING_TOGGLE_TAG, {
+        watchingId,
+        data,
+        episode,
+        episodeTags
       });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
@@ -133,6 +170,7 @@ const mutations = {
     const currentSeasonEpisodesBefore = (item) => seasonNumber == episode.season.number && item.number <= episode.number;
     const watchingEpisodes = episodes.map(item => ({
       ...item,
+      tags: [],
       watched: episodesBefore || currentSeasonEpisodesBefore(item)
     }))
 
@@ -162,6 +200,58 @@ const mutations = {
           if (season._id === episode.season._id) {
             return season.episodes.map((item) => {
               item.watched = currentSeasonEpisodesBefore(item);
+              return item;
+            });
+          }
+
+          return season;
+        });
+      }
+
+      return watch;
+    });
+  },
+  [WATCHING_TOGGLE_TAG](state, { watchingId, episode, data, episodeTags }) {
+    state.watching = state.watching.map(watch => {
+      if (watch._id === watchingId) {
+        watch.show.seasons.map(season => {
+          if (season._id === episode.season) {
+            return season.episodes.map((item) => {
+              if(item._id === episode._id) {
+                item.tags = episodeTags.map(t => {
+                  return {
+                    ...t,
+                    active: data.find(({ id }) => t.id == id) ? true : false
+                  }
+                })
+              }
+
+              return item;
+            });
+          }
+
+          return season;
+        });
+      }
+
+      return watch;
+    });
+  },
+  [WATCHING_GET_TAG](state, { watchingId, episode, data, episodeTags }) {
+    state.watching = state.watching.map(watch => {
+      if (watch._id === watchingId) {
+        watch.show.seasons.map(season => {
+          if (season._id === episode.season) {
+            return season.episodes.map((item) => {
+              if(item._id === episode._id) {
+                item.tags = episodeTags.map(t => {
+                  return {
+                    ...t,
+                    active: data.find(({ id }) => t.id == id) ? true : false
+                  }
+                })
+              }
+
               return item;
             });
           }

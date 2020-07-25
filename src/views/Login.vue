@@ -12,7 +12,7 @@
 
             <div class="form-element dark">
                <label for="password">Password</label>
-               <!-- <button class="forgot-password" type="button" @click="$router.push({ name: 'forgotPassword' })">Forgotten your password?</button> -->
+               <button class="forgot-password" type="button" @click="$router.push({ name: 'forgotPassword' })">Forgotten your password?</button>
                <input name="password" type="password" v-model="form.password" required>
             </div>
 

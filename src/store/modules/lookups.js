@@ -1,9 +1,11 @@
 import axios from '../../http';
-import { SEASONS_GET, EPISODES_GET } from '../mutation-types';
+import { SEASONS_GET, EPISODES_GET, EPISODE_TAGS_GET, SHOW_TYPES_GET } from '../mutation-types';
 
 const state = {
   seasons: [],
-  episodes: []
+  episodes: [],
+  episodeTags: [],
+  showTypes: []
 };
 
 const getters = {};
@@ -21,6 +23,30 @@ const actions = {
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error', message: data }, { root: true });
     }
+  },
+  async getEpisodeTags({ commit, dispatch }) {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: '/episode-tags'
+      });
+
+      commit(EPISODE_TAGS_GET, res.data);
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data }, { root: true });
+    }
+  },
+  async getShowTypes({ commit, dispatch }) {
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: '/show-types'
+      });
+
+      commit(SHOW_TYPES_GET, res.data);
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error', message: data }, { root: true });
+    }
   }
 }
 
@@ -30,6 +56,12 @@ const mutations = {
   },
   [EPISODES_GET](state, data) {
     state.episodes = data;
+  },
+  [EPISODE_TAGS_GET](state, data) {
+    state.episodeTags = data;
+  },
+  [SHOW_TYPES_GET](state, data) {
+    state.showTypes = data;
   },
   resetState(state, prop) {
     state[prop] = [];
