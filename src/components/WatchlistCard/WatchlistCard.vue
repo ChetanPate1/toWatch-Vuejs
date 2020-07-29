@@ -115,6 +115,8 @@ export default {
         tagId: tag.id,
         episode
       });
+
+      this.$forceUpdate();
     },
     tabButtonName(number) {
       return number < 10 ? `S0${number}` : `S${number}`;

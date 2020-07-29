@@ -6,7 +6,7 @@
 
   <div class="content">
     <div class="bar">
-      <progress-bar :percentage="data.percentage"></progress-bar>
+      <progress-bar :percentage="data.percentage" :tags="data.tagPositions"></progress-bar>
     </div>
 
     <div class="text-ellipsis">
