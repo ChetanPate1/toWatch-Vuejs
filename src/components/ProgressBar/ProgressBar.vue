@@ -1,12 +1,10 @@
 <template lang="html">
   <div class="progress-bar-container">
-    <div class="progress" :style="{ 'width': `${percentage}%` }">
-      <span class="spot"
-        v-for="(t, i) in tags"
-        :key="i"
-        :style="{ 'left': `${t}%` }"></span>
-    </div>
-
+    <div class="progress" :style="{ 'width': `${percentage}%` }"></div>
+    <span class="spot"
+      v-for="(t, i) in tags"
+      :key="i"
+      :style="{ left: `${t}%` }"></span>
   </div>
 </template>
 
@@ -44,18 +42,20 @@ export default {
     height: 100%;
     width: 100%;
     border-radius: 0;
-    transition: 400ms width ease;
+    transition: 600ms width ease;
   }
 
   .spot {
     left: 0;
     top: 0;
     position: absolute;
-    border-radius: 2px;
     z-index: 10;
+    border-radius: 2px;
     height: 4px;
     width: 4px;
+    z-index: 20;
     background-color: $danger-color;
+    transform: translate(-100%, 0);
   }
 }
 </style>
