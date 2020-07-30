@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="switch-group" :class="{ dark }">
+<div class="switch-group" :class="{ dark }" v-if="options.length > 0">
   <div class="switch-group-item"
     v-for="item in options"
     :key="item.id"
