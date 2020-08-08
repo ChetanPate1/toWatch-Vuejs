@@ -3,7 +3,7 @@
   <div class="form-element search dark">
     <button type="button" class="dripicons-cross"
         @click="empty"
-        v-if="moviesFound.length">
+        v-if="moviesFound.length > 0">
     </button>
     <loader :show="requesting"></loader>
     <input type="text" name="name" v-model="name" placeholder="'Movie Name, Year'">
@@ -12,7 +12,7 @@
     </button>
 
     <div class="search-results" :class="{'show' : moviesFound }">
-      <search-result-item 
+      <search-result-item
         v-for="(movie, index) in moviesFound" :key="index"
         :poster="movie.Poster"
         :title="movie.Title"

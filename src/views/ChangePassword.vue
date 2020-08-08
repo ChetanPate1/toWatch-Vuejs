@@ -1,64 +1,64 @@
 <template lang="html">
-<div class="container">
-   <div class="col-md-offset-4 col-md-4">
+  <div class="container">
+    <div class="col-md-offset-4 col-md-4">
       <card>
-         <h2>Change Password</h2>
+        <h2>Change Password</h2>
 
-         <form name="form" novalidate @submit.prevent="onSubmit">
-            <div class="form-element dark">
-               <label for="password">New Password</label>
-               <input name="password" type="password" v-model="form.newPassword" required>
-            </div>
+        <form name="form" novalidate>
+          <div class="form-element dark">
+            <label for="password">New Password</label>
+            <input name="password" type="password" v-model="form.newPassword" required>
+          </div>
 
-            <div class="row margin-top-30">
-               <div class="col-xs-12 text-right">
-                  <button type="submit" class="button" :disabled="loader">Change Password</button>
-               </div>
+          <div class="row margin-top-30">
+            <div class="col-xs-12 text-right">
+              <uiv-btn type="primary" @click="onSubmit" :disabled="loader">Change Password</uiv-btn>
             </div>
-         </form>
+          </div>
+        </form>
       </card>
-   </div>
-</div>
+    </div>
+  </div>
 </template>
 
 <script>
 import Card from '@/components/Card/Card';
 
 export default {
-   name: 'ChangePassword',
-   data() {
-      return {
-        loader: true,
-         form: {
-            newPassword: ''
-         }
+  name: 'ChangePassword',
+  data() {
+    return {
+      loader: true,
+      form: {
+        newPassword: ''
       }
-   },
-   async mounted() {
-     const { resetToken } = this.$route.params;
-     await this.$store.dispatch('auth/resetPassword', resetToken);
-     this.loader = false;
-   },
-   methods: {
-      async onSubmit() {
-        const { resetToken } = this.$route.params;
-        this.loader = true;
-        await this.$store.dispatch('auth/changePassword', {
-          newPassword: this.form.newPassword,
-          token: resetToken
-        });
-        this.loader = false;
-      }
-   },
-   components: {
-      Card
-   }
+    }
+  },
+  async mounted() {
+    const { resetToken } = this.$route.params;
+    await this.$store.dispatch('auth/resetPassword', resetToken);
+    this.loader = false;
+  },
+  methods: {
+    async onSubmit() {
+      const { resetToken } = this.$route.params;
+      this.loader = true;
+      await this.$store.dispatch('auth/changePassword', {
+        newPassword: this.form.newPassword,
+        token: resetToken
+      });
+      this.loader = false;
+    }
+  },
+  components: {
+    Card
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 h2{
-   color: #ffffff;
+  color: #ffffff;
 }
 
 .forgot-password {

@@ -1,20 +1,19 @@
 <template lang="html">
 <div>
-  <popup title="Confirm" size="md" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-20">
-      Are you sure you want to delete this watched show?
-    </h4>
-
-    <button class="button button-sm red pull-left"
-            type="button"
-            @click="$refs.confirmPopup.close('cancel')">Cancel
-    </button>
-
-    <button class="button button-sm pull-right"
-            type="button"
-            @click="$refs.confirmPopup.close('yes')">Yes
-    </button>
-  </popup>
+  <uiv-modal v-model="deleteModal.show"
+    title="Confirm"
+    @hide="onDelete"
+    ref="deleteModal"
+    ok-text="Yes"
+    size="sm">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="margin-top-0 margin-bottom-20">
+          Are you sure you want to delete this watched show?
+        </h4>
+      </div>
+    </div>
+  </uiv-modal>
 
   <pager
     v-if="watchedShows.length > 15"
@@ -36,7 +35,13 @@
 
     <div class="row">
       <div class="col-sm-6 col-md-4" v-for="item in watchedShows" :key="item._id">
-        <watched-show-card :data="item"></watched-show-card>
+        <watched-show-card
+          :data="item"
+          @onDelete="(id) => {
+            deleteModal.show = true;
+            deleteModal.showId = id;
+          }">
+        </watched-show-card>
       </div>
     </div>
 
@@ -67,6 +72,14 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Watched',
+  data() {
+    return {
+      deleteModal: {
+        show: false,
+        showId: null
+      }
+    }
+  },
   async mounted() {
     this.$store.dispatch('watchedShows/getWatchedShows', {
       currentPage: 1
@@ -100,6 +113,17 @@ export default {
       this.$store.dispatch('watchedShows/getWatchedShows', {
         currentPage: 1
       });
+    },
+    async onDelete(result) {
+      if(result == 'ok') {
+        const { showId } = this.deleteModal;
+
+        await this.$store.dispatch('watchedShows/deleteFromWatchedShows', {
+          showId
+        });
+
+        await this.$store.dispatch('watchedShows/getWatchedShows', { currentPage: 1 });
+      }
     },
     initScroll() {
       window.onscroll = () => {

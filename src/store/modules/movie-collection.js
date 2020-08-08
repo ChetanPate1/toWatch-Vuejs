@@ -17,9 +17,9 @@ const state = {
 const getters = {};
 
 const actions = {
-  async getMovieCollection({ commit, dispatch }, { currentPage }) {
+  async getMovieCollection({ state, commit, dispatch }, { currentPage }) {
     if(state.requesting || state.totalPages < currentPage && currentPage > 1) return;
-    
+
     try {
       commit(MOVIE_COLLECTION_REQUESTING, true);
       const res = await axios({
@@ -31,6 +31,10 @@ const actions = {
       if (currentPage === 1) {
         commit(MOVIE_COLLECTION_REQUESTING, false);
         return commit(MOVIE_COLLECTION_SET, res.data);
+      }
+
+      if(res.data.collection.length == 0) {
+        return commit('updateState', { reachedEnd: true });
       }
 
       commit(MOVIE_COLLECTION_REQUESTING, false);
@@ -77,6 +81,12 @@ const actions = {
 };
 
 const mutations = {
+  updateState(state, { prop, value }) {
+    state = {
+      ...state,
+      [prop]: value
+    };
+  },
   [MOVIE_COLLECTION_REQUESTING](state, value) {
     state.requesting = value;
   },

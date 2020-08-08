@@ -1,41 +1,49 @@
 <template lang="html">
 <div>
-  <popup title="Add To Watch List" size="md" ref="popup">
-    <add-to-watchlist ref="addToWatchlist" :show="selectedShow"></add-to-watchlist>
-  </popup>
-
-  <popup title="Confirm" size="md" ref="confirmPopup" @open="showTypeId = showTypeList[0].id">
-    <h4 class="margin-top-0 margin-bottom-20">
-      Are you sure you want to delete this show?
-    </h4>
-
-    <div class="margin-bottom-30">
-      <label>Place Show In:</label>
-      <switch-group
-        id="showType"
-        v-model="showTypeId"
-        value-key="id"
-        :options="showTypeList">
-      </switch-group>
+  <uiv-modal v-model="addModal" title="Add To Watch List" ref="modal" size="sm" :footer="false">
+    <div class="row">
+      <div class="col-md-12">
+        <add-to-watchlist
+          ref="addToWatchlist"
+          :show="selectedShow"
+          @done="addModal = false">
+        </add-to-watchlist>
+      </div>
     </div>
+  </uiv-modal>
 
-    <button class="button button-sm red pull-left"
-            type="button"
-            @click="$refs.confirmPopup.close({ answer: 'cancel' })">Cancel
-    </button>
+  <uiv-modal v-model="deleteModal.show"
+    title="Confirm"
+    @show="deleteModal.showTypeId = showTypeList[0].id"
+    @hide="onDelete"
+    ref="deleteModal"
+    ok-text="Yes"
+    size="sm">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="margin-top-0 margin-bottom-20">
+          Are you sure you want to delete this show?
+        </h4>
 
-    <button class="button button-sm pull-right"
-            type="button"
-            @click="$refs.confirmPopup.close({ answer: 'yes', showTypeId })">Yes
-    </button>
-  </popup>
+        <div class="margin-bottom-30">
+          <label>Place Show In:</label>
+          <switch-group
+            id="showType"
+            v-model="deleteModal.showTypeId"
+            value-key="id"
+            :options="showTypeList">
+          </switch-group>
+        </div>
+      </div>
+    </div>
+  </uiv-modal>
 
   <pager
     v-if="watching.length > 6"
     :current-page="currentPage"
     :total-pages="totalPages">
   </pager>
-
+  
   <div class="container-fluid fade-in">
     <div class="row">
       <div class="col-xs-12 margin-bottom-30">
@@ -47,7 +55,11 @@
           :heading="item.show.name"
           :id="item._id"
           :data="item"
-          :img-src="item.show.image.original">
+          :img-src="item.show.image.original"
+          @onDelete="(id) => {
+            deleteModal.show = true;
+            deleteModal.watchingId = id;
+          }">
         </watchlist-card>
       </div>
     </div>
@@ -84,10 +96,15 @@ export default {
   name: 'Watching',
   data() {
     return {
+      addModal: false,
+      deleteModal: {
+        show: false,
+        watchingId: null,
+        showTypeId: null
+      },
       selectedShow: {
         title: ''
-      },
-      showTypeId: null
+      }
     }
   },
   async mounted() {
@@ -96,7 +113,7 @@ export default {
     await this.$store.dispatch('watching/getWatching', {
       currentPage: 1
     });
-    
+
     this.initScroll();
   },
   computed: {
@@ -121,7 +138,21 @@ export default {
   methods: {
     onSelect(show) {
       this.selectedShow = show;
-      this.$refs.popup.open();
+      this.addModal = true;
+    },
+    async onDelete(result) {
+      if(result == 'ok') {
+        const { watchingId, showTypeId } = this.deleteModal;
+
+        await this.$store.dispatch('watching/deleteWatching', {
+          id: watchingId,
+          showTypeId
+        });
+
+        await this.$store.dispatch('watching/getWatching', {
+          currentPage: 1
+        });
+      }
     },
     initScroll() {
       window.onscroll = () => {

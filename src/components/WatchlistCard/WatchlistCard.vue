@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
   <div class="watchlist-card" tabindex="0" :style="{ 'background-image': 'url('+ imgSrc +')' }">
-    <button type="button" class="icon-button red dripicons-trash" @click="confirmDelete(id)"></button>
+    <button type="button" class="icon-button red dripicons-trash" @click="$emit('onDelete', id)"></button>
 
     <h2>{{ heading }}</h2>
     <h4>{{ data.episode ? data.episode.name : '' }}</h4>
@@ -83,20 +83,6 @@ export default {
 
       if (this.open) {
         await this.tabSelect(this.data.show.seasons[episode.season.number - 1]);
-      }
-    },
-    async confirmDelete(id) {
-      const result = await this.$parent.$refs.confirmPopup.open();
-
-      if (result == 'dismiss') return;
-
-      if(result.answer == 'yes') {
-        await this.$store.dispatch('watching/deleteWatching', {
-          id, showTypeId: result.showTypeId
-        });
-        await this.$store.dispatch('watching/getWatching', {
-          currentPage: 1
-        });
       }
     },
     async onGetTags(isOpen, episode) {

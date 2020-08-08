@@ -1,54 +1,54 @@
 <template lang="html">
-<div class="container">
-   <div class="col-md-offset-4 col-md-4">
+  <div class="container">
+    <div class="col-md-offset-4 col-md-4">
       <card>
-         <h2>Forgot Password</h2>
+        <h2>Forgot Password</h2>
 
-         <form name="form" novalidate @submit.prevent="onSubmit">
-            <div class="form-element dark">
-               <label for="email">Your Email</label>
-               <input name="email" type="email" v-model="form.email" required>
-            </div>
+        <form name="form" novalidate>
+          <div class="form-element dark">
+            <label for="email">Your Email</label>
+            <input name="email" type="email" v-model="form.email" required>
+          </div>
 
-            <div class="row margin-top-30">
-               <div class="col-xs-12 text-right">
-                  <button type="submit" class="button" :disabled="loader">Reset Password</button>
-               </div>
+          <div class="row margin-top-30">
+            <div class="col-xs-12 text-right">
+              <uiv-btn type="primary" @click="onSubmit" :disabled="loader">Reset Password</uiv-btn>
             </div>
-         </form>
+          </div>
+        </form>
       </card>
-   </div>
-</div>
+    </div>
+  </div>
 </template>
 
 <script>
 import Card from '@/components/Card/Card';
 
 export default {
-   name: 'ForgotPassword',
-   data() {
-      return {
-        loader: false,
-         form: {
-            email: ''
-         }
+  name: 'ForgotPassword',
+  data() {
+    return {
+      loader: false,
+      form: {
+        email: ''
       }
-   },
-   methods: {
-      async onSubmit() {
-        this.loader = true;
-        await this.$store.dispatch('auth/forgotPassword', this.form);
-      }
-   },
-   components: {
-      Card
-   }
+    }
+  },
+  methods: {
+    async onSubmit() {
+      this.loader = true;
+      await this.$store.dispatch('auth/forgotPassword', this.form);
+    }
+  },
+  components: {
+    Card
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 h2{
-   color: #ffffff;
+  color: #ffffff;
 }
 
 .forgot-password {

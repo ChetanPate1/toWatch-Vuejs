@@ -21,7 +21,7 @@ const actions = {
 
       commit(EPISODES_GET, res.data);
     } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data }, { root: true });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
   async getEpisodeTags({ commit, dispatch }) {
@@ -33,7 +33,7 @@ const actions = {
 
       commit(EPISODE_TAGS_GET, res.data);
     } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data }, { root: true });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   },
   async getShowTypes({ commit, dispatch }) {
@@ -45,7 +45,7 @@ const actions = {
 
       commit(SHOW_TYPES_GET, res.data);
     } catch ({ data }) {
-      dispatch('showToast', { title: 'Error', message: data }, { root: true });
+      dispatch('showToast', { title: 'Error', message: data.message }, { root: true });
     }
   }
 }

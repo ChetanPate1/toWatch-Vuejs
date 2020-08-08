@@ -1,20 +1,19 @@
 <template lang="html">
 <div>
-  <popup :title="'Confirm'" :size="'md'" ref="confirmPopup">
-    <h4 class="margin-top-0 margin-bottom-30">
-      Are you sure you want to delete this movie?
-    </h4>
-
-    <button class="button button-sm red pull-left"
-            type="button"
-            @click="$refs.confirmPopup.close('cancel')">Cancel
-    </button>
-
-    <button class="button button-sm pull-right"
-            type="button"
-            @click="$refs.confirmPopup.close('yes')">Yes
-    </button>
-  </popup>
+  <uiv-modal v-model="deleteModal.show"
+    title="Confirm"
+    @hide="onDelete"
+    ref="deleteModal"
+    ok-text="Yes"
+    size="sm">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="margin-top-0 margin-bottom-20">
+          Are you sure you want to delete this movie?
+        </h4>
+      </div>
+    </div>
+  </uiv-modal>
 
   <pager
     v-if="collection.length > 15"
@@ -36,7 +35,11 @@
           :img-src="item.movie.poster"
           :movie-id="item.movie._id"
           :id="item._id"
-          :deleteable="true">
+          :deleteable="true"
+          @onDelete="(id) => {
+            deleteModal.show = true;
+            deleteModal.id = id
+          }">
         </movie-card>
       </div>
     </div>
@@ -51,7 +54,7 @@
       Reached End
     </reached-end>
 
-    <no-content message="Your movie collection is empty!" :condition="!collection.length"></no-content>
+    <no-content message="Your movie collection is empty!" v-if="collection.length == 0"></no-content>
   </div>
 </div>
 </template>
@@ -69,6 +72,14 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'MovieCollection',
+  data() {
+    return {
+      deleteModal: {
+        show: false,
+        showId: null
+      }
+    }
+  },
   async mounted() {
     await this.$store.dispatch('movieCollection/getMovieCollection', {
       currentPage: 1
@@ -79,8 +90,8 @@ export default {
   computed: {
     ...mapState({
       collection: ({ movieCollection }) => movieCollection.collection,
-      currentPage:  ({ movieCollection }) => movieCollection.currentPage,
-      totalPages:  ({ movieCollection }) => movieCollection.totalPages,
+      currentPage: ({ movieCollection }) => movieCollection.currentPage,
+      totalPages: ({ movieCollection }) => movieCollection.totalPages,
       reachedEnd: ({ movieCollection }) => {
         const { collection, pageSize, currentPage, totalPages } = movieCollection;
 
@@ -94,6 +105,12 @@ export default {
     })
   },
   methods: {
+    async onDelete(result) {
+      if(result == 'ok') {
+        const { id } = this.deleteModal;
+        await this.$store.dispatch('movieCollection/deleteFromMovieCollection', id);
+      }
+    },
     initScroll() {
       window.onscroll = () => {
         const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;

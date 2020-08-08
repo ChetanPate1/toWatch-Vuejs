@@ -11,10 +11,11 @@
     <p class="margin-top-10 margin-bottom-0" v-if="plot">{{ plot }}</p>
 
     <div class="margin-top-10 text-right">
-      <button class="button" type="button"
+
+      <uiv-btn type="primary"
         @click="$emit('click')"
         :disabled="disabled">Add to Collection
-      </button>
+      </uiv-btn>
     </div>
   </div>
 </div>

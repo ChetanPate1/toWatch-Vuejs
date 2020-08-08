@@ -1,43 +1,44 @@
 <template lang="html">
-<form name="form" v-on:submit.prevent="add(form)">
-  <div class="form-element">
-    <label for="series">Series Name</label>
-    {{ show.name }}
-  </div>
+  <form name="form">
+    <div class="form-element">
+      <label for="series">Series Name</label>
+      {{ show.name }}
+    </div>
 
-  <div class="form-element" v-if="show._id">
-    <label for="seasons">Seasons</label>
-    <div class="select-series">
+    <div class="form-element" v-if="show._id">
+      <label for="seasons">Seasons</label>
+      <div class="select-series">
         <div class="col-xs-3" v-for="item in show.seasons" :key="item._id">
           <label class="radio" :class="{'selected' : form.seasonId == item._id }" >
-              <input type="radio"
-                v-model="form.seasonId"
-                :value="item._id">{{ item.number }}
+            <input type="radio"
+            v-model="form.seasonId"
+            :value="item._id">{{ item.number }}
           </label>
         </div>
+      </div>
     </div>
-  </div>
 
-  <div class="form-element" v-if="form.seasonId">
-    <label for="seasons">Episodes</label>
-    <div class="select-series">
+    <div class="form-element" v-if="form.seasonId">
+      <label for="seasons">Episodes</label>
+      <div class="select-series">
         <div class="col-xs-3" v-for="episode in findEpisodes(form.seasonId)" :key="episode._id">
           <label class="radio"
-            :class="{'selected' : form.episodeId == episode._id }">
-              <input type="radio"
-                v-model="form.episodeId"
-                :value="episode._id">{{ episode.number }}
-          </label>
-        </div>
-        <span class="selected-none" :class="{'selected': !form.seasonId }">Select a episode</span>
+          :class="{'selected' : form.episodeId == episode._id }">
+          <input type="radio"
+          v-model="form.episodeId"
+          :value="episode._id">{{ episode.number }}
+        </label>
+      </div>
+      <span class="selected-none" :class="{'selected': !form.seasonId }">Select a episode</span>
     </div>
   </div>
 
-  <button class="button pull-right"
-    type="submit"
-    :disabled="!form.seasonId || !form.episodeId">
-    add
-  </button>
+  <div class="text-right">
+    <uiv-btn type="primary"
+      @click="add(form)"
+      :disabled="!form.seasonId || !form.episodeId">Add
+    </uiv-btn>
+  </div>
 </form>
 </template>
 
@@ -59,7 +60,7 @@ export default {
   methods: {
     async add() {
       await this.$store.dispatch('watching/addToWatching', {
-        ...this.form,
+        episodeId: this.form.episodeId,
         showId: this.show._id
       });
 
@@ -67,7 +68,7 @@ export default {
         seasonId: '',
         episodeId: ''
       };
-      this.$parent.close();
+      this.$emit('done');
     },
     findEpisodes(seasonId) {
       const season = this.show.seasons.find(item => item._id === seasonId);

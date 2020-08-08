@@ -1,12 +1,16 @@
 <template lang="html">
 <card class="watched-show-card margin-bottom-20" tabindex="0">
   <div class="status-dot"
+    v-uiv-tooltip="`Show ${data.status}`"
     :class="{ ended: data.status == 'Ended', running: (data.status == 'Running' || data.status == 'To Be Determined') }">
   </div>
 
   <div class="content">
     <div class="bar">
-      <progress-bar :percentage="data.percentage" :tags="data.tagPositions"></progress-bar>
+      <progress-bar
+        :percentage="data.percentage"
+        :tags="data.tagPositions"
+         v-uiv-tooltip="'Progress'"></progress-bar>
     </div>
 
     <div class="text-ellipsis">
@@ -30,17 +34,21 @@
 
   <button class="icon-button red dripicons-trash"
     tabindex="0"
-    @click.stop="onDelete()"></button>
+    v-uiv-tooltip="'Delete'"
+    @click.stop="$emit('onDelete', data.showId)"></button>
 
   <button class="icon-button dripicons-clockwise"
     :class="{ count: data.watchedCount > 0 }"
     tabindex="0"
+    v-uiv-tooltip="'Rewatch'"
     @click.stop="onRewatching()">
-    <div class="watched-count">{{ data.watchedCount }}</div>
+    <div class="watched-count"
+      v-uiv-tooltip="'Rewatch Count'">{{ data.watchedCount }}</div>
   </button>
 
   <button class="icon-button dripicons-media-play"
     tabindex="0"
+    v-uiv-tooltip="'Continue'"
     @click.stop="onContinue()"
     :disabled="data.percentage == 100"></button>
 
@@ -74,14 +82,6 @@ export default {
     },
     async onUpdate() {
       await this.$store.dispatch('shows/updateShow', this.data.showId);
-    },
-    async onDelete() {
-      const result = await this.$parent.$refs.confirmPopup.open();
-
-      if (result == 'yes') {
-        await this.$store.dispatch('watchedShows/deleteFromWatchedShows', this.data);
-        await this.$store.dispatch('watchedShows/getWatchedShows');
-      }
     },
     onEpisode(on, small) {
       if (small) {
@@ -190,7 +190,7 @@ export default {
     border-radius: 50%;
 
     &.ended {
-      background-color: #070710;
+      background-color: $danger-color;
     }
 
     &.running {

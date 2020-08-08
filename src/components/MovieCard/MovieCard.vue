@@ -5,7 +5,9 @@
   :class="{ 'deleteable': deleteable }"
   :style="{ 'background-image': 'url('+ imgSrc +')' }">
 
-  <button class="icon-button red dripicons-trash" tabindex="0" @click.stop="confirmDelete()"></button>
+  <button class="icon-button red dripicons-trash"
+    tabindex="0"
+    @click.stop="$emit('onDelete', id)"></button>
   <h2>{{ heading }}</h2>
 </div>
 </template>
@@ -13,11 +15,6 @@
 <script>
 export default {
   name: 'MovieCard',
-  data() {
-    return {
-      deleteOpen: false
-    };
-  },
   props: {
     heading: String,
     imgSrc: String,
@@ -28,12 +25,6 @@ export default {
   methods: {
     goToMovieDetails(movieId) {
       this.$router.push({ name: 'movieDetails', params: { movieId } });
-    },
-    async confirmDelete() {
-      const result = await this.$parent.$refs.confirmPopup.open();
-      if (result == 'yes') {
-        await this.$store.dispatch('movieCollection/deleteFromMovieCollection', this.id);
-      }
     }
   }
 };

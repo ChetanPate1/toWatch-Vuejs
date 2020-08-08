@@ -3,7 +3,7 @@
   <div class="form-element search dark">
     <button type="button" class="dripicons-cross"
         @click="empty"
-        v-if="showsFound.length">
+        v-if="showsFound.length > 0">
     </button>
 
     <loader :show="requesting"></loader>
@@ -12,7 +12,7 @@
     <button type="submit" class="dripicons-search" :disabled="requesting"></button>
 
     <div class="search-results" :class="{'show' : showsFound }">
-      <search-result-item 
+      <search-result-item
         v-for="show in showsFound" :key="show.id"
         :poster="show.image.medium"
         :title="show.name"
@@ -90,7 +90,7 @@ export default {
   max-height: 500px;
   overflow-y: auto;
   opacity: 0;
-  
+
   .result {
     margin: 0 0 5px 0;
     background-color: $shade-1;
