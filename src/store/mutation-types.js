@@ -4,6 +4,7 @@ export const SIGN_OUT_USER = 'SIGN_OUT_USER';
 export const SET_MOST_POPULAR_SHOWS = 'SET_MOST_POPULAR_SHOWS';
 
 export const SHOWS_GET = 'SHOWS_GET';
+export const SHOW_EPISODES_TAGS_GET = 'SHOW_EPISODES_TAGS_GET';
 export const SHOWS_RESET = 'SHOWS_RESET';
 
 export const WATCHING_SET = 'WATCHING_SET';

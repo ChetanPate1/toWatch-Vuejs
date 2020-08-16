@@ -3,6 +3,7 @@
     <div class="progress" :style="{ 'width': `${percentage}%` }"></div>
     <span class="spot"
       v-for="(t, i) in tags"
+      v-uiv-tooltip="'Tags'"
       :key="i"
       :style="{ left: `${t}%` }"></span>
   </div>

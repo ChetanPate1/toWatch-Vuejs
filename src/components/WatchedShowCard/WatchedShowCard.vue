@@ -1,59 +1,62 @@
 <template lang="html">
-<card class="watched-show-card margin-bottom-20" tabindex="0">
-  <div class="status-dot"
-    v-uiv-tooltip="`Show ${data.status}`"
-    :class="{ ended: data.status == 'Ended', running: (data.status == 'Running' || data.status == 'To Be Determined') }">
-  </div>
-
-  <div class="content">
-    <div class="bar">
-      <progress-bar
-        :percentage="data.percentage"
-        :tags="data.tagPositions"
-         v-uiv-tooltip="'Progress'"></progress-bar>
-    </div>
-
-    <div class="text-ellipsis">
-      <h3 class="margin-bottom-0 text-ellipsis">{{ data.name }}</h3>
-      {{ data.on.name }}
-    </div>
-
-    <div class="margin-top-10">
-      <small v-if="data.percentage != 100">
-        <span class="visible-sm">{{ onEpisode(data.on, true) }}</span>
-        <span class="hidden-sm">{{ onEpisode(data.on) }}</span>
-      </small>
-
-      <div class="margin-top-10">
-        <span class="status green" v-if="data.percentage == 100">
-          {{ data.status == 'Running' ? 'Up To Date' : 'Complete' }}
-        </span>
+  <div @click.stop="$emit('onClick', data)">
+    <card class="watched-show-card margin-bottom-20" tabindex="0">
+      <div class="status-dot"
+        v-uiv-tooltip="`Show ${data.status}`"
+        :class="{ ended: data.status == 'Ended', running: (data.status == 'Running' || data.status == 'To Be Determined') }">
       </div>
-    </div>
+
+      <div class="content">
+        <div class="bar">
+          <progress-bar
+            :percentage="data.percentage"
+            :tags="data.tagPositions"
+            v-uiv-tooltip="'Progress'"></progress-bar>
+        </div>
+
+        <div class="text-ellipsis">
+          <h3 class="margin-bottom-0 text-ellipsis">{{ data.name }}</h3>
+          {{ data.on.name }}
+        </div>
+
+        <div class="margin-top-10">
+          <small v-if="data.percentage != 100">
+            <span class="visible-sm">{{ onEpisode(data.on, true) }}</span>
+            <span class="hidden-sm">{{ onEpisode(data.on) }}</span>
+          </small>
+
+          <div class="margin-top-10">
+            <span class="status green" v-if="data.percentage == 100">
+              {{ data.status == 'Running' ? 'Up To Date' : 'Complete' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <button class="icon-button red dripicons-trash"
+        tabindex="0"
+        v-uiv-tooltip="'Delete'"
+        @click.stop="$emit('onDelete', data.showId)"></button>
+
+      <button class="icon-button dripicons-clockwise"
+        :class="{ count: data.watchedCount > 0 }"
+        tabindex="0"
+        v-uiv-tooltip="'Rewatch'"
+        @click.stop="onRewatching()">
+        <div class="watched-count"
+          v-uiv-tooltip="'Rewatch Count'">{{ data.watchedCount }}</div>
+      </button>
+
+      <button class="icon-button dripicons-media-play"
+        tabindex="0"
+        v-uiv-tooltip="'Continue'"
+        @click.stop="onContinue()"
+        :disabled="data.percentage == 100"></button>
+
+      <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
+    </card>
   </div>
 
-  <button class="icon-button red dripicons-trash"
-    tabindex="0"
-    v-uiv-tooltip="'Delete'"
-    @click.stop="$emit('onDelete', data.showId)"></button>
-
-  <button class="icon-button dripicons-clockwise"
-    :class="{ count: data.watchedCount > 0 }"
-    tabindex="0"
-    v-uiv-tooltip="'Rewatch'"
-    @click.stop="onRewatching()">
-    <div class="watched-count"
-      v-uiv-tooltip="'Rewatch Count'">{{ data.watchedCount }}</div>
-  </button>
-
-  <button class="icon-button dripicons-media-play"
-    tabindex="0"
-    v-uiv-tooltip="'Continue'"
-    @click.stop="onContinue()"
-    :disabled="data.percentage == 100"></button>
-
-  <div class="poster" :style="{ 'background-image': 'url('+ data.poster +')' }"></div>
-</card>
 </template>
 
 <script>
@@ -201,9 +204,6 @@ export default {
 
   &:hover {
     cursor: pointer;
-  }
-
-  &:focus {
     .icon-button {
       transform: translate(0, 0);
     }

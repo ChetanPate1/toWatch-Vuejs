@@ -15,6 +15,30 @@
     </div>
   </uiv-modal>
 
+  <uiv-modal v-model="tagsModal.show"
+    title="Tags"
+    ref="tagsModal"
+    :footer="false"
+    size="sm">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="list-group">
+          <li class="list-group-item" v-for="(tag, i) in tagsModal.data" :key="i">
+            <div class="row">
+              <div class="col-xs-4">
+                {{ tag.y }}
+              </div>
+
+              <div class="col-xs-8 text-right">
+                {{ tag.x }}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </uiv-modal>
+
   <pager
     v-if="watchedShows.length > 15"
     :current-page="currentPage"
@@ -40,7 +64,8 @@
           @onDelete="(id) => {
             deleteModal.show = true;
             deleteModal.showId = id;
-          }">
+          }"
+          @onClick="onTags">
         </watched-show-card>
       </div>
     </div>
@@ -77,6 +102,10 @@ export default {
       deleteModal: {
         show: false,
         showId: null
+      },
+      tagsModal: {
+        show: false,
+        data: []
       }
     }
   },
@@ -84,7 +113,7 @@ export default {
     this.$store.dispatch('watchedShows/getWatchedShows', {
       currentPage: 1
     });
-
+    await this.$store.dispatch('lookups/getEpisodeTags');
     await this.$store.dispatch('lookups/getShowTypes');
 
     this.initScroll();
@@ -95,6 +124,8 @@ export default {
       currentPage: ({ watchedShows }) => watchedShows.currentPage,
       totalPages: ({ watchedShows }) => watchedShows.totalPages,
       showTypeList: ({ lookups }) => lookups.showTypes,
+      episodeTagsList: ({ lookups }) => lookups.episodeTags,
+      showEpisodesTags: ({ shows }) => shows.showEpisodesTags,
       filter: ({ watchedShows }) => watchedShows.filter,
       reachedEnd: ({ watchedShows }) => {
         const { pageSize, currentPage, totalPages } = watchedShows;
@@ -124,6 +155,21 @@ export default {
 
         await this.$store.dispatch('watchedShows/getWatchedShows', { currentPage: 1 });
       }
+    },
+    async onTags({ showId }) {
+      await this.$store.dispatch('shows/showsEpisodesTagsGet', showId);
+      const twoDigits = (n) => n < 10 ? `0${n}` : n;
+
+      const data = this.showEpisodesTags.map(({ name, episode }) => ({
+        x: name,
+        y: `S${twoDigits(episode.season.number)}E${twoDigits(episode.number)}`
+      }));
+
+      if (data.length == 0) return;
+
+      this.tagsModal.show = true;
+
+      this.tagsModal.data = data;
     },
     initScroll() {
       window.onscroll = () => {

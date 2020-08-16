@@ -1,10 +1,12 @@
 import axios from '../../http';
 import {
-  SHOWS_GET, 
+  SHOWS_GET,
+  SHOW_EPISODES_TAGS_GET,
   SHOWS_RESET } from '../mutation-types';
 
 const state = {
-  showsFound: []
+  showsFound: [],
+  showEpisodesTags: []
 };
 
 const getters = {};
@@ -17,15 +19,29 @@ const actions = {
         url: `${process.env.VUE_APP_TVMAZE_API_URL}/search/shows`,
         params: { q }
       });
-      
+
       if(res.data.length == 0) {
         return dispatch('showToast', {
           title: 'Not Found',
           message: 'Show could not be found.'
         });
       }
-  
+
       commit(SHOWS_GET, res.data);
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error.', message: data }, { root: true });
+    }
+  },
+  async showsEpisodesTagsGet({ commit, dispatch }, showId) {
+    commit('SHOWS_RESET');
+
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `/episode-tags/${showId}/tags`
+      });
+
+      commit(SHOW_EPISODES_TAGS_GET, res.data.tags);
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error.', message: data }, { root: true });
     }
@@ -49,13 +65,13 @@ const actions = {
         method: 'GET',
         url: `${process.env.VUE_APP_TVMAZE_API_URL}/shows/${showId}`
       });
-  
+
       const { data } = await axios({
         method: 'POST',
         url: `/shows/${showId}/update`,
         data: res.data
       });
-      
+
       if (data.updated == false) {
         dispatch('showToast', { title: 'Already Updated.', message: data.message }, { root: true });
       } else {
@@ -76,6 +92,9 @@ const mutations = {
       ...show,
       image: show.image || {}
     }));
+  },
+  [SHOW_EPISODES_TAGS_GET](state, tags) {
+    state.showEpisodesTags = tags;
   },
   [SHOWS_RESET](state) {
     state.showsFound = [];
