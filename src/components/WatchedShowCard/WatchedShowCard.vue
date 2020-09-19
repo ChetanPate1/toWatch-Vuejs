@@ -20,18 +20,16 @@
         </div>
 
         <div class="margin-top-10">
-          <small v-if="data.percentage != 100">
+          <small>
             <span class="visible-sm">{{ onEpisode(data.on, true) }}</span>
             <span class="hidden-sm">{{ onEpisode(data.on) }}</span>
           </small>
-
-          <div class="margin-top-10">
-            <span class="status green" v-if="data.percentage == 100">
-              {{ data.status == 'Running' ? 'Up To Date' : 'Complete' }}
-            </span>
-          </div>
         </div>
       </div>
+
+      <span class="status green" v-if="data.percentage == 100">
+        {{ data.status == 'Running' ? 'Up To Date' : 'Complete' }}
+      </span>
 
       <button class="icon-button red dripicons-trash"
         tabindex="0"
@@ -200,6 +198,12 @@ export default {
       animation: pulse 1s infinite;
       background-color: $green;
     }
+  }
+
+  .status {
+    position: absolute;
+    bottom: 14px;
+    left: 125px;
   }
 
   &:hover {
