@@ -46,6 +46,7 @@ export default {
   background-repeat: no-repeat;
   box-shadow: inset 0 130px 130px rgba(0, 0, 0, 0.2),
     0 20px 40px -10px rgba(0, 0, 0, 0.7);
+  border-top: 1px solid rgba(200, 200, 200, 0.5);
 
   &.deleteable {
     &:hover,

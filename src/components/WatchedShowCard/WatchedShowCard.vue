@@ -107,6 +107,7 @@ export default {
   min-height: 160px;
   color: #b7b7b7;
   overflow: hidden;
+  border-top: 1px solid rgba(97, 97, 97, 0.7);
 
   h3 {
     font-size: 18px;
