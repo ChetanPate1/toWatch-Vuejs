@@ -71,6 +71,18 @@ const actions = {
       dispatch('showToast', { title: 'Error.', message: data }, { root: true });
     }
   },
+  async updateShows({ dispatch }) {
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: '/shows/update'
+      });
+
+      dispatch('showToast', { title: 'Shows Updated.' }, { root: true });
+    } catch ({ data }) {
+      dispatch('showToast', { title: 'Error.', message: data }, { root: true });
+    }
+  },
   reset({ commit }) {
     commit(SHOWS_RESET);
   }

@@ -15,7 +15,7 @@ const state = {
   currentPage: 1,
   requesting: false,
   totalPages: 10,
-  pageSize: 15
+  pageSize: 4
 };
 
 const getters = {};
@@ -29,7 +29,10 @@ const actions = {
 
       const res = await axios({
         method: 'GET',
-        url: '/watchings'
+        url: '/watchings',
+        params: {
+          currentPage
+        }
       });
 
       if (currentPage === 1) {

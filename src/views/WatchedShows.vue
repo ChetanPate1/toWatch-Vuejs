@@ -58,6 +58,12 @@
     </div>
 
     <div class="row">
+      <div class="col-md-12 text-right margin-bottom-20">
+        <button type="button" class="btn btn-xs btn-ghost" :disabled="refreshing" @click="onRefresh">
+          <loader :show="refreshing" />
+          {{ refreshing ? '' : 'Refresh' }}
+        </button>
+      </div>
       <div class="col-sm-6 col-md-4" v-for="item in watchedShows" :key="item._id">
         <watched-show-card
           :data="item"
@@ -79,13 +85,12 @@
     <reached-end :show="reachedEnd">
       Reached End
     </reached-end>
-    <no-content message="You haven't watched any shows yet!" v-if="watchedShows.length == 0"></no-content>
+    <no-content message="You haven't watched any shows yet!" v-if="!requesting && watchedShows.length == 0"></no-content>
   </div>
 </div>
 </template>
 
 <script>
-import Popup from '@/components/Popup/Popup';
 import NoContent from '@/components/NoContent/NoContent';
 import WatchedShowCard from '@/components/WatchedShowCard/WatchedShowCard';
 import SwitchGroup from '@/components/FormElements/SwitchGroup';
@@ -106,7 +111,8 @@ export default {
       tagsModal: {
         show: false,
         data: []
-      }
+      },
+      refreshing: false
     }
   },
   async mounted() {
@@ -171,6 +177,11 @@ export default {
 
       this.tagsModal.data = data;
     },
+    async onRefresh() {
+      this.refreshing = true;
+      await this.$store.dispatch('shows/updateShows');
+      this.refreshing = false;
+    },
     initScroll() {
       window.onscroll = () => {
         const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -184,7 +195,6 @@ export default {
     }
   },
   components: {
-    Popup,
     NoContent,
     WatchedShowCard,
     SwitchGroup,

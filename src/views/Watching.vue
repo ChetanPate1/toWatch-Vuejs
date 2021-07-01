@@ -75,7 +75,7 @@
       Reached End
     </reached-end>
 
-    <no-content message="Your watch list is empty!" v-if="watching.length == 0"></no-content>
+    <no-content message="Your watch list is empty!" v-if="!requesting && watching.length == 0"></no-content>
   </div>
 </div>
 </template>
@@ -163,7 +163,7 @@ export default {
         const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
         if (bottomOfWindow) {
-          this.$store.dispatch('watchedShows/getWatchedShows', {
+          this.$store.dispatch('watching/getWatching', {
             currentPage: this.currentPage + 1
           });
         }
