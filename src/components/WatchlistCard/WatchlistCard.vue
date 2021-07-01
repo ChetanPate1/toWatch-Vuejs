@@ -2,6 +2,7 @@
 <div>
   <div class="watchlist-card" tabindex="0" :style="{ 'background-image': 'url('+ imgSrc +')' }">
     <button type="button" class="icon-button red dripicons-trash" @click="$emit('onDelete', id)"></button>
+    <button type="button" class="icon-button dripicons-clockwise" v-uiv-tooltip="'Refresh'" @click="$emit('onRefresh', data.show._id)"></button>
 
     <h2>{{ heading }}</h2>
     <h4>{{ data.episode ? data.episode.name : '' }}</h4>

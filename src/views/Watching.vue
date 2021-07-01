@@ -43,7 +43,7 @@
     :current-page="currentPage"
     :total-pages="totalPages">
   </pager>
-  
+
   <div class="container-fluid fade-in">
     <div class="row">
       <div class="col-xs-12 margin-bottom-30">
@@ -59,7 +59,8 @@
           @onDelete="(id) => {
             deleteModal.show = true;
             deleteModal.watchingId = id;
-          }">
+          }"
+          @onRefresh="onRefresh">
         </watchlist-card>
       </div>
     </div>
@@ -153,6 +154,9 @@ export default {
           currentPage: 1
         });
       }
+    },
+    async onRefresh(id) {
+        await this.$store.dispatch('shows/updateShow', id);
     },
     initScroll() {
       window.onscroll = () => {

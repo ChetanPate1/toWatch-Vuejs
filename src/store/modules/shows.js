@@ -62,21 +62,11 @@ const actions = {
   async updateShow({ dispatch }, showId) {
     try {
       const res = await axios({
-        method: 'GET',
-        url: `${process.env.VUE_APP_TVMAZE_API_URL}/shows/${showId}`
-      });
-
-      const { data } = await axios({
         method: 'POST',
-        url: `/shows/${showId}/update`,
-        data: res.data
+        url: `/shows/${showId}/update`
       });
 
-      if (data.updated == false) {
-        dispatch('showToast', { title: 'Already Updated.', message: data.message }, { root: true });
-      } else {
-        dispatch('showToast', { title: 'Show Updated.', message: data.message }, { root: true });
-      }
+      dispatch('showToast', { title: res.status == 200 ? 'Show Updated.' : 'Show Already Upto Date.' }, { root: true });
     } catch ({ data }) {
       dispatch('showToast', { title: 'Error.', message: data }, { root: true });
     }
