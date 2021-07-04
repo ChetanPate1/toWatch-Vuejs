@@ -15,7 +15,7 @@ const state = {
   currentPage: 1,
   requesting: false,
   totalPages: 10,
-  pageSize: 4
+  pageSize: 8
 };
 
 const getters = {};
