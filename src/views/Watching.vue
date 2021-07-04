@@ -157,6 +157,9 @@ export default {
     },
     async onRefresh(id) {
         await this.$store.dispatch('shows/updateShow', id);
+        this.$store.dispatch('watching/getWatching', {
+          currentPage: this.currentPage
+        });
     },
     initScroll() {
       window.onscroll = () => {
